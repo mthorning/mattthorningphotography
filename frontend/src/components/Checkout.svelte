@@ -6,7 +6,7 @@
   export let selectedPrint, showSpinner, hideSpinner
   let paypal
 
-  $: description = `${selectedPrint.x} x ${selectedPrint.y} ${selectedPrint.title} (${selectedPrint.fileName})`
+  $: description = `${selectedPrint.x} x ${selectedPrint.y} ${selectedPrint.title} (${selectedPrint.id})`
 
   onMount(() => {
     window.paypal

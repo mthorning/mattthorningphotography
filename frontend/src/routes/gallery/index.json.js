@@ -3,7 +3,7 @@ import request from '../../utils/request';
 export async function get(req, res, next) {
   request(
     `
-        photos {
+        photos(where: { published: true }) {
             id
             isPortrait
             image {
@@ -23,7 +23,7 @@ export async function get(req, res, next) {
         res.end(JSON.stringify(photos.map(photo => ({
             id: photo.id,
             alt: photo.image.alternativeText,
-            isPortrait: photo.image.height > photo.image.width,
+            isPortrait: photo.isPortrait,
             formats: photo.image.formats
         }))));
     }

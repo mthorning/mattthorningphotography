@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_photo_crop_sizes",
+  "info": {
+    "name": "Crop Size",
+    "icon": "arrows-alt"
+  },
+  "options": {},
+  "attributes": {
+    "width": {
+      "type": "integer"
+    },
+    "height": {
+      "type": "integer"
+    }
+  }
+}

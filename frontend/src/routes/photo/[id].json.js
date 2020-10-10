@@ -11,13 +11,18 @@ export function get(req, res) {
         photo(id: "${id}") {
             id
             title
+            description
+            sell
             isPortrait
+            showExif
             exif
+            cropSize  {
+                height
+                width
+            }
             image {
                 url
                 formats
-                width
-                height
             }
         }
     `,
@@ -26,13 +31,13 @@ export function get(req, res) {
         if (response) {
             const { photo } = response;
 
-            const printSizes = calcPrintSize(photo.image.width, photo.image.height)
+            const printSizes = calcPrintSize(photo.cropSize.width, photo.cropSize.height)
 
             res.writeHead(200, {
               "Content-Type": "application/json",
             });
 
-            res.end(JSON.stringify({...photo, printSizes}));
+            res.end(JSON.stringify({...photo, ...photo.image, printSizes}));
         }
 
     }).catch((error) => {

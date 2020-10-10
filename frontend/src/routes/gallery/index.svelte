@@ -2,8 +2,8 @@
   export async function preload(page, session) {
     const res = await this.fetch('gallery.json')
     if (res.status === 200) {
-      const images = await res.json()
-      return { images }
+      const photos = await res.json()
+      return { photos }
     }
     this.error(404, 'Not Found')
   }
@@ -13,14 +13,14 @@
   import { goto } from '@sapper/app'
   import Thumbnail from '../../components/Thumbnail.svelte'
   import Lightbox from '../../components/Lightbox.svelte'
-  export let images = []
+  export let photos = []
 
   let selectedIdx
-  $: selectedImage = images[selectedIdx]
+  $: selectedImage = photos[selectedIdx]
 
   function onImageClick(e) {
     e.stopPropagation()
-    goto(`/image/${selectedImage.id}`)
+    goto(`/photo/${selectedImage.id}`)
   }
 </script>
 
@@ -47,14 +47,14 @@
 </svelte:head>
 
 <div data-test="gallery">
-  {#if !images || !images.length}
-    <h5>I thought I had more images than this...</h5>
+  {#if !photos || !photos.length}
+    <h5>I thought I had more photos than this...</h5>
   {:else}
-    {#each images as image, index}
+    {#each photos as photos, index}
       <Thumbnail
-        isPortrait={image.isPortrait}
-        alt={image.alt}
-        url={image.formats.small.url}
+        isPortrait={photos.isPortrait}
+        alt={photos.alt}
+        url={photos.formats.small.url}
         on:click={() => (selectedIdx = index)} />
     {/each}
   {/if}
@@ -66,7 +66,7 @@
       on:click={onImageClick}
       class="pointer"
       close={() => (selectedIdx = -1)}
-      next={() => (selectedIdx = selectedIdx === images.length - 1 ? 0 : selectedIdx + 1)}
-      previous={() => (selectedIdx = selectedIdx === 0 ? images.length - 1 : selectedIdx - 1)} />
+      next={() => (selectedIdx = selectedIdx === photos.length - 1 ? 0 : selectedIdx + 1)}
+      previous={() => (selectedIdx = selectedIdx === 0 ? photos.length - 1 : selectedIdx - 1)} />
   {/if}
 </div>

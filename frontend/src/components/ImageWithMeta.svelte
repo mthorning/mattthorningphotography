@@ -3,21 +3,26 @@
   import Lightbox from './Lightbox.svelte'
   import Img from './Img.svelte'
 
-  export let meta, isPortrait, fileName, type
+  export let photo
 
-  $: apperture = meta.apperture
-  $: focalLength = meta.focalLength
-  $: iso = meta.iso
+  const {
+    isPortrait,
+    exif: { FNumber, FocalLength, ShutterSpeedValue, ISO },
+  } = photo
+
+  $: apperture = FNumber
+  $: focalLength = FocalLength
+  $: iso = ISO
   $: shutter =
-    meta.shutter >= 1
-      ? Math.round(meta.shutter * 10) / 10
-      : `1/${Math.round(1 / meta.shutter)}`
+    ShutterSpeedValue >= 1
+      ? Math.round(ShutterSpeedValue * 10) / 10
+      : `1/${Math.round(1 / ShutterSpeedValue)}`
 
   const dispatch = createEventDispatcher()
   let touchstart = 0
   let showLightbox = false
-  let imageLoaded = false
-  let imageWrapper
+  let photoLoaded = false
+  let photoWrapper
 
   function closeLightbox() {
     showLightbox = false
@@ -49,12 +54,12 @@
     margin: 0;
     text-align: right;
   }
-  .image-wrapper {
+  .photo-wrapper {
     background: url('/spinner.gif') no-repeat center;
     background-size: 75px;
     text-align: center;
   }
-  :global(.image) {
+  :global(.photo) {
     cursor: pointer;
     max-width: 100%;
     max-height: 50vh;
@@ -67,25 +72,26 @@
   on:click
   on:touchstart={onTouchstart}
   on:touchend={onTouchend}>
-  <div bind:this={imageWrapper} class="image-wrapper">
+  <div bind:this={photoWrapper} class="photo-wrapper">
     <Img
       on:click={() => (showLightbox = true)}
-      alt={fileName}
-      class="image"
-      src={`images/fullsize/${fileName}.${type}`}
-      afterLoaded={(image) => {
-        imageLoaded = true
-        image.style.width = 'auto'
-        image.style.height = 'auto'
+      alt={photo.alt}
+      class="photo"
+      src={photo.formats.medium.url}
+      afterLoaded={(photo) => {
+        photoLoaded = true
+        photo.style.width = 'auto'
+        photo.style.height = 'auto'
       }} />
-    {#if apperture && shutter && iso && focalLength}
+    {#if photo.showExif && apperture && shutter && iso && focalLength}
       <p>f{apperture} | {shutter}sec | ISO {iso} | {focalLength}mm</p>
     {/if}
   </div>
 </div>
 {#if showLightbox}
   <Lightbox
-    {...{ fileName, type, isPortrait }}
+    {isPortrait}
+    url={photo.formats.large.url}
     close={closeLightbox}
     on:click={closeLightbox} />
 {/if}

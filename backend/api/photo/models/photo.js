@@ -8,9 +8,8 @@ const exifr = require("exifr");
 const isPortrait = (image) => image.height > image.width;
 
 async function update(data) {
-  data.isPortrait = isPortrait(data.image);
-
   const file = await strapi.query("file", "upload").findOne({ id: data.image });
+  data.isPortrait = isPortrait(file);
   const { ImageDescription, ...exif } = await exifr.parse(
     `${process.cwd()}/public/${file.url}`
   );
@@ -25,8 +24,20 @@ module.exports = {
       if (data.image) {
         const { ImageDescription, file } = await update(data);
 
-        // if description is set in LR then use that:
-        if (ImageDescription) data.description = ImageDescription;
+        // if description is set in LR then use that (remove array):
+        if (ImageDescription) {
+          const cropSizeMatch = ImageDescription.match(/\[\d+,\ ?\d+\]/);
+          const cropSize = cropSizeMatch ? JSON.parse(cropSizeMatch[0]) : null;
+          if (cropSize)
+            data.cropSize = {
+              width: Number(cropSize[0]),
+              height: Number(cropSize[1]),
+            };
+
+          data.description =
+            ImageDescription && ImageDescription.replace(cropSize, "");
+        }
+
         // might as well set the title too
         data.title = file.name
           .split("-")[1]

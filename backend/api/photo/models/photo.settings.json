@@ -29,6 +29,23 @@
     },
     "description": {
       "type": "text"
+    },
+    "sell": {
+      "type": "boolean",
+      "default": true
+    },
+    "published": {
+      "type": "boolean",
+      "default": true
+    },
+    "cropSize": {
+      "type": "component",
+      "repeatable": false,
+      "component": "photo.crop-size"
+    },
+    "showExif": {
+      "type": "boolean",
+      "default": true
     }
   }
 }

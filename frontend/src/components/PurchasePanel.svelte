@@ -1,7 +1,7 @@
 <script>
   import Checkout from './Checkout.svelte'
   import Spinner from './Spinner.svelte'
-  export let printSizes, title, fileName
+  export let printSizes, title, id
 
   let spinner = false
 
@@ -100,5 +100,5 @@
   <Checkout
     showSpinner={() => (spinner = true)}
     hideSpinner={() => (spinner = false)}
-    selectedPrint={{ ...selectedPrint, title, fileName }} />
+    selectedPrint={{ ...selectedPrint, title, id }} />
 </div>
