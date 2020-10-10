@@ -1,0 +1,44 @@
+version: '2'
+services:
+  backend:
+    build: ./backend
+    restart: always
+    container_name: ${BE_CONTAINER_NAME}
+    environment:
+      DATABASE_CLIENT: mongo
+      DATABASE_HOST: ${MONGO_CONTAINER_NAME}
+      DATABASE_PORT: 27017
+      DATABASE_NAME: ${APP_NAME}
+      DATABASE_USERNAME: ${APP_NAME}
+      DATABASE_PASSWORD: ${APP_NAME}
+      PUBLIC_URL: ${PUBLIC_URL}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
+      NODE_ENV: production
+    depends_on:
+      - mongo
+    volumes:
+      - ../uploads:/srv/app/public/uploads
+
+  frontend:
+    build: ./frontend
+    restart: always
+    container_name: ${FE_CONTAINER_NAME}
+    environment:
+      API_URL: ${API_URL}
+      PUBLIC_URL: ${PUBLIC_URL}
+      NODE_ENV: production
+    ports:
+      - '3001:3000'
+    depends_on:
+      - backend
+
+  mongo:
+    image: mongo
+    restart: always
+    container_name: ${MONGO_CONTAINER_NAME}
+    environment:
+      MONGO_INITDB_DATABASE: ${APP_NAME}
+      MONGO_INITDB_ROOT_USERNAME: ${APP_NAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${APP_NAME}
+    volumes:
+      - ../data:/data/db
