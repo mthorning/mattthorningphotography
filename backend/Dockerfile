@@ -7,6 +7,7 @@ COPY package-lock.json .
 COPY api api
 COPY build build
 COPY config config
+COPY components components
 COPY exports exports
 COPY extensions extensions
 

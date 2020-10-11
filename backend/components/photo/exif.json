@@ -11,16 +11,16 @@
       "default": true
     },
     "aperture": {
-      "type": "decimal"
+      "type": "string"
     },
     "shutter": {
-      "type": "integer"
+      "type": "string"
     },
     "iso": {
-      "type": "integer"
+      "type": "string"
     },
     "focalLength": {
-      "type": "integer"
+      "type": "string"
     },
     "bracketed": {
       "type": "boolean",

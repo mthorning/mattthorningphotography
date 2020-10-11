@@ -43,19 +43,19 @@ type ComponentPhotoExif {
   createdAt: DateTime!
   updatedAt: DateTime!
   show: Boolean
-  aperture: Float
-  shutter: Int
-  iso: Int
-  focalLength: Int
+  aperture: String
+  shutter: String
+  iso: String
+  focalLength: String
   bracketed: Boolean
 }
 
 input ComponentPhotoExifInput {
   show: Boolean
-  aperture: Float
-  shutter: Int
-  iso: Int
-  focalLength: Int
+  aperture: String
+  shutter: String
+  iso: String
+  focalLength: String
   bracketed: Boolean
 }
 
@@ -146,10 +146,10 @@ input editComponentPhotoCropSizeInput {
 input editComponentPhotoExifInput {
   id: ID
   show: Boolean
-  aperture: Float
-  shutter: Int
-  iso: Int
-  focalLength: Int
+  aperture: String
+  shutter: String
+  iso: String
+  focalLength: String
   bracketed: Boolean
 }
 
@@ -431,22 +431,22 @@ enum PublicationState {
 }
 
 type Query {
-  about: About
-  photo(id: ID!): Photo
-  photos(sort: String, limit: Int, start: Int, where: JSON): [Photo]
+  about(publicationState: PublicationState): About
+  photo(id: ID!, publicationState: PublicationState): Photo
+  photos(sort: String, limit: Int, start: Int, where: JSON, publicationState: PublicationState): [Photo]
   photosConnection(sort: String, limit: Int, start: Int, where: JSON): PhotoConnection
-  print: Prints
-  files(sort: String, limit: Int, start: Int, where: JSON): [UploadFile]
+  print(publicationState: PublicationState): Prints
+  files(sort: String, limit: Int, start: Int, where: JSON, publicationState: PublicationState): [UploadFile]
   filesConnection(sort: String, limit: Int, start: Int, where: JSON): UploadFileConnection
-  role(id: ID!): UsersPermissionsRole
+  role(id: ID!, publicationState: PublicationState): UsersPermissionsRole
 
   """
   Retrieve all the existing roles. You can't apply filters on this query.
   """
-  roles(sort: String, limit: Int, start: Int, where: JSON): [UsersPermissionsRole]
+  roles(sort: String, limit: Int, start: Int, where: JSON, publicationState: PublicationState): [UsersPermissionsRole]
   rolesConnection(sort: String, limit: Int, start: Int, where: JSON): UsersPermissionsRoleConnection
-  user(id: ID!): UsersPermissionsUser
-  users(sort: String, limit: Int, start: Int, where: JSON): [UsersPermissionsUser]
+  user(id: ID!, publicationState: PublicationState): UsersPermissionsUser
+  users(sort: String, limit: Int, start: Int, where: JSON, publicationState: PublicationState): [UsersPermissionsUser]
   usersConnection(sort: String, limit: Int, start: Int, where: JSON): UsersPermissionsUserConnection
   me: UsersPermissionsMe
 }

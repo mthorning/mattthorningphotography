@@ -29,4 +29,5 @@ rm ./**/.env
 ssh vps << EOF
     cd ~/containers/$APP_NAME/$APP_NAME
     docker-compose up -d --build --force-recreate --remove-orphans
+    echo "y" | docker image prune
 EOF
