@@ -1,7 +1,4 @@
 import nodemailer from 'nodemailer'
-import env from 'node-env-file'
-
-env(__dirname + '../../../../.env');
 
 // create transporter object with smtp server details
 const transporter = nodemailer.createTransport({

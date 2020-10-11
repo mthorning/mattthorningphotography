@@ -9,7 +9,6 @@ COPY build build
 COPY config config
 COPY exports exports
 COPY extensions extensions
-COPY public public
 
 RUN npm ci
 CMD npm start
