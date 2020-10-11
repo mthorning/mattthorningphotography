@@ -1,3 +1,21 @@
+type About {
+  id: ID!
+  _id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  body: String
+  title: String
+  image: UploadFile
+}
+
+input AboutInput {
+  body: String
+  title: String
+  image: ID
+  created_by: ID
+  updated_by: ID
+}
+
 type AdminUser {
   id: ID!
   username: String
@@ -17,6 +35,28 @@ type ComponentPhotoCropSize {
 input ComponentPhotoCropSizeInput {
   width: Int
   height: Int
+}
+
+type ComponentPhotoExif {
+  id: ID!
+  _id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  show: Boolean
+  aperture: Float
+  shutter: Int
+  iso: Int
+  focalLength: Int
+  bracketed: Boolean
+}
+
+input ComponentPhotoExifInput {
+  show: Boolean
+  aperture: Float
+  shutter: Int
+  iso: Int
+  focalLength: Int
+  bracketed: Boolean
 }
 
 input createPhotoInput {
@@ -57,12 +97,20 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the
 """
 scalar DateTime
 
+type deleteAboutPayload {
+  about: About
+}
+
 input deletePhotoInput {
   where: InputID
 }
 
 type deletePhotoPayload {
   photo: Photo
+}
+
+type deletePrintPayload {
+  print: Prints
 }
 
 input deleteRoleInput {
@@ -81,10 +129,28 @@ type deleteUserPayload {
   user: UsersPermissionsUser
 }
 
+input editAboutInput {
+  body: String
+  title: String
+  image: ID
+  created_by: ID
+  updated_by: ID
+}
+
 input editComponentPhotoCropSizeInput {
   id: ID
   width: Int
   height: Int
+}
+
+input editComponentPhotoExifInput {
+  id: ID
+  show: Boolean
+  aperture: Float
+  shutter: Int
+  iso: Int
+  focalLength: Int
+  bracketed: Boolean
 }
 
 input editFileInput {
@@ -111,12 +177,19 @@ input editPhotoInput {
   title: String
   image: ID
   isPortrait: Boolean
-  exif: JSON
   description: String
   sell: Boolean
   published: Boolean
   cropSize: editComponentPhotoCropSizeInput
-  showExif: Boolean
+  exif: editComponentPhotoExifInput
+  created_by: ID
+  updated_by: ID
+}
+
+input editPrintInput {
+  info: String
+  availablePrintSizes: JSON
+  enabled: Boolean
   created_by: ID
   updated_by: ID
 }
@@ -182,12 +255,16 @@ scalar JSON
 """The `Long` scalar type represents 52-bit integers"""
 scalar Long
 
-union Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | UserPermissionsPasswordPayload | Photo | PhotoConnection | PhotoAggregator | PhotoGroupBy | PhotoConnectionId | PhotoConnection_id | PhotoConnectionCreatedAt | PhotoConnectionUpdatedAt | PhotoConnectionTitle | PhotoConnectionImage | PhotoConnectionIsPortrait | PhotoConnectionExif | PhotoConnectionDescription | PhotoConnectionSell | PhotoConnectionPublished | PhotoConnectionCropSize | PhotoConnectionShowExif | createPhotoPayload | updatePhotoPayload | deletePhotoPayload | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnection_id | UploadFileConnectionCreatedAt | UploadFileConnectionUpdatedAt | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_metadata | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnection_id | UsersPermissionsRoleConnectionCreatedAt | UsersPermissionsRoleConnectionUpdatedAt | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | createRolePayload | updateRolePayload | deleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnection_id | UsersPermissionsUserConnectionCreatedAt | UsersPermissionsUserConnectionUpdatedAt | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | createUserPayload | updateUserPayload | deleteUserPayload | ComponentPhotoCropSize
+union Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | UserPermissionsPasswordPayload | About | updateAboutPayload | deleteAboutPayload | Photo | PhotoConnection | PhotoAggregator | PhotoGroupBy | PhotoConnectionId | PhotoConnection_id | PhotoConnectionCreatedAt | PhotoConnectionUpdatedAt | PhotoConnectionTitle | PhotoConnectionImage | PhotoConnectionIsPortrait | PhotoConnectionDescription | PhotoConnectionSell | PhotoConnectionPublished | PhotoConnectionCropSize | PhotoConnectionExif | createPhotoPayload | updatePhotoPayload | deletePhotoPayload | Prints | updatePrintPayload | deletePrintPayload | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnection_id | UploadFileConnectionCreatedAt | UploadFileConnectionUpdatedAt | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_metadata | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnection_id | UsersPermissionsRoleConnectionCreatedAt | UsersPermissionsRoleConnectionUpdatedAt | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | createRolePayload | updateRolePayload | deleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnection_id | UsersPermissionsUserConnectionCreatedAt | UsersPermissionsUserConnectionUpdatedAt | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | createUserPayload | updateUserPayload | deleteUserPayload | ComponentPhotoCropSize | ComponentPhotoExif
 
 type Mutation {
+  updateAbout(input: updateAboutInput): updateAboutPayload
+  deleteAbout: deleteAboutPayload
   createPhoto(input: createPhotoInput): createPhotoPayload
   updatePhoto(input: updatePhotoInput): updatePhotoPayload
   deletePhoto(input: deletePhotoInput): deletePhotoPayload
+  updatePrint(input: updatePrintInput): updatePrintPayload
+  deletePrint: deletePrintPayload
 
   """Create a new role"""
   createRole(input: createRoleInput): createRolePayload
@@ -224,12 +301,11 @@ type Photo {
   title: String
   image: UploadFile
   isPortrait: Boolean
-  exif: JSON
   description: String
   sell: Boolean
   published: Boolean
   cropSize: ComponentPhotoCropSize
-  showExif: Boolean
+  exif: ComponentPhotoExif
 }
 
 type PhotoAggregator {
@@ -264,7 +340,7 @@ type PhotoConnectionDescription {
 }
 
 type PhotoConnectionExif {
-  key: JSON
+  key: ID
   connection: PhotoConnection
 }
 
@@ -293,11 +369,6 @@ type PhotoConnectionSell {
   connection: PhotoConnection
 }
 
-type PhotoConnectionShowExif {
-  key: Boolean
-  connection: PhotoConnection
-}
-
 type PhotoConnectionTitle {
   key: String
   connection: PhotoConnection
@@ -316,26 +387,42 @@ type PhotoGroupBy {
   title: [PhotoConnectionTitle]
   image: [PhotoConnectionImage]
   isPortrait: [PhotoConnectionIsPortrait]
-  exif: [PhotoConnectionExif]
   description: [PhotoConnectionDescription]
   sell: [PhotoConnectionSell]
   published: [PhotoConnectionPublished]
   cropSize: [PhotoConnectionCropSize]
-  showExif: [PhotoConnectionShowExif]
+  exif: [PhotoConnectionExif]
 }
 
 input PhotoInput {
   title: String
   image: ID
   isPortrait: Boolean
-  exif: JSON
   description: String
   sell: Boolean
   published: Boolean
   cropSize: ComponentPhotoCropSizeInput
-  showExif: Boolean
+  exif: ComponentPhotoExifInput
   created_by: ID
   updated_by: ID
+}
+
+input PrintInput {
+  info: String
+  availablePrintSizes: JSON
+  enabled: Boolean
+  created_by: ID
+  updated_by: ID
+}
+
+type Prints {
+  id: ID!
+  _id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  info: String
+  availablePrintSizes: JSON
+  enabled: Boolean
 }
 
 enum PublicationState {
@@ -344,9 +431,11 @@ enum PublicationState {
 }
 
 type Query {
+  about: About
   photo(id: ID!): Photo
   photos(sort: String, limit: Int, start: Int, where: JSON): [Photo]
   photosConnection(sort: String, limit: Int, start: Int, where: JSON): PhotoConnection
+  print: Prints
   files(sort: String, limit: Int, start: Int, where: JSON): [UploadFile]
   filesConnection(sort: String, limit: Int, start: Int, where: JSON): UploadFileConnection
   role(id: ID!): UsersPermissionsRole
@@ -375,6 +464,14 @@ input RoleInput {
 """A time string with format: HH:mm:ss.SSS"""
 scalar Time
 
+input updateAboutInput {
+  data: editAboutInput
+}
+
+type updateAboutPayload {
+  about: About
+}
+
 input updatePhotoInput {
   where: InputID
   data: editPhotoInput
@@ -382,6 +479,14 @@ input updatePhotoInput {
 
 type updatePhotoPayload {
   photo: Photo
+}
+
+input updatePrintInput {
+  data: editPrintInput
+}
+
+type updatePrintPayload {
+  print: Prints
 }
 
 input updateRoleInput {

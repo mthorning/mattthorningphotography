@@ -7,16 +7,8 @@
 
   const {
     isPortrait,
-    exif: { FNumber, FocalLength, ShutterSpeedValue, ISO },
+    exif: { aperture, focalLength, iso, shutter, bracketed },
   } = photo
-
-  $: apperture = FNumber
-  $: focalLength = FocalLength
-  $: iso = ISO
-  $: shutter =
-    ShutterSpeedValue >= 1
-      ? Math.round(ShutterSpeedValue * 10) / 10
-      : `1/${Math.round(1 / ShutterSpeedValue)}`
 
   const dispatch = createEventDispatcher()
   let touchstart = 0
@@ -83,8 +75,8 @@
         photo.style.width = 'auto'
         photo.style.height = 'auto'
       }} />
-    {#if photo.showExif && apperture && shutter && iso && focalLength}
-      <p>f{apperture} | {shutter}sec | ISO {iso} | {focalLength}mm</p>
+    {#if photo.exif.show && aperture && shutter && iso && focalLength}
+        <p>f{aperture} | {bracketed ? 'bracketed' : `${shutter}sec`} | ISO {iso} | {focalLength}mm</p>
     {/if}
   </div>
 </div>

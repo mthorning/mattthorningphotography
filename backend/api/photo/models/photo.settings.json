@@ -24,9 +24,6 @@
     "isPortrait": {
       "type": "boolean"
     },
-    "exif": {
-      "type": "json"
-    },
     "description": {
       "type": "text"
     },
@@ -43,9 +40,10 @@
       "repeatable": false,
       "component": "photo.crop-size"
     },
-    "showExif": {
-      "type": "boolean",
-      "default": true
+    "exif": {
+      "type": "component",
+      "repeatable": false,
+      "component": "photo.exif"
     }
   }
 }

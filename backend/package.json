@@ -7,7 +7,7 @@
     "dev": "strapi develop",
     "start": "strapi start",
     "build": "strapi build",
-    "mongo": "docker run --rm -p 27017:27017 -v ~/containers/mongo/mtp-data/db:/data/db -e MONGO_INITDB_ROOT_USERNAME=photo -e MONGO_INITDB_ROOT_PASSWORD=photo --name mtp_mongo mongo > /dev/null",
+    "mongo": "docker run --rm -p 27017:27017 -v ~/containers/mongo/mtp-data/db:/data/db --name mtp-mongo mongo > /dev/null",
     "strapi": "strapi"
   },
   "devDependencies": {},

@@ -1,0 +1,28 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/prints",
+      "handler": "prints.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/prints",
+      "handler": "prints.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/prints",
+      "handler": "prints.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "kind": "singleType",
+  "collectionName": "prints",
+  "info": {
+    "name": "prints"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "info": {
+      "type": "richtext"
+    },
+    "availablePrintSizes": {
+      "type": "json"
+    },
+    "enabled": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

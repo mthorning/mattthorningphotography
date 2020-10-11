@@ -1,5 +1,3 @@
-import fs from "fs";
-import path from "path";
 import calcPrintSize from "tariff/src/index"
 import request from '../../utils/request';
 
@@ -14,8 +12,14 @@ export function get(req, res) {
             description
             sell
             isPortrait
-            showExif
-            exif
+            exif {
+                aperture
+                focalLength
+                iso
+                shutter
+                bracketed
+                show
+            }
             cropSize  {
                 height
                 width
@@ -25,19 +29,34 @@ export function get(req, res) {
                 formats
             }
         }
+        print {
+            availablePrintSizes
+            info
+            enabled
+        }
     `,
     res
     ).then((response) => {
         if (response) {
-            const { photo } = response;
+            const { 
+                photo: { cropSize, ...photo }, 
+                print: { availablePrintSizes, info, enabled } 
+            } = response;
 
-            const printSizes = calcPrintSize(photo.cropSize.width, photo.cropSize.height)
+            const printSizes = calcPrintSize(
+                cropSize.width, 
+                cropSize.height, 
+                availablePrintSizes
+            )
 
             res.writeHead(200, {
               "Content-Type": "application/json",
             });
 
-            res.end(JSON.stringify({...photo, ...photo.image, printSizes}));
+            res.end(JSON.stringify({
+                photo: {...photo, ...photo.image}, 
+                print: { info, printSizes } 
+            }));
         }
 
     }).catch((error) => {
