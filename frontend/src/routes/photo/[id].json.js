@@ -38,16 +38,13 @@ export function get(req, res) {
     res
     ).then((response) => {
         if (response) {
-            const { 
-                photo: { cropSize, ...photo }, 
-                print: { availablePrintSizes, info, enabled } 
-            } = response;
+            const { photo, print } = response
 
-            const printSizes = calcPrintSize(
-                cropSize.width, 
-                cropSize.height, 
-                availablePrintSizes
-            )
+            const printSizes = print && photo ? calcPrintSize(
+                photo.cropSize.width, 
+                photo.cropSize.height, 
+                print.availablePrintSizes
+            ) : null
 
             res.writeHead(200, {
               "Content-Type": "application/json",
@@ -55,7 +52,7 @@ export function get(req, res) {
 
             res.end(JSON.stringify({
                 photo: {...photo, ...photo.image}, 
-                print: { info, printSizes } 
+                print: { ...print, printSizes } 
             }));
         }
 

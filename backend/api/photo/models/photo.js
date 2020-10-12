@@ -15,45 +15,50 @@ async function update(data) {
   return Promise.resolve({ file, exif });
 }
 
+function addExif(exif, data) {
+  if (exif && Object.keys(exif).length) {
+    data.captureDate = exif.CreateDate;
+    data.exifData = exif;
+
+    data.exif = {
+      ...data.exif,
+      aperture: exif.FNumber,
+      focalLength: exif.FocalLength,
+      iso: exif.ISO,
+      shutter:
+        exif.ExposureTime && exif.ExposureTime >= 1
+          ? Math.round(exif.ExposureTime * 10) / 10
+          : `1/${Math.round(1 / exif.ExposureTime)}`,
+    };
+  } else {
+    data.exif = { ...data.exif, show: false };
+  }
+}
+
 module.exports = {
   lifecycles: {
     beforeCreate: async (data) => {
       if (data.image) {
         const { file, exif } = await update(data);
+        addExif(exif, data);
 
-        if (exif && Object.keys(exif).length) {
-          data.exif = {
-            ...data.exif,
-            aperture: exif.FNumber,
-            focalLength: exif.FocalLength,
-            iso: exif.ISO,
-            shutter:
-              exif.ShutterSpeedValue && exif.ShutterSpeedValue >= 1
-                ? Math.round(exif.ShutterSpeedValue * 10) / 10
-                : `1/${Math.round(1 / exif.ShutterSpeedValue)}`,
-          };
+        // if description is set in LR then use that (remove array):
+        if (exif.ImageDescription) {
+          const cropSizeMatch = exif.ImageDescription.match(/\[\d+,\ ?\d+\]/);
+          const cropSizeString = cropSizeMatch ? cropSizeMatch[0] : null;
 
-          // if description is set in LR then use that (remove array):
-          if (exif.ImageDescription) {
-            const cropSizeMatch = exif.ImageDescription.match(/\[\d+,\ ?\d+\]/);
-            const cropSizeString = cropSizeMatch ? cropSizeMatch[0] : null;
-
-            if (cropSizeString) {
-              const cropSize = JSON.parse(cropSizeString);
-              data.cropSize = {
-                width: Number(cropSize[0]),
-                height: Number(cropSize[1]),
-              };
-            }
-
-            data.description =
-              exif.ImageDescription &&
-              exif.ImageDescription.replace(cropSizeString, "");
+          if (cropSizeString) {
+            const cropSize = JSON.parse(cropSizeString);
+            data.cropSize = {
+              width: Number(cropSize[0]),
+              height: Number(cropSize[1]),
+            };
           }
-        } else {
-          data.exif = { ...data.exif, show: false };
-        }
 
+          data.description =
+            exif.ImageDescription &&
+            exif.ImageDescription.replace(cropSizeString, "");
+        }
         // might as well set the title too
         data.title = data.title
           ? data.title
@@ -61,7 +66,8 @@ module.exports = {
       }
     },
     beforeUpdate: async (params, data) => {
-      await update(data);
+      const { exif } = await update(data);
+      addExif(exif, data);
     },
   },
 };

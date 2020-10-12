@@ -44,6 +44,16 @@
       "type": "component",
       "repeatable": false,
       "component": "photo.exif"
+    },
+    "captureDate": {
+      "type": "datetime"
+    },
+    "category": {
+      "model": "category",
+      "via": "photo"
+    },
+    "exifData": {
+      "type": "json"
     }
   }
 }

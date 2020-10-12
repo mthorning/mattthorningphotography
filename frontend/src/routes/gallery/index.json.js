@@ -3,7 +3,7 @@ import request from '../../utils/request';
 export async function get(req, res, next) {
   request(
     `
-        photos(where: { published: true }) {
+        photos(sort: "captureDate:asc", where: { published: true }) {
             id
             isPortrait
             image {

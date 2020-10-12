@@ -23,6 +23,72 @@ type AdminUser {
   lastname: String!
 }
 
+type Category {
+  id: ID!
+  _id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String
+  photo: Photo
+}
+
+type CategoryAggregator {
+  count: Int
+  totalCount: Int
+}
+
+type CategoryConnection {
+  values: [Category]
+  groupBy: CategoryGroupBy
+  aggregate: CategoryAggregator
+}
+
+type CategoryConnection_id {
+  key: ID
+  connection: CategoryConnection
+}
+
+type CategoryConnectionCreatedAt {
+  key: DateTime
+  connection: CategoryConnection
+}
+
+type CategoryConnectionId {
+  key: ID
+  connection: CategoryConnection
+}
+
+type CategoryConnectionName {
+  key: String
+  connection: CategoryConnection
+}
+
+type CategoryConnectionPhoto {
+  key: ID
+  connection: CategoryConnection
+}
+
+type CategoryConnectionUpdatedAt {
+  key: DateTime
+  connection: CategoryConnection
+}
+
+type CategoryGroupBy {
+  id: [CategoryConnectionId]
+  _id: [CategoryConnection_id]
+  createdAt: [CategoryConnectionCreatedAt]
+  updatedAt: [CategoryConnectionUpdatedAt]
+  name: [CategoryConnectionName]
+  photo: [CategoryConnectionPhoto]
+}
+
+input CategoryInput {
+  name: String
+  photo: ID
+  created_by: ID
+  updated_by: ID
+}
+
 type ComponentPhotoCropSize {
   id: ID!
   _id: ID!
@@ -57,6 +123,14 @@ input ComponentPhotoExifInput {
   iso: String
   focalLength: String
   bracketed: Boolean
+}
+
+input createCategoryInput {
+  data: CategoryInput
+}
+
+type createCategoryPayload {
+  category: Category
 }
 
 input createPhotoInput {
@@ -101,6 +175,14 @@ type deleteAboutPayload {
   about: About
 }
 
+input deleteCategoryInput {
+  where: InputID
+}
+
+type deleteCategoryPayload {
+  category: Category
+}
+
 input deletePhotoInput {
   where: InputID
 }
@@ -133,6 +215,13 @@ input editAboutInput {
   body: String
   title: String
   image: ID
+  created_by: ID
+  updated_by: ID
+}
+
+input editCategoryInput {
+  name: String
+  photo: ID
   created_by: ID
   updated_by: ID
 }
@@ -182,6 +271,9 @@ input editPhotoInput {
   published: Boolean
   cropSize: editComponentPhotoCropSizeInput
   exif: editComponentPhotoExifInput
+  captureDate: DateTime
+  category: ID
+  exifData: JSON
   created_by: ID
   updated_by: ID
 }
@@ -255,11 +347,14 @@ scalar JSON
 """The `Long` scalar type represents 52-bit integers"""
 scalar Long
 
-union Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | UserPermissionsPasswordPayload | About | updateAboutPayload | deleteAboutPayload | Photo | PhotoConnection | PhotoAggregator | PhotoGroupBy | PhotoConnectionId | PhotoConnection_id | PhotoConnectionCreatedAt | PhotoConnectionUpdatedAt | PhotoConnectionTitle | PhotoConnectionImage | PhotoConnectionIsPortrait | PhotoConnectionDescription | PhotoConnectionSell | PhotoConnectionPublished | PhotoConnectionCropSize | PhotoConnectionExif | createPhotoPayload | updatePhotoPayload | deletePhotoPayload | Prints | updatePrintPayload | deletePrintPayload | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnection_id | UploadFileConnectionCreatedAt | UploadFileConnectionUpdatedAt | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_metadata | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnection_id | UsersPermissionsRoleConnectionCreatedAt | UsersPermissionsRoleConnectionUpdatedAt | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | createRolePayload | updateRolePayload | deleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnection_id | UsersPermissionsUserConnectionCreatedAt | UsersPermissionsUserConnectionUpdatedAt | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | createUserPayload | updateUserPayload | deleteUserPayload | ComponentPhotoCropSize | ComponentPhotoExif
+union Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | UserPermissionsPasswordPayload | About | updateAboutPayload | deleteAboutPayload | Category | CategoryConnection | CategoryAggregator | CategoryGroupBy | CategoryConnectionId | CategoryConnection_id | CategoryConnectionCreatedAt | CategoryConnectionUpdatedAt | CategoryConnectionName | CategoryConnectionPhoto | createCategoryPayload | updateCategoryPayload | deleteCategoryPayload | Photo | PhotoConnection | PhotoAggregator | PhotoGroupBy | PhotoConnectionId | PhotoConnection_id | PhotoConnectionCreatedAt | PhotoConnectionUpdatedAt | PhotoConnectionTitle | PhotoConnectionImage | PhotoConnectionIsPortrait | PhotoConnectionDescription | PhotoConnectionSell | PhotoConnectionPublished | PhotoConnectionCropSize | PhotoConnectionExif | PhotoConnectionCaptureDate | PhotoConnectionCategory | PhotoConnectionExifData | createPhotoPayload | updatePhotoPayload | deletePhotoPayload | Prints | updatePrintPayload | deletePrintPayload | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnection_id | UploadFileConnectionCreatedAt | UploadFileConnectionUpdatedAt | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_metadata | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnection_id | UsersPermissionsRoleConnectionCreatedAt | UsersPermissionsRoleConnectionUpdatedAt | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | createRolePayload | updateRolePayload | deleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnection_id | UsersPermissionsUserConnectionCreatedAt | UsersPermissionsUserConnectionUpdatedAt | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | createUserPayload | updateUserPayload | deleteUserPayload | ComponentPhotoCropSize | ComponentPhotoExif
 
 type Mutation {
   updateAbout(input: updateAboutInput): updateAboutPayload
   deleteAbout: deleteAboutPayload
+  createCategory(input: createCategoryInput): createCategoryPayload
+  updateCategory(input: updateCategoryInput): updateCategoryPayload
+  deleteCategory(input: deleteCategoryInput): deleteCategoryPayload
   createPhoto(input: createPhotoInput): createPhotoPayload
   updatePhoto(input: updatePhotoInput): updatePhotoPayload
   deletePhoto(input: deletePhotoInput): deletePhotoPayload
@@ -306,6 +401,9 @@ type Photo {
   published: Boolean
   cropSize: ComponentPhotoCropSize
   exif: ComponentPhotoExif
+  captureDate: DateTime
+  category: Category
+  exifData: JSON
 }
 
 type PhotoAggregator {
@@ -320,6 +418,16 @@ type PhotoConnection {
 }
 
 type PhotoConnection_id {
+  key: ID
+  connection: PhotoConnection
+}
+
+type PhotoConnectionCaptureDate {
+  key: DateTime
+  connection: PhotoConnection
+}
+
+type PhotoConnectionCategory {
   key: ID
   connection: PhotoConnection
 }
@@ -341,6 +449,11 @@ type PhotoConnectionDescription {
 
 type PhotoConnectionExif {
   key: ID
+  connection: PhotoConnection
+}
+
+type PhotoConnectionExifData {
+  key: JSON
   connection: PhotoConnection
 }
 
@@ -392,6 +505,9 @@ type PhotoGroupBy {
   published: [PhotoConnectionPublished]
   cropSize: [PhotoConnectionCropSize]
   exif: [PhotoConnectionExif]
+  captureDate: [PhotoConnectionCaptureDate]
+  category: [PhotoConnectionCategory]
+  exifData: [PhotoConnectionExifData]
 }
 
 input PhotoInput {
@@ -403,6 +519,9 @@ input PhotoInput {
   published: Boolean
   cropSize: ComponentPhotoCropSizeInput
   exif: ComponentPhotoExifInput
+  captureDate: DateTime
+  category: ID
+  exifData: JSON
   created_by: ID
   updated_by: ID
 }
@@ -432,6 +551,9 @@ enum PublicationState {
 
 type Query {
   about(publicationState: PublicationState): About
+  category(id: ID!, publicationState: PublicationState): Category
+  categories(sort: String, limit: Int, start: Int, where: JSON, publicationState: PublicationState): [Category]
+  categoriesConnection(sort: String, limit: Int, start: Int, where: JSON): CategoryConnection
   photo(id: ID!, publicationState: PublicationState): Photo
   photos(sort: String, limit: Int, start: Int, where: JSON, publicationState: PublicationState): [Photo]
   photosConnection(sort: String, limit: Int, start: Int, where: JSON): PhotoConnection
@@ -470,6 +592,15 @@ input updateAboutInput {
 
 type updateAboutPayload {
   about: About
+}
+
+input updateCategoryInput {
+  where: InputID
+  data: editCategoryInput
+}
+
+type updateCategoryPayload {
+  category: Category
 }
 
 input updatePhotoInput {

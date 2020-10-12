@@ -1,7 +1,6 @@
 <script>
   import Img from '../components/Img.svelte'
   export let isPortrait, alt, url
-  console.log(alt)
 </script>
 
 <style>
@@ -24,7 +23,7 @@
     position: absolute;
     left: 50%;
     top: 50%;
-    height: 105%;
+    height: 120%;
     width: auto;
     transform: translate(-50%, -50%);
   }
