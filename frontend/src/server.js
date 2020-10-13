@@ -1,3 +1,5 @@
+process.env.NODE_ENV !== 'production' && require('dotenv').config();
+
 import sirv from "sirv";
 import polka from "polka";
 import bodyParser from 'body-parser';
@@ -10,7 +12,7 @@ const { PORT, NODE_ENV, API_URL } = process.env;
 const dev = NODE_ENV === "development";
 
 const apiProxy = createProxyMiddleware(["/api", "/uploads"], {
-  target: API_URL ? API_URL : "http://localhost:1337",
+  target: API_URL,
   changeOrigin: true,
   pathRewrite: {
     "^/api": "",

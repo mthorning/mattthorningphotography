@@ -1,3 +1,5 @@
+process.env.NODE_ENV !== 'production' && require('dotenv').config();
+
 import resolve from "@rollup/plugin-node-resolve";
 import replace from "@rollup/plugin-replace";
 import commonjs from "@rollup/plugin-commonjs";
@@ -27,6 +29,7 @@ export default {
         "process.browser": true,
         "process.env.NODE_ENV": JSON.stringify(mode),
         "process.env.PORT": JSON.stringify(process.env.PORT),
+        "process.env.PAYPAL_ID": JSON.stringify(process.env.PAYPAL_ID),
       }),
       svelte({
         dev,
@@ -80,6 +83,7 @@ export default {
       replace({
         "process.browser": false,
         "process.env.NODE_ENV": JSON.stringify(mode),
+        "process.env.PUBLIC_URL": JSON.stringify(process.env.PUBLIC_URL)
       }),
       svelte({
         generate: "ssr",

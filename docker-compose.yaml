@@ -27,6 +27,10 @@ services:
       API_URL: ${API_URL}
       PUBLIC_URL: ${PUBLIC_URL}
       NODE_ENV: production
+      EMAIL_ADDRESS: ${EMAIL_ADDRESS}
+      EMAIL_USERNAME: ${EMAIL_USERNAME}
+      EMAIL_PASSWORD: ${EMAIL_PASSWORD}
+      PAYPAL_ID: ${PAYPAL_ID}
     ports:
       - '3002:3000'
     depends_on:

@@ -16,7 +16,6 @@ NODE_ENV=production npm run build
 cd ..
 
 rsync --recursive -av --progress --delete \
-    --include .env \
     --exclude ".*" \
     --exclude "node_modules" \
     --exclude release.sh \
