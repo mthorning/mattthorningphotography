@@ -1,29 +1,25 @@
 #! /bin/bash
 set -e 
 
-source ./.env
+source ./.env;
 
-cp ./.env ./backend
 cd backend
 rm -rf ./.cache ./build
 NODE_ENV=production npm run build 
 
 cd ..
-cp ./.env ./frontend
 cd frontend
 rm -rf ./__sapper__
 NODE_ENV=production npm run build 
 cd ..
 
 rsync --recursive -av --progress --delete \
-    --exclude ".*" \
+    --exclude "./**/.*" \
     --exclude "node_modules" \
     --exclude release.sh \
     --exclude backend/public/ \
     --exclude "src" \
     . vps:~/containers/$APP_NAME/$APP_NAME/
-
-rm ./**/.env
 
 ssh vps << EOF
     cd ~/containers/$APP_NAME/$APP_NAME

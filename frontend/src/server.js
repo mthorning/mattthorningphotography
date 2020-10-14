@@ -1,4 +1,4 @@
-process.env.NODE_ENV !== 'production' && require('dotenv').config();
+require('dotenv').config({ path: process.env.NODE_ENV !== 'production' ? './.env' : '../.env' });
 
 import sirv from "sirv";
 import polka from "polka";

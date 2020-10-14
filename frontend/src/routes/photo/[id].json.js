@@ -1,5 +1,6 @@
 import calcPrintSize from "tariff/src/index"
 import request from '../../utils/request';
+import marked from "marked";
 
 
 export function get(req, res) {
@@ -38,7 +39,7 @@ export function get(req, res) {
     res
     ).then((response) => {
         if (response) {
-            const { photo, print } = response
+            const { photo = {}, print = {} } = response
 
             const printSizes = print && photo ? calcPrintSize(
                 photo.cropSize.width, 
@@ -52,7 +53,7 @@ export function get(req, res) {
 
             res.end(JSON.stringify({
                 photo: {...photo, ...photo.image}, 
-                print: { ...print, printSizes } 
+                print: { ...print, printSizes, info: marked(print.info) } 
             }));
         }
 

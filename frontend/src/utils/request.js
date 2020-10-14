@@ -1,7 +1,7 @@
 import { gql, GraphQLClient } from "graphql-request";
 
 const dev = process.env.NODE_ENV === "development";
-const client = new GraphQLClient(`${process.env.PUBLIC_URL}/api/graphql`);
+const client = new GraphQLClient(`${process.env.API_URL}/graphql`);
 
 export default function request(query, res) {
   return client

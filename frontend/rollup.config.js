@@ -1,4 +1,4 @@
-process.env.NODE_ENV !== 'production' && require('dotenv').config();
+require('dotenv').config({ path: process.env.NODE_ENV !== 'production' ? './.env' : '../.env' });
 
 import resolve from "@rollup/plugin-node-resolve";
 import replace from "@rollup/plugin-replace";
@@ -9,7 +9,7 @@ import { terser } from "rollup-plugin-terser";
 import config from "sapper/config/rollup.js";
 import pkg from "./package.json";
 
-const mode = process.env.NODE_ENV;
+const mode = process.env.NODE_ENV || 'development';
 const dev = mode === "development";
 
 const legacy = !!process.env.SAPPER_LEGACY_BUILD;
@@ -83,7 +83,6 @@ export default {
       replace({
         "process.browser": false,
         "process.env.NODE_ENV": JSON.stringify(mode),
-        "process.env.PUBLIC_URL": JSON.stringify(process.env.PUBLIC_URL)
       }),
       svelte({
         generate: "ssr",
