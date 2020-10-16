@@ -18,6 +18,17 @@
     "enabled": {
       "type": "boolean",
       "default": true
+    },
+    "calcPrice": {
+      "type": "json"
+    },
+    "ratioTolerance": {
+      "type": "decimal",
+      "default": 0.05
+    },
+    "minDPI": {
+      "type": "integer",
+      "default": 150
     }
   }
 }

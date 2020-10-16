@@ -282,6 +282,9 @@ input editPrintInput {
   info: String
   availablePrintSizes: JSON
   enabled: Boolean
+  calcPrice: JSON
+  ratioTolerance: Float
+  minDPI: Int
   created_by: ID
   updated_by: ID
 }
@@ -530,6 +533,9 @@ input PrintInput {
   info: String
   availablePrintSizes: JSON
   enabled: Boolean
+  calcPrice: JSON
+  ratioTolerance: Float
+  minDPI: Int
   created_by: ID
   updated_by: ID
 }
@@ -542,6 +548,9 @@ type Prints {
   info: String
   availablePrintSizes: JSON
   enabled: Boolean
+  calcPrice: JSON
+  ratioTolerance: Float
+  minDPI: Int
 }
 
 enum PublicationState {

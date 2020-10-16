@@ -22,9 +22,9 @@ export async function get(req, res, next) {
 
         res.end(JSON.stringify(photos.map(photo => ({
             id: photo.id,
-            alt: photo.image.alternativeText,
+            alt: photo.image && photo.image.alternativeText,
             isPortrait: photo.isPortrait,
-            formats: photo.image.formats
+            formats: photo.image && photo.image.formats
         }))));
     }
   });

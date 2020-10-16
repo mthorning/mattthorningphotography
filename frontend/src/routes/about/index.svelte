@@ -35,10 +35,15 @@
   <title>About</title>
 </svelte:head>
 
-<div style={`--image-url:url(${image.url})`}>
+<div>
   <h1>{title}</h1>
 
-  <div data-test="photo" class="photo" />
+  {#if image.url}
+    <div
+      data-test="photo"
+      style={`--image-url:url(${image.url})`}
+      class="photo" />
+  {/if}
   <div data-test="some-gibberish">
     {@html body}
   </div>

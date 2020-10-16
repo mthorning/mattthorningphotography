@@ -17,7 +17,8 @@ export function get(req, res) {
         if (response) {
             const about = {
                 ...response.about,
-                body: marked(response.about.body)
+                body: marked(response.about.body),
+                image: response.about.image === null ? {} : response.about.image
             }
 
             res.writeHead(200, {
