@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { afterUpdate } from 'svelte'
   import Nav from '../components/Nav.svelte'
 

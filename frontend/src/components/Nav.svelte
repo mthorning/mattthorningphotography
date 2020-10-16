@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { onMount, onDestroy } from 'svelte'
   import FaInstagram from 'svelte-icons/fa/FaInstagram.svelte'
   import FaTwitterSquare from 'svelte-icons/fa/FaTwitterSquare.svelte'

@@ -11,7 +11,7 @@
   }
 </script>
 
-<script>
+<script lang="ts">
   import { onMount } from 'svelte'
   import { goto } from '@sapper/app'
   import ImageWithMeta from '../../components/ImageWithMeta.svelte'

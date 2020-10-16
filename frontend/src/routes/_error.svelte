@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   export let status = 'Error'
   export let error
 
