@@ -11,5 +11,6 @@ ssh vps << EOF
     git checkout $BRANCH
     git pull
     docker-compose up -d --build --force-recreate --remove-orphans
+    echo "y" | docker container prune
     echo "y" | docker image prune
 EOF
