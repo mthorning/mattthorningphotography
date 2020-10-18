@@ -1,13 +1,14 @@
-<script>
+<script lang="ts">
   import Checkout from './Checkout.svelte'
   import Spinner from './Spinner.svelte'
-  export let printSizes, title, id
+  import type { PrintSize } from '../types'
+  export let printSizes: PrintSize[], title: string, id: string
 
   let spinner = false
 
-  $: selectedPrint = printSizes[0]
-  function select(print) {
-    selectedPrint = print
+  $: selectedPrintSize = printSizes[0]
+  function select(printSize: PrintSize) {
+    selectedPrintSize = printSize
   }
 </script>
 
@@ -62,37 +63,25 @@
     <thead>
       <th />
       <th>Size (in)</th>
-      <!--
-      <th>Pixels</th>
-      -->
       <th>Size (mm)</th>
       <th>Price</th>
-      <!--
-      <th>Img Ratio</th>
-      <th>Print Ratio</th>
-      <th>DPI</th>
-      -->
     </thead>
     <tbody>
-      {#each printSizes as print}
+      {#each printSizes as printSize}
         <tr>
           <td>
             <input
               type="radio"
-              checked={print === selectedPrint}
-              on:change={() => select(print)} />
+              checked={printSize === selectedPrintSize}
+              on:change={() => select(printSize)} />
           </td>
-          <td>{print.x} x {print.y}</td>
-          <!--
-          <td>{print.cropSize}</td>
-           -->
-          <td>{Math.round(print.x * 25.4)} x {Math.round(print.y * 25.4)}</td>
-          <td>£{print.price}</td>
-          <!--
-          <td>{print.imgRatio}</td>
-          <td>{print.paperRatio}</td>
-          <td>{print.dpi}</td>
-            -->
+          <td>{printSize.x} x {printSize.y}</td>
+          <td>
+            {Math.round(printSize.x * 25.4)}
+            x
+            {Math.round(printSize.y * 25.4)}
+          </td>
+          <td>£{printSize.price}</td>
         </tr>
       {/each}
     </tbody>
@@ -100,5 +89,5 @@
   <Checkout
     showSpinner={() => (spinner = true)}
     hideSpinner={() => (spinner = false)}
-    selectedPrint={{ ...selectedPrint, title, id }} />
+    purchasedPrint={{ ...selectedPrintSize, title, id }} />
 </div>

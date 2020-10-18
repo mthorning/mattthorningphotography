@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { goto } from '@sapper/app'
   import Spinner from '../../components/Spinner.svelte'
   import sendEmail from '../../utils/sendEmail.js'

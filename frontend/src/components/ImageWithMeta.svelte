@@ -1,20 +1,21 @@
-<script>
+<script lang="ts">
   import { createEventDispatcher } from 'svelte'
   import Lightbox from './Lightbox.svelte'
   import Img from './Img.svelte'
 
-  export let photo
+  import type { Photo } from '../types'
+
+  export let photo: Photo
 
   const {
-    isPortrait,
+    alternativeText,
+    formats,
     exif: { aperture, focalLength, iso, shutter, bracketed },
   } = photo
 
   const dispatch = createEventDispatcher()
   let touchstart = 0
   let showLightbox = false
-  let photoLoaded = false
-  let photoWrapper
 
   function closeLightbox() {
     showLightbox = false
@@ -64,26 +65,32 @@
   on:click
   on:touchstart={onTouchstart}
   on:touchend={onTouchend}>
-  <div bind:this={photoWrapper} class="photo-wrapper">
+  <div class="photo-wrapper">
     <Img
       on:click={() => (showLightbox = true)}
-      alt={photo.alt}
+      alt={alternativeText}
       class="photo"
-      src={photo.formats.medium.url}
+      src={formats.medium.url}
       afterLoaded={(photo) => {
-        photoLoaded = true
         photo.style.width = 'auto'
         photo.style.height = 'auto'
       }} />
     {#if photo.exif.show && aperture && shutter && iso && focalLength}
-        <p>f{aperture} | {bracketed ? 'bracketed' : `${shutter}sec`} | ISO {iso} | {focalLength}mm</p>
+      <p>
+        f{aperture}
+        |
+        {bracketed ? 'bracketed' : `${shutter}sec`}
+        | ISO
+        {iso}
+        |
+        {focalLength}mm
+      </p>
     {/if}
   </div>
 </div>
 {#if showLightbox}
   <Lightbox
-    {isPortrait}
-    url={photo.formats.large.url}
+    url={formats.large.url}
     close={closeLightbox}
     on:click={closeLightbox} />
 {/if}

@@ -1,5 +1,7 @@
 import nodemailer from 'nodemailer'
 
+import type { Email } from '../../types'
+
 // create transporter object with smtp server details
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -10,14 +12,15 @@ const transporter = nodemailer.createTransport({
 });
 
 export async function post(req, res, next) {
-    const { from = process.env.EMAIL_ADDRESS, subject, html } = req.body;
+    const email: Email = req.body
+    const { from = process.env.EMAIL_ADDRESS, subject, html } = email
     transporter.sendMail({
         to: process.env.EMAIL_ADDRESS,
         from,
         subject,
         html
-    }, (err, info) => {
-        if(err) next(new Error(err));
+    }, (err: Error) => {
+        if(err) next(err);
         res.end(JSON.stringify({ from, subject, html }))
     })
 }

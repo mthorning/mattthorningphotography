@@ -1,24 +1,27 @@
-<script context="module">
+<script context="module" lang="ts">
   export async function preload(page, session) {
     const res = await this.fetch('gallery.json')
     if (res.status === 200) {
-      const photos = await res.json()
-      return { photos }
+      const data = await res.json()
+      return { data }
     }
     this.error(404, 'Not Found')
   }
 </script>
 
-<script>
+<script lang="ts">
   import { goto } from '@sapper/app'
   import Thumbnail from '../../components/Thumbnail.svelte'
   import Lightbox from '../../components/Lightbox.svelte'
-  export let photos = []
 
-  let selectedIdx
+  import type { Data } from './_types'
+  export let data: Data
+  const { photos } = data
+
+  let selectedIdx: number
   $: selectedImage = photos[selectedIdx]
 
-  function onImageClick(e) {
+  function onImageClick(e: MouseEvent) {
     e.stopPropagation()
     goto(`/photo/${selectedImage.id}`)
   }
@@ -53,15 +56,14 @@
     {#each photos as photos, index}
       <Thumbnail
         isPortrait={photos.isPortrait}
-        alt={photos.alt}
+        alt={photos.alternativeText}
         url={photos.formats.small.url}
         on:click={() => (selectedIdx = index)} />
     {/each}
   {/if}
   {#if selectedImage}
     <Lightbox
-      isPortrait={selectedImage.isPortrait}
-      alt={selectedImage.alt}
+      alt={selectedImage.alternativeText}
       url={selectedImage.formats.large.url}
       on:click={onImageClick}
       class="pointer"

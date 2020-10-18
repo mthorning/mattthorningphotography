@@ -1,7 +1,9 @@
 import request from '../../utils/request'
 import marked from 'marked'
-import type { Dimensions,AvailablePrintSize, PrintSize, Print, Photo } from './_types'
 
+import type { CropSize, AvailablePrintSize, PrintSize } from '../../types'
+import type { Request, Response } from 'express'
+import type { Dimensions, Data } from './_types'
 
 function calcDPI(pixels: Dimensions, inches: Dimensions) {
   return Math.sqrt((pixels.x * pixels.y) / (inches.x * inches.y));
@@ -13,26 +15,36 @@ function calcPrice({ price, postage }) {
 }
 
 
-function calcPrintSize({
-  width,
-  height,
-  availablePrintSizes,
-  ratioTolerance,
-  minDPI,
-}) {
-  const [pixelWidth, pixelHeight] =
-    width > height ? [width, height] : [height, width]
-  return availablePrintSizes.map((print: AvailablePrintSize) => ({
+interface CalcPrintSizes {
+    ( 
+        cropSize: CropSize,
+        availablePrintSizes: AvailablePrintSize[],
+        ratioTolerance: number,
+        minDPI: number
+    ): PrintSize[]
+}
+let calcPrintSizes: CalcPrintSizes
+calcPrintSizes = function(
+    cropSize,
+    availablePrintSizes,
+    ratioTolerance,
+    minDPI,
+) {
+    const { width, height } = cropSize
+    const [pixelWidth, pixelHeight] =
+        width > height ? [width, height] : [height, width]
+
+    return availablePrintSizes.map((print) => ({
       ...print,
       cropSize: `${pixelWidth} x ${pixelHeight}`,
       price: calcPrice(print),
-      imgRatio: (pixelWidth / pixelHeight).toFixed(2),
-      paperRatio: (print.x / print.y).toFixed(2),
+      imgRatio: pixelWidth / pixelHeight,
+      paperRatio: print.x / print.y,
       dpi: Math.round(
         calcDPI({ x: pixelWidth, y: pixelHeight }, { x: print.x, y: print.y })
       ),
     }))
-        .filter((print: PrintSize) => {
+        .filter((print) => {
       const diff = print.imgRatio - print.paperRatio
       return (
         (diff < 0 ? diff > ratioTolerance * -1 : diff < ratioTolerance) &&
@@ -41,7 +53,7 @@ function calcPrintSize({
     })
 }
 
-export function get(req, res) {
+export function get(req: Request, res: Response) {
   const { id } = req.params
   request(
     `
@@ -50,7 +62,6 @@ export function get(req, res) {
             title
             description
             sell
-            isPortrait
             exif {
                 aperture
                 focalLength
@@ -66,6 +77,7 @@ export function get(req, res) {
             image {
                 url
                 formats
+                alternativeText
             }
         }
         print {
@@ -80,29 +92,27 @@ export function get(req, res) {
   )
     .then((response) => {
       if (response) {
-        const print: Print = response.print;
-        const photo: Photo = response.photo;
+        const { print, photo } = response
 
-        const printSizes =
-          print && photo
-            ? calcPrintSize({
-                width: photo.cropSize.width,
-                height: photo.cropSize.height,
-                availablePrintSizes: print.availablePrintSizes,
-                ratioTolerance: print.ratioTolerance,
-                minDPI: print.minDPI,
-              })
-            : null
+          const printSizes = print && photo
+            ? calcPrintSizes(
+                 photo.cropSize,
+                 print.availablePrintSizes,
+                 print.ratioTolerance,
+                 print.minDPI,
+              )
+            : []
 
         res.writeHead(200, {
           'Content-Type': 'application/json',
         })
 
-        res.end(
-          JSON.stringify({
+          const data: Data = {
             photo: { ...photo, ...(photo.image ? photo.image : {}) },
             print: { ...print, printSizes, info: marked(print.info) },
-          })
+          }
+        res.end(
+          JSON.stringify(data)
         )
       }
     })

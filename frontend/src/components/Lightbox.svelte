@@ -1,14 +1,12 @@
-<script>
-  import { createEventDispatcher } from 'svelte'
+<script lang="ts">
   import { onMount } from 'svelte'
-  import { fade } from 'svelte/transition'
-  import { quadIn, quadOut } from 'svelte/easing'
   import Img from '../components/Img.svelte'
 
-  export let isPortrait, alt, url, close
+  export let alt: string, url: string, close: () => void
   export let previous = () => {}
   export let next = () => {}
-  let extraClasses
+
+  let extraClasses: string
   export { extraClasses as class }
 
   let touchstart = 0
@@ -34,15 +32,17 @@
       previous()
     }
   }
-  function onKeydown(e) {
-    switch (e.which) {
-      case 27:
+  function onKeydown(e: KeyboardEvent) {
+    switch (e.key) {
+      case 'Escape':
         close()
         break
-      case 37:
+      case 'Left':
+      case 'ArrowLeft':
         previous()
         break
-      case 39:
+      case 'Right':
+      case 'ArrowRight':
         next()
         break
     }
@@ -78,10 +78,5 @@
   on:click={() => close()}
   on:touchstart={onTouchstart}
   on:touchend={onTouchend}>
-  <Img
-    on:click
-    class={`fullsize-img ${extraClasses}`}
-    alt={alt}
-    {isPortrait}
-    src={url} />
+  <Img on:click class={`fullsize-img ${extraClasses}`} {alt} src={url} />
 </div>

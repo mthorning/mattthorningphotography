@@ -27,6 +27,6 @@ polka()
     bodyParser.json(),
     sapper.middleware()
   )
-  .listen(PORT, (err) => {
+    .listen(PORT, (err: string) => {
     if (err) console.log("error", err);
   });

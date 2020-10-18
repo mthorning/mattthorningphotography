@@ -2,8 +2,8 @@
   import { afterUpdate } from 'svelte'
   import Nav from '../components/Nav.svelte'
 
-  export let segment
-  let pathname
+  export let segment: 'gallery' | 'about' | 'contact'
+  let pathname: string
   afterUpdate(() => {
     pathname = window.location.pathname
   })

@@ -1,12 +1,13 @@
 <script lang="ts">
-  import { onMount, onDestroy } from 'svelte'
+  import { onMount } from 'svelte'
   import FaInstagram from 'svelte-icons/fa/FaInstagram.svelte'
   import FaTwitterSquare from 'svelte-icons/fa/FaTwitterSquare.svelte'
   import FaBars from 'svelte-icons/fa/FaBars.svelte'
-  export let segment, home
+  export let segment: 'gallery' | 'about' | 'contact'
+  export let home: boolean
 
   let open = false
-  let nav
+  let nav: HTMLElement
   const toggleOpen = () => (open = open ? false : true)
 
   const handleDocClick = ({ target }) => {
@@ -17,8 +18,9 @@
     document.addEventListener('click', handleDocClick)
   })
 
-  const detectAnchorClick = (e) => {
-    if (e.target.tagName === 'A') open = false
+  const detectAnchorClick = (e: MouseEvent) => {
+    const element = e.target as HTMLElement
+    if (element.tagName === 'A') open = false
   }
 </script>
 

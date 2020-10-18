@@ -1,6 +1,6 @@
-<script>
+<script lang="ts">
   import Img from '../components/Img.svelte'
-  export let isPortrait, alt, url
+  export let isPortrait: boolean, alt: string, url: string
 </script>
 
 <style>

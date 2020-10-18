@@ -1,14 +1,14 @@
-<script>
-  export let src, alt
-  export let afterLoaded = () => {}
+<script lang="ts">
+  export let src: string, alt: string
+  export let afterLoaded: (image: HTMLElement) => void = () => {}
 
-  let extraClasses
+  let extraClasses: string
   export { extraClasses as class }
 
-  let image
+  let image: HTMLImageElement
   let loaded = false
 
-  function setUp(image) {
+  function setUp(image: HTMLImageElement) {
     if (image.complete) {
       loaded = true
       afterLoaded(image)
@@ -33,13 +33,12 @@
 
 {#each [src] as src (src)}
   <img
-    key={src}
+    {src}
+    bind:this={image}
     use:setUp
     on:click
     class={extraClasses}
     class:loaded
     loading="lazy"
-    decoding="async"
-    alt={alt || 'photograph'}
-    {src} />
+    alt={alt || 'photograph'} />
 {/each}

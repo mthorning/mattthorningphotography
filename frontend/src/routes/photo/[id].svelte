@@ -1,10 +1,10 @@
-<script context="module">
-  export async function preload(page, session) {
+<script context="module" lang="ts">
+  export async function preload(page) {
     const { id } = page.params
     const res = await this.fetch(`photo/${id}.json`)
     if (res.status === 200) {
       const data = await res.json()
-      return data
+      return { data }
     }
 
     this.error(404, 'Not Found')
@@ -12,13 +12,13 @@
 </script>
 
 <script lang="ts">
-  import { onMount } from 'svelte'
-  import { goto } from '@sapper/app'
   import ImageWithMeta from '../../components/ImageWithMeta.svelte'
   import PurchasePanel from '../../components/PurchasePanel.svelte'
-  export let photo, print
 
-  let allowPurchases = true
+  import type { Data } from './_types'
+
+  export let data: Data
+  const { photo, print } = data
 
   $: printSizes = print.printSizes
     ? print.printSizes.sort((a, b) => a.price - b.price)
@@ -45,8 +45,8 @@
 </svelte:head>
 
 <h1>{photo.title}</h1>
-{#each [photo] as photo (photo.id)}
-  <ImageWithMeta {photo} />
+{#each [photo] as uniqPhoto (photo.id)}
+  <ImageWithMeta photo={uniqPhoto} />
 {/each}
 <p class="description">{photo.description}</p>
 {#if print.enabled && photo.sell && printSizes && printSizes.length}

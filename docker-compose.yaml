@@ -4,6 +4,7 @@ services:
     build: ./backend
     restart: always
     container_name: ${BE_CONTAINER_NAME}
+    restart: always
     environment:
       DATABASE_CLIENT: mongo
       DATABASE_HOST: ${MONGO_CONTAINER_NAME}
@@ -23,6 +24,7 @@ services:
     build: ./frontend
     restart: always
     container_name: ${FE_CONTAINER_NAME}
+    restart: always
     environment:
       API_URL: ${API_URL}
       PUBLIC_URL: ${PUBLIC_URL}

@@ -2,18 +2,14 @@
 set -e 
 
 APP_NAME=mattthorningphotography
+BRANCH=typescript
 
-rsync --recursive -av --progress --delete \
-    --exclude ".*" \
-    --exclude "node_modules" \
-    --exclude release.sh \
-    --exclude backend/public/ \
-    --exclude backend/build\
-    --exclude frontend/__sapper__ \
-    . vps:~/containers/$APP_NAME/$APP_NAME/
+scp ./.env vps:~/containers/$APP_NAME/$APP_NAME
 
 ssh vps << EOF
     cd ~/containers/$APP_NAME/$APP_NAME
+    git checkout $BRANCH
+    git pull
     docker-compose up -d --build --force-recreate --remove-orphans
     echo "y" | docker image prune
 EOF

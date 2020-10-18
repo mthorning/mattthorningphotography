@@ -1,7 +1,10 @@
 import request from '../../utils/request';
 import marked from "marked";
 
-export function get(req, res) {
+import type { Request, Response } from 'express'
+import type { Data } from './_types'
+
+export function get(_req: Request, res: Response) {
     request(
         `
             about {
@@ -15,17 +18,19 @@ export function get(req, res) {
         res
     ).then((response) => {
         if (response) {
-            const about = {
+            const data: Data = {
+                about: {
                 ...response.about,
                 body: marked(response.about.body),
                 image: response.about.image === null ? {} : response.about.image
+                }
             }
 
             res.writeHead(200, {
               "Content-Type": "application/json",
             });
 
-            res.end(JSON.stringify(about));
+            res.end(JSON.stringify(data));
         }
 
     }).catch((error) => {

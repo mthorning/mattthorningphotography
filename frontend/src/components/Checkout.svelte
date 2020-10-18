@@ -1,22 +1,33 @@
-<script>
+<script lang="ts">
+  import { loadScript } from '@paypal/paypal-js'
   import { onMount } from 'svelte'
   import { goto } from '@sapper/app'
   import sendEmail from '../utils/sendEmail.js'
+  import type { PrintSize } from '../types'
 
-  export let selectedPrint, showSpinner, hideSpinner
-  let paypal
+  interface PurchasedPrint extends PrintSize {
+    title: string
+    id: string
+  }
 
-  $: description = `${selectedPrint.x} x ${selectedPrint.y} ${selectedPrint.title} (${selectedPrint.id})`
+  export let purchasedPrint: PurchasedPrint,
+    showSpinner: () => void,
+    hideSpinner: () => void
+
+  let paypalContainer: HTMLElement
+
+  $: description = `${purchasedPrint.x} x ${purchasedPrint.y} ${purchasedPrint.title} (${purchasedPrint.id})`
 
   onMount(() => {
-    const script = document.createElement('script')
-    script.type = 'text/javascript'
-    script.src = `https://www.paypal.com/sdk/js?client-id=${process.env.PAYPAL_ID}&currency=GBP&disable-funding=credit,card,bancontact,blik,eps,giropay,ideal,mybank,p24,sepa,sofort,venmo`
-
-    script.onload = function () {
-      window.paypal
+    loadScript({
+      'client-id': process.env.PAYPAL_ID,
+      'disable-funding':
+        'credit,card,bancontact,blik,eps,giropay,ideal,mybank,p24,sepa,sofort,venmo',
+      currency: 'GBP',
+    }).then((paypal) =>
+      paypal
         .Buttons({
-          createOrder: (data, actions) => {
+          createOrder: (_: any, actions: any) => {
             showSpinner()
             return actions.order.create({
               intent: 'CAPTURE',
@@ -25,7 +36,7 @@
                   description,
                   amount: {
                     currency_code: 'GBP',
-                    value: selectedPrint.price.toFixed(1),
+                    value: purchasedPrint.price.toFixed(1),
                   },
                 },
               ],
@@ -33,51 +44,47 @@
           },
           onCancel: () => {
             hideSpinner()
-            sendEmail({
-              body: {
-                subject: `Paypal Cancelled`,
-                html: `
+            const body = {
+              subject: `Paypal Cancelled`,
+              html: `
                     <h3>Cancelled Paypal purchase</h3>
                     <pre>${JSON.stringify(
-                      { description, selectedPrint },
+                      { description, purchasedPrint },
                       null,
                       2
                     )}</pre>
                 `,
-              },
-            })
+            }
+            sendEmail({ body })
           },
-          onApprove: async (data, actions) => {
+          onApprove: async (_: any, actions: any) => {
             const order = await actions.order.capture()
-            sendEmail({
-              body: {
-                subject: `Paypal Purchase`,
-                html: `
+            const body = {
+              subject: `Paypal Purchase`,
+              html: `
                     <h3>Approved Paypal purchase</h3>
                     <pre>${JSON.stringify(order, null, 2)}</pre>
                 `,
-              },
-            })
-            goto(`/thankyou?order_id=${order.id}`)
+            }
+            sendEmail({ body })
+            goto(`/thanky,ou?order_id=${order.id}`)
           },
-          onError: (err) => {
+          onError: (err: Error) => {
             hideSpinner()
-            sendEmail({
-              body: {
-                subject: `Paypal Error`,
-                html: `
+            const body = {
+              subject: `Paypal Error`,
+              html: `
                     <h3>Failed Paypal purchase</h3>
                     <pre>${JSON.stringify(err, null, 2)}</pre>
                 `,
-              },
-            })
+            }
+            sendEmail({ body })
             goto('/paypal-error')
           },
         })
-        .render(paypal)
-    }
-    document.body.appendChild(script)
+        .render(paypalContainer)
+    )
   })
 </script>
 
-<div bind:this={paypal} />
+<div bind:this={paypalContainer} />

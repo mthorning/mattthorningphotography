@@ -1,17 +1,22 @@
-<script context="module">
+<script context="module" lang="ts">
   export async function preload(page, session) {
     const res = await this.fetch(`about.json`)
     if (res.status === 200) {
-      const about = await res.json()
-      return about
+      const data: Data = await res.json()
+      return { data }
     }
 
     this.error(404, 'Not Found')
   }
 </script>
 
-<script>
-  export let title, body, image
+<script lang="ts">
+  import type { Data } from './_types'
+
+  export let data: Data
+  const {
+    about: { title, body, image },
+  } = data
 </script>
 
 <style>
