@@ -34,8 +34,8 @@ export default {
         'process.browser': true,
         'process.env.NODE_ENV': JSON.stringify(mode),
         'process.env.PORT': JSON.stringify(process.env.PORT),
+        'process.env.EMAIL_ADDRESS': JSON.stringify(process.env.EMAIL_ADDRESS),
         'process.env.PAYPAL_ID': JSON.stringify(process.env.PAYPAL_ID),
-        'process.env.API_URL': JSON.stringify(process.env.API_URL),
       }),
       svelte({
         dev,
@@ -89,12 +89,12 @@ export default {
     input: { server: config.server.input().server.replace(/\.js$/, '.ts') },
     output: config.server.output(),
     plugins: [
-      replace({
-        'process.browser': false,
-        'process.env.NODE_ENV': JSON.stringify(mode),
-        'process.env.PAYPAL_ID': JSON.stringify(process.env.PAYPAL_ID),
-        'process.env.API_URL': JSON.stringify(process.env.API_URL),
-      }),
+      // replace({
+      //   'process.browser': false,
+      //   'process.env.NODE_ENV': JSON.stringify(mode),
+      //   'process.env.PAYPAL_ID': JSON.stringify(process.env.PAYPAL_ID),
+      //   'process.env.API_URL': JSON.stringify(process.env.API_URL),
+      // }),
       svelte({
         generate: 'ssr',
         hydratable: true,
