@@ -1,4 +1,4 @@
-process.env.NODE_ENV !== 'production' &&
+if(process.env.NODE_ENV !== 'production')
   require('dotenv').config({
     path: './.env',
   })
@@ -89,12 +89,10 @@ export default {
     input: { server: config.server.input().server.replace(/\.js$/, '.ts') },
     output: config.server.output(),
     plugins: [
-      // replace({
-      //   'process.browser': false,
-      //   'process.env.NODE_ENV': JSON.stringify(mode),
-      //   'process.env.PAYPAL_ID': JSON.stringify(process.env.PAYPAL_ID),
-      //   'process.env.API_URL': JSON.stringify(process.env.API_URL),
-      // }),
+      replace({
+        'process.browser': false,
+        'process.env.NODE_ENV': JSON.stringify(mode),
+      }),
       svelte({
         generate: 'ssr',
         hydratable: true,
