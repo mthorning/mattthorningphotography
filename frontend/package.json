@@ -1,10 +1,12 @@
 {
-  "name": "TODO",
-  "description": "TODO",
+  "name": "mattthorningphotography",
+  "description": "mattthorningphotography",
   "version": "0.0.1",
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
     "dev": "sapper dev",
-    "proxy": "API_URL=https://photo2.thorning.ovh/api npm run dev",
     "build": "sapper build --legacy",
     "export": "sapper export --legacy",
     "start": "node __sapper__/build",

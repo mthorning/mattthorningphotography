@@ -14,9 +14,7 @@
   import type { Data } from './index.json'
 
   export let data: Data
-  const {
-    about: { title, body, image },
-  } = data
+  const { about: { title, body, image } = {} } = data
 </script>
 
 <style>
@@ -43,7 +41,7 @@
 <div>
   <h1>{title}</h1>
 
-  {#if image.url}
+  {#if image?.url}
     <div
       data-test="photo"
       style={`--image-url:url(${image.url})`}

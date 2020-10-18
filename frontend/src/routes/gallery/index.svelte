@@ -56,16 +56,16 @@
   {:else}
     {#each photos as photo, index}
       <Thumbnail
-        isPortrait={photo.isPortrait}
-        alt={photo.image.alternativeText}
-        url={photo.image.formats.small.url}
+        isPortrait={photo?.isPortrait}
+        alt={photo?.image?.alternativeText}
+        url={photo?.image?.formats?.small?.url}
         on:click={() => (selectedIdx = index)} />
     {/each}
   {/if}
   {#if selectedImage}
     <Lightbox
-      alt={selectedImage.image.alternativeText}
-      url={selectedImage.image.formats.large.url}
+      alt={selectedImage?.image?.alternativeText}
+      url={selectedImage?.image?.formats?.large?.url}
       on:click={onImageClick}
       class="pointer"
       close={() => (selectedIdx = -1)}

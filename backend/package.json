@@ -1,8 +1,8 @@
 {
-  "name": "app",
+  "name": "matthorningphotography",
   "private": true,
   "version": "0.1.0",
-  "description": "A Strapi application",
+  "description": "matthorningphotography",
   "scripts": {
     "dev": "strapi develop",
     "start": "strapi start",
