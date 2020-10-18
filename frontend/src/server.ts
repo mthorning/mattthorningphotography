@@ -1,8 +1,3 @@
-if(process.env.NODE_ENV !== 'production')
-  require('dotenv').config({
-    path: './.env',
-  })
-
 import sirv from "sirv";
 import polka from "polka";
 import bodyParser from 'body-parser';

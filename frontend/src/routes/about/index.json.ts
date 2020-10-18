@@ -2,7 +2,16 @@ import request from '../../utils/request';
 import marked from "marked";
 
 import type { Request, Response } from 'express'
-import type { Data } from './_types'
+
+export interface Data {
+    about: {
+        title: string,
+        body: string,
+        image: {
+            url: string
+        }
+    }
+}
 
 export function get(_req: Request, res: Response) {
     request(
@@ -16,23 +25,20 @@ export function get(_req: Request, res: Response) {
             }
         `, 
         res
-    ).then((response) => {
+    ).then((response: Data) => {
         if (response) {
-            const data: Data = {
-                about: {
-                ...response.about,
-                body: marked(response.about.body),
-                image: response.about.image === null ? {} : response.about.image
-                }
-            }
 
             res.writeHead(200, {
               "Content-Type": "application/json",
             });
 
-            res.end(JSON.stringify(data));
+            res.end(JSON.stringify({ 
+                about: { 
+                    ...response.about, 
+                    body: marked(response.about?.body)
+                }
+            }))
         }
-
     }).catch((error) => {
         console.error("Something happened", error);
             

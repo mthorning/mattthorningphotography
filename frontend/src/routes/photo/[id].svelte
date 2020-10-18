@@ -15,7 +15,7 @@
   import ImageWithMeta from '../../components/ImageWithMeta.svelte'
   import PurchasePanel from '../../components/PurchasePanel.svelte'
 
-  import type { Data } from './_types'
+  import type { Data } from './[id].json'
 
   export let data: Data
   const { photo, print } = data
@@ -45,9 +45,11 @@
 </svelte:head>
 
 <h1>{photo.title}</h1>
-{#each [photo] as uniqPhoto (photo.id)}
-  <ImageWithMeta photo={uniqPhoto} />
-{/each}
+<ImageWithMeta
+  alt={photo.image.alternativeText}
+  exif={photo.exif}
+  mediumURL={photo.formats.medium.url}
+  largeURL={photo.formats.large.url} />
 <p class="description">{photo.description}</p>
 {#if print.enabled && photo.sell && printSizes && printSizes.length}
   <h2>Prints</h2>

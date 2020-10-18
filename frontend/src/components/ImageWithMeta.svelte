@@ -3,15 +3,10 @@
   import Lightbox from './Lightbox.svelte'
   import Img from './Img.svelte'
 
-  import type { Photo } from '../types'
+  import type { Exif } from '../types'
 
-  export let photo: Photo
-
-  const {
-    alternativeText,
-    formats,
-    exif: { aperture, focalLength, iso, shutter, bracketed },
-  } = photo
+  export let alt: string, exif: Exif, mediumURL: string, largeURL: string
+  const { aperture, focalLength, iso, shutter, bracketed } = exif
 
   const dispatch = createEventDispatcher()
   let touchstart = 0
@@ -68,14 +63,14 @@
   <div class="photo-wrapper">
     <Img
       on:click={() => (showLightbox = true)}
-      alt={alternativeText}
+      {alt}
       class="photo"
-      src={formats.medium.url}
+      src={mediumURL}
       afterLoaded={(photo) => {
         photo.style.width = 'auto'
         photo.style.height = 'auto'
       }} />
-    {#if photo.exif.show && aperture && shutter && iso && focalLength}
+    {#if exif.show && aperture && shutter && iso && focalLength}
       <p>
         f{aperture}
         |
@@ -90,7 +85,7 @@
 </div>
 {#if showLightbox}
   <Lightbox
-    url={formats.large.url}
+    url={largeURL}
     close={closeLightbox}
     on:click={closeLightbox} />
 {/if}

@@ -14,9 +14,10 @@
   import Thumbnail from '../../components/Thumbnail.svelte'
   import Lightbox from '../../components/Lightbox.svelte'
 
-  import type { Data } from './_types'
+  import type { Data } from './index.json'
+
   export let data: Data
-  const { photos } = data
+  const photos = data.photos
 
   let selectedIdx: number
   $: selectedImage = photos[selectedIdx]
@@ -53,18 +54,18 @@
   {#if !photos || !photos.length}
     <h5>I thought I had more photos than this...</h5>
   {:else}
-    {#each photos as photos, index}
+    {#each photos as photo, index}
       <Thumbnail
-        isPortrait={photos.isPortrait}
-        alt={photos.alternativeText}
-        url={photos.formats.small.url}
+        isPortrait={photo.isPortrait}
+        alt={photo.image.alternativeText}
+        url={photo.image.formats.small.url}
         on:click={() => (selectedIdx = index)} />
     {/each}
   {/if}
   {#if selectedImage}
     <Lightbox
-      alt={selectedImage.alternativeText}
-      url={selectedImage.formats.large.url}
+      alt={selectedImage.image.alternativeText}
+      url={selectedImage.image.formats.large.url}
       on:click={onImageClick}
       class="pointer"
       close={() => (selectedIdx = -1)}

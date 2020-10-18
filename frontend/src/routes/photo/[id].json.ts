@@ -1,54 +1,97 @@
 import request from '../../utils/request'
 import marked from 'marked'
 
-import type { CropSize, AvailablePrintSize, PrintSize } from '../../types'
 import type { Request, Response } from 'express'
-import type { Dimensions, Data } from './_types'
+import type { Exif, PrintSize } from '../../types'
 
-function calcDPI(pixels: Dimensions, inches: Dimensions) {
-  return Math.sqrt((pixels.x * pixels.y) / (inches.x * inches.y));
+interface CropSize {
+  height: number,
+  width: number
 }
 
-function calcPrice({ price, postage }) {
+interface AvailablePrintSize {
+  x: number,
+  y: number,
+  postage: number,
+  price: number,
+}
+
+interface Photo {
+  id: string,
+  title: string,
+  description: string,
+  sell: boolean,
+  exif: Exif,
+  alternativeText: string
+  formats: {
+    medium: { url },
+    large: { url }
+  }
+}
+
+interface Print {
+  printSizes: PrintSize[],
+  info: string,
+  enabled: boolean,
+}
+
+export interface Data {
+  photo: Photo,
+  print: Print
+}
+
+interface Dimensions {
+  x: number,
+  y: number
+}
+
+function calcDPI(pixels: Dimensions, paper: Dimensions) {
+  return Math.round(Math.sqrt((pixels.x * pixels.y) / (paper.x * paper.y)));
+}
+
+function calcRatio(pixels: Dimensions, paper: Dimensions) {
+  const pixelRatio = pixels.x / pixels.y
+  const paperRatio = paper.x / paper.y
+  return pixelRatio - paperRatio
+}
+
+function calcPrice(price: number, postage: number) {
   const margin = price * 2 < 35 ? 35 : price * 2;
   return Math.ceil(price + (margin + (margin / 100) * 20) + postage * 2);
 }
 
 
 interface CalcPrintSizes {
-    ( 
-        cropSize: CropSize,
-        availablePrintSizes: AvailablePrintSize[],
-        ratioTolerance: number,
-        minDPI: number
-    ): PrintSize[]
+  (
+    cropSize: CropSize,
+    availablePrintSizes: AvailablePrintSize[],
+    ratioTolerance: number,
+    minDPI: number
+  ): PrintSize[]
 }
 let calcPrintSizes: CalcPrintSizes
-calcPrintSizes = function(
-    cropSize,
-    availablePrintSizes,
-    ratioTolerance,
-    minDPI,
+calcPrintSizes = function (
+  cropSize,
+  availablePrintSizes,
+  ratioTolerance,
+  minDPI,
 ) {
-    const { width, height } = cropSize
-    const [pixelWidth, pixelHeight] =
-        width > height ? [width, height] : [height, width]
+  const { width, height } = cropSize
+  const [pixelWidth, pixelHeight] =
+    width > height ? [width, height] : [height, width]
 
-    return availablePrintSizes.map((print) => ({
-      ...print,
-      cropSize: `${pixelWidth} x ${pixelHeight}`,
-      price: calcPrice(print),
-      imgRatio: pixelWidth / pixelHeight,
-      paperRatio: print.x / print.y,
-      dpi: Math.round(
-        calcDPI({ x: pixelWidth, y: pixelHeight }, { x: print.x, y: print.y })
-      ),
-    }))
-        .filter((print) => {
-      const diff = print.imgRatio - print.paperRatio
+  return availablePrintSizes.map((print) => ({
+    ...print,
+    price: calcPrice(print.price, print.postage),
+  }))
+    .filter((print) => {
+      const pixels = { x: pixelWidth, y: pixelHeight }
+      const paper = { x: print.x, y: print.y }
+      const diff = calcRatio(pixels, paper)
+      const dpi = calcDPI(pixels, paper)
       return (
         (diff < 0 ? diff > ratioTolerance * -1 : diff < ratioTolerance) &&
-        print.dpi > minDPI
+        dpi > minDPI
       )
     })
 }
@@ -94,23 +137,23 @@ export function get(req: Request, res: Response) {
       if (response) {
         const { print, photo } = response
 
-          const printSizes = print && photo
-            ? calcPrintSizes(
-                 photo.cropSize,
-                 print.availablePrintSizes,
-                 print.ratioTolerance,
-                 print.minDPI,
-              )
-            : []
+        const printSizes: PrintSize[] = print && photo
+          ? calcPrintSizes(
+            photo.cropSize,
+            print.availablePrintSizes,
+            print.ratioTolerance,
+            print.minDPI,
+          )
+          : []
 
         res.writeHead(200, {
           'Content-Type': 'application/json',
         })
 
-          const data: Data = {
-            photo: { ...photo, ...(photo.image ? photo.image : {}) },
-            print: { ...print, printSizes, info: marked(print.info) },
-          }
+        const data: Data = {
+          photo: { ...photo, ...(photo.image ? photo.image : {}) },
+          print: { ...print, printSizes, info: marked(print.info) },
+        }
         res.end(
           JSON.stringify(data)
         )

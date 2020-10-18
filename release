@@ -2,15 +2,53 @@
 set -e 
 
 APP_NAME=mattthorningphotography
-BRANCH=typescript
 
-scp ./.env vps:~/containers/$APP_NAME/$APP_NAME
+cd frontend
+
+mv ./.env ./.devenv
+cp ../.env .
+rm -rf __sapper__
+NODE_ENV=production npm run build
+mv ./.devenv ./.env
+
+cd ../backend
+
+cp ../.env .
+rm -rf build .cache
+NODE_ENV=production npm run build
+rm ./.env
+
+cd ..
+
+tar -czvf $APP_NAME.tar.gz \
+    ./.env \
+    ./docker-compose.yaml \
+    ./frontend/package.json \
+    ./frontend/package-lock.json \
+    ./frontend/Dockerfile \
+    ./frontend/__sapper__/build \
+    ./frontend/static \
+    ./backend/package.json \
+    ./backend/package-lock.json \
+    ./backend/Dockerfile \
+    ./backend/api \
+    ./backend/components \
+    ./backend/config \
+    ./backend/exports \
+    ./backend/extensions \
+    ./backend/build
+
+scp $APP_NAME.tar.gz vps:~/containers/$APP_NAME/$APP_NAME
 
 ssh vps << EOF
     cd ~/containers/$APP_NAME/$APP_NAME
-    git checkout $BRANCH
-    git pull
+    tar -xvf $APP_NAME.tar.gz
+
     docker-compose up -d --build --force-recreate --remove-orphans
     echo "y" | docker container prune
     echo "y" | docker image prune
+
+    rm $APP_NAME.tar.gz
 EOF
+
+rm $APP_NAME.tar.gz

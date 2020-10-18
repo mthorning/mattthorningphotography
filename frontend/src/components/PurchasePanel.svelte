@@ -1,6 +1,7 @@
 <script lang="ts">
   import Checkout from './Checkout.svelte'
   import Spinner from './Spinner.svelte'
+
   import type { PrintSize } from '../types'
   export let printSizes: PrintSize[], title: string, id: string
 

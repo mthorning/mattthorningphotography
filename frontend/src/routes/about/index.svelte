@@ -11,7 +11,7 @@
 </script>
 
 <script lang="ts">
-  import type { Data } from './_types'
+  import type { Data } from './index.json'
 
   export let data: Data
   const {
