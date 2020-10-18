@@ -34,6 +34,8 @@ export default {
         'process.browser': true,
         'process.env.NODE_ENV': JSON.stringify(mode),
         'process.env.PORT': JSON.stringify(process.env.PORT),
+        'process.env.PAYPAL_ID': JSON.stringify(process.env.PAYPAL_ID),
+        'process.env.API_URL': JSON.stringify(process.env.API_URL),
       }),
       svelte({
         dev,
