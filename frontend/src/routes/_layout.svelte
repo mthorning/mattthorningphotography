@@ -28,6 +28,43 @@
     background-size: cover;
     background-position: center;
   }
+
+  :root {
+    --text-color-to-rgb: 69, 85, 101;
+  }
+
+  :global(*::-webkit-scrollbar) {
+    width: 6px;
+    height: 6px;
+  }
+
+  :global(*) {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(var(--text-color-to-rgb), 0.2)
+      rgba(var(--text-color-to-rgb), 0);
+  }
+  :global(*:hover) {
+    scrollbar-color: rgba(var(--text-color-to-rgb), 0.4)
+      rgba(var(--text-color-to-rgb), 0);
+  }
+  :global(*::-webkit-scrollbar-track) {
+    background: rgba(var(--text-color-to-rgb), 0);
+    border: none;
+  }
+  :global(*::-webkit-scrollbar-corner) {
+    background: rgba(var(--text-color-to-rgb), 0);
+  }
+  :global(*::-webkit-scrollbar-thumb) {
+    background-color: rgba(var(--text-color-to-rgb), 0.2);
+    border-radius: 3px;
+    border: none;
+  }
+  :global(*:hover::-webkit-scrollbar-track) {
+    background-color: rgba(var(--text-color-to-rgb), 0);
+  }
+  :global(*:hover::-webkit-scrollbar-thumb) {
+    background-color: rgba(var(--text-color-to-rgb), 0.4);
+  }
 </style>
 
 <main class:background={pathname === '/'}>

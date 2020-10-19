@@ -1,6 +1,8 @@
 <script lang="ts">
   import Img from '../components/Img.svelte'
-  export let isPortrait: boolean, alt: string, url: string
+  import IntersectionObserver from '../components/IntersectionObserver.svelte'
+
+  export let isPortrait: boolean, alt: string, url: string, style: string
 </script>
 
 <style>
@@ -11,7 +13,6 @@
     height: 140px;
     overflow: hidden;
     border: 1px solid #f0f0f0;
-    float: left;
   }
   @media (min-width: 600px) {
     div {
@@ -33,10 +34,14 @@
   }
 </style>
 
-<div data-test="thumbnail" class="thumbnail">
-  <Img
-    on:click
-    class={`img ${isPortrait ? 'isPortrait' : ''}`}
-    {alt}
-    src={url} />
+<div data-test="thumbnail" class={`thumbnail `} {style}>
+  <IntersectionObserver once let:intersecting>
+    {#if intersecting}
+      <Img
+        on:click
+        class={`img ${isPortrait ? 'isPortrait' : ''}`}
+        {alt}
+        src={url} />
+    {/if}
+  </IntersectionObserver>
 </div>

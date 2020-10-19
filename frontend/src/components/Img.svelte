@@ -31,14 +31,11 @@
   }
 </style>
 
-{#each [src] as src (src)}
-  <img
-    {src}
-    bind:this={image}
-    use:setUp
-    on:click
-    class={extraClasses}
-    class:loaded
-    loading="lazy"
-    alt={alt || 'photograph'} />
-{/each}
+<img
+  {src}
+  bind:this={image}
+  use:setUp
+  on:click
+  class={extraClasses}
+  class:loaded
+  alt={alt || 'photograph'} />

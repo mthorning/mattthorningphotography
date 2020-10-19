@@ -1,0 +1,6 @@
+PUBLIC_URL=http://localhost:3000
+API_URL=https://photo2.thorning.ovh/api
+EMAIL_ADDRESS=matthewthorning@gmail.com
+EMAIL_USERNAME=matthewthorning@gmail.com
+EMAIL_PASSWORD=upzkkptdskpjptxq
+PAYPAL_ID=AbQA2UnTdfu5U_Lbb8Kds0qEOsr45m5tcK498tmqrOBH_o1pn_sy3z8rstJfoFWmCcC-kBK_Ty9AXwNL

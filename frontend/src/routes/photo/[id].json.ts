@@ -22,10 +22,12 @@ interface Photo {
   description: string,
   sell: boolean,
   exif: Exif,
-  alternativeText: string
+  image: {
+    alternativeText: string
+  },
   formats: {
-    medium: { url },
-    large: { url }
+    medium: { url: string },
+    large: { url: string }
   }
 }
 
@@ -35,7 +37,20 @@ interface Print {
   enabled: boolean,
 }
 
+interface Thumb {
+  id: string,
+  isPortrait: boolean,
+  image: {
+    alternativeText: string,
+    formats: {
+      thumbnail: { url: string }
+    }
+  }
+
+}
+
 export interface Data {
+  thumbs: Thumb[],
   photo: Photo,
   print: Print
 }
@@ -100,6 +115,14 @@ export function get(req: Request, res: Response) {
   const { id } = req.params
   request(
     `
+        thumbs: photos {
+          id
+          isPortrait
+          image {
+            alternativeText
+            formats
+          }
+        }
         photo(id: "${id}") {
             id
             title
@@ -135,7 +158,7 @@ export function get(req: Request, res: Response) {
   )
     .then((response) => {
       if (response) {
-        const { print, photo } = response
+        const { print, photo, thumbs } = response
 
         const printSizes: PrintSize[] = print && photo
           ? calcPrintSizes(
@@ -151,6 +174,7 @@ export function get(req: Request, res: Response) {
         })
 
         const data: Data = {
+          thumbs,
           photo: { ...photo, ...(photo.image ? photo.image : {}) },
           print: { ...print, printSizes, info: marked(print.info) },
         }

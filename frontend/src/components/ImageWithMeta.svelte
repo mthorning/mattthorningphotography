@@ -6,7 +6,6 @@
   import type { Exif } from '../types'
 
   export let alt: string, exif: Exif, mediumURL: string, largeURL: string
-  const { aperture, focalLength, iso, shutter, bracketed } = exif
 
   const dispatch = createEventDispatcher()
   let touchstart = 0
@@ -70,22 +69,19 @@
         photo.style.width = 'auto'
         photo.style.height = 'auto'
       }} />
-    {#if exif.show && aperture && shutter && iso && focalLength}
+    {#if exif?.show}
       <p>
-        f{aperture}
+        f{exif?.aperture ?? '-'}
         |
-        {bracketed ? 'bracketed' : `${shutter}sec`}
+        {exif?.bracketed ? 'bracketed' : `${exif?.shutter ?? '-'}sec`}
         | ISO
-        {iso}
+        {exif?.iso ?? '-'}
         |
-        {focalLength}mm
+        {exif?.focalLength ?? '-'}mm
       </p>
     {/if}
   </div>
 </div>
 {#if showLightbox}
-  <Lightbox
-    url={largeURL}
-    close={closeLightbox}
-    on:click={closeLightbox} />
+  <Lightbox url={largeURL} close={closeLightbox} on:click={closeLightbox} />
 {/if}
