@@ -118,7 +118,7 @@ export function get(req: Request, res: Response) {
   const { id } = req.params
   request(
     `
-        thumbs: photos {
+        thumbs: photos(sort: "captureDate:asc", where: { published: true }) {
           id
           isPortrait
           image {

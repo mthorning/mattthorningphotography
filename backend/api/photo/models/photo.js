@@ -37,8 +37,8 @@ function addExif(exif, data) {
 
 function checkCanBePublished(data) {
   if (!data.title || !data.description || !data.captureDate) data.published = false
-  const exif = data?.exif
-  if (!exif?.aperture || !exif?.focalLength || !exif?.iso) data.exif = { ...data?.exif ?? {}, show: false }
+  const exif = data.exif
+  if (!exif.aperture || !exif.focalLength || !exif.iso) data.exif = { ...data.exif, show: false }
 }
 
 module.exports = {
