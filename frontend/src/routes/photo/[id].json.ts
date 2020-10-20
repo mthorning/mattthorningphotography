@@ -92,7 +92,8 @@ calcPrintSizes = function (
   ratioTolerance = 0.05,
   minDPI = 150,
 ) {
-  if (!(cropSize?.width || cropSize?.height || availablePrintSizes?.length)) return []
+  console.log(cropSize)
+  if (!cropSize?.width || !cropSize?.height || !availablePrintSizes?.length) return []
   const { width, height } = cropSize
   const [pixelWidth, pixelHeight] =
     width > height ? [width, height] : [height, width]
@@ -160,7 +161,7 @@ export function get(req: Request, res: Response) {
   )
     .then((response) => {
       if (response) {
-        const { print, photo, thumbs } = response
+        const { print = {}, photo = {}, thumbs = {} } = response
 
         const printSizes: PrintSize[] = print && photo
           ? calcPrintSizes(

@@ -9,14 +9,12 @@ mv ./.env ./.devenv
 cp ../.env .
 rm -rf __sapper__
 NODE_ENV=production npm run build
-mv ./.devenv ./.env
 
 cd ../backend
 
 cp ../.env .
 rm -rf build .cache
 NODE_ENV=production npm run build
-rm ./.env
 
 cd ..
 
@@ -39,6 +37,11 @@ tar -czvf $APP_NAME.tar.gz \
     ./backend/build
 
 scp $APP_NAME.tar.gz vps:~/containers/$APP_NAME/$APP_NAME
+
+# cleanup
+mv ./frontend/.devenv ./frontend/.env
+rm ./backend/.env
+rm -rf ./backend/build ./backend/.cache
 
 ssh vps << EOF
     cd ~/containers/$APP_NAME/$APP_NAME

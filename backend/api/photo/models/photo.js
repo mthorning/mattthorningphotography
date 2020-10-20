@@ -16,12 +16,12 @@ async function update(data) {
 }
 
 function addExif(exif, data) {
-  if (exif && Object.keys(exif).length) {
-    data.captureDate = exif.CreateDate;
-    data.exifData = exif;
+  data.captureDate = exif.CreateDate;
+  data.exifData = exif;
+  const exifProperties = ['FNumber', 'FocalLength', 'ISO', 'ExposureTime']
 
+  if (exif && Object.keys(exif).every(key => exifProperties.includes(key))) {
     data.exif = {
-      ...data.exif,
       aperture: exif.FNumber,
       focalLength: exif.FocalLength,
       iso: exif.ISO,
@@ -33,6 +33,12 @@ function addExif(exif, data) {
   } else {
     data.exif = { ...data.exif, show: false };
   }
+}
+
+function checkCanBePublished(data) {
+  if (!data.title || !data.description || !data.captureDate) data.published = false
+  const exif = data?.exif
+  if (!exif?.aperture || !exif?.focalLength || !exif?.iso) data.exif = { ...data?.exif ?? {}, show: false }
 }
 
 module.exports = {
@@ -63,11 +69,14 @@ module.exports = {
         data.title = data.title
           ? data.title
           : file.name.split("-")[1].replace(/_/g, " ").replace(file.ext, "");
+
+        checkCanBePublished(data)
       }
     },
     beforeUpdate: async (params, data) => {
       const { exif } = await update(data);
-      addExif(exif, data);
+
+      checkCanBePublished(data)
     },
   },
 };
