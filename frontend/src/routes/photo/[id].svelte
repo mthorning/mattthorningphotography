@@ -82,20 +82,20 @@
       {@html print.info}
     {/if}
   </div>
+{/if}
 
-  <div id="test" class="footer">
-    {#each thumbs as thumb, index}
-      <Thumbnail
-        style={`
+<div id="test" class="footer">
+  {#each thumbs as thumb, index}
+    <Thumbnail
+      style={`
           width: 100px;
           height: 100px;
           display: inline-block;
           margin: 0 4px;
         `}
-        isPortrait={thumb?.isPortrait}
-        alt={thumb?.image?.alternativeText}
-        url={thumb?.image?.formats?.thumbnail?.url}
-        on:click={() => onImageClick(thumb?.id)} />
-    {/each}
-  </div>
-{/if}
+      isPortrait={thumb?.isPortrait}
+      alt={thumb?.image?.alternativeText}
+      url={thumb?.image?.formats?.thumbnail?.url}
+      on:click={() => onImageClick(thumb?.id)} />
+  {/each}
+</div>

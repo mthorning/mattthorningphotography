@@ -88,9 +88,10 @@ let calcPrintSizes: CalcPrintSizes
 calcPrintSizes = function (
   cropSize,
   availablePrintSizes,
-  ratioTolerance,
-  minDPI,
+  ratioTolerance = 0.05,
+  minDPI = 150,
 ) {
+  if (!cropSize?.width || !cropSize?.height || availablePrintSizes?.length) return []
   const { width, height } = cropSize
   const [pixelWidth, pixelHeight] =
     width > height ? [width, height] : [height, width]
