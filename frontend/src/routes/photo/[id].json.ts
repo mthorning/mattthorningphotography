@@ -85,13 +85,14 @@ interface CalcPrintSizes {
   ): PrintSize[]
 }
 let calcPrintSizes: CalcPrintSizes
+
 calcPrintSizes = function (
   cropSize,
   availablePrintSizes,
   ratioTolerance = 0.05,
   minDPI = 150,
 ) {
-  if (!cropSize?.width || !cropSize?.height || availablePrintSizes?.length) return []
+  if (!(cropSize?.width || cropSize?.height || availablePrintSizes?.length)) return []
   const { width, height } = cropSize
   const [pixelWidth, pixelHeight] =
     width > height ? [width, height] : [height, width]
@@ -177,7 +178,7 @@ export function get(req: Request, res: Response) {
         const data: Data = {
           thumbs,
           photo: { ...photo, ...(photo.image ? photo.image : {}) },
-          print: { ...print, printSizes, info: marked(print.info) },
+          print: { printSizes, enabled: print.enabled, info: marked(print.info) },
         }
         res.end(
           JSON.stringify(data)
