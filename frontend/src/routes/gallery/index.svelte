@@ -36,9 +36,6 @@
     justify-content: center;
     padding: initial;
   }
-  :global(.pointer) {
-    cursor: pointer;
-  }
   @media (min-width: 600px) {
     div {
       grid-template-columns: repeat(auto-fit, minmax(250px, max-content));
@@ -64,10 +61,10 @@
   {/if}
   {#if selectedImage}
     <Lightbox
+      pointer
       alt={selectedImage?.image?.alternativeText}
       url={selectedImage?.image?.formats?.large?.url}
       on:click={onImageClick}
-      class="pointer"
       close={() => (selectedIdx = -1)}
       next={() => (selectedIdx = selectedIdx === photos.length - 1 ? 0 : selectedIdx + 1)}
       previous={() => (selectedIdx = selectedIdx === 0 ? photos.length - 1 : selectedIdx - 1)} />

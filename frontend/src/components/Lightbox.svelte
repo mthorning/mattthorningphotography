@@ -1,24 +1,47 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import Img from '../components/Img.svelte'
+  import Img from 'svelte-components/Img.svelte'
 
-  export let alt: string, url: string, close: () => void
+  export let alt: string, url: string, close: () => void, pointer: boolean
   export let previous = () => {}
   export let next = () => {}
-
-  let extraClasses: string
-  export { extraClasses as class }
 
   let touchstart = 0
 
   onMount(() => {
-    window.addEventListener('onpopstate', (e) => {
+    const main = document.querySelector('main')
+    const scrollY = stopAppScroll(main)
+    window.onpopstate = (e: PopStateEvent) => {
       e.preventDefault()
       e.stopPropagation()
-    })
+      close()
+    }
+    history.pushState({ id: 'modal' }, 'modal')
     document.addEventListener('keydown', onKeydown)
-    return () => document.removeEventListener('keydown', onKeydown)
+
+    return () => {
+      if (history.state.id === 'modal') history.back()
+      restoreAppScroll(main, scrollY)
+      document.removeEventListener('keydown', onKeydown)
+    }
   })
+
+  function stopAppScroll(main: HTMLElement) {
+    const scrollY = window.scrollY
+    main.style.position = 'fixed'
+    main.style.top = -1 * scrollY + 'px'
+    main.style.right = '0'
+    main.style.left = '0'
+    return scrollY
+  }
+
+  function restoreAppScroll(main: HTMLElement, scrollY: number) {
+    main.style.position = 'static'
+    main.style.top = ''
+    main.style.right = ''
+    main.style.left = ''
+    window.scrollTo(0, scrollY)
+  }
 
   function onTouchstart({ changedTouches }) {
     touchstart = changedTouches[0].screenX
@@ -64,12 +87,6 @@
     align-items: center;
     justify-content: center;
   }
-  :global(.fullsize-img) {
-    max-width: 100%;
-    max-height: 100%;
-    width: auto;
-    height: auto;
-  }
 </style>
 
 <!-- svelte-ignore a11y-autofocus -->
@@ -78,5 +95,15 @@
   on:click={() => close()}
   on:touchstart={onTouchstart}
   on:touchend={onTouchend}>
-  <Img on:click class={`fullsize-img ${extraClasses}`} {alt} src={url} />
+  <Img
+    on:click
+    style={`
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      ${pointer ? 'cursor: pointer;' : ''} 
+    `}
+    {alt}
+    src={url} />
 </div>

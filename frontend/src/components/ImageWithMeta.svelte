@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte'
   import Lightbox from './Lightbox.svelte'
-  import Img from './Img.svelte'
+  import Img from 'svelte-components/Img.svelte'
 
   import type { Exif } from '../types'
 
@@ -46,11 +46,6 @@
     background-size: 75px;
     text-align: center;
   }
-  :global(.photo) {
-    cursor: pointer;
-    max-width: 100%;
-    max-height: 50vh;
-  }
 </style>
 
 <!-- svelte-ignore a11y-autofocus -->
@@ -63,7 +58,11 @@
     <Img
       on:click={() => (showLightbox = true)}
       {alt}
-      class="photo"
+      style={`
+        cursor: pointer;
+        max-width: 100%;
+        max-height: 50vh;
+       `}
       src={mediumURL}
       afterLoaded={(photo) => {
         photo.style.width = 'auto'

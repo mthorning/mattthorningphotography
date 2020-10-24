@@ -1,12 +1,15 @@
 <script lang="ts">
   import { afterUpdate } from 'svelte'
-  import Nav from '../components/Nav.svelte'
+  import Nav from 'svelte-components/Nav.svelte'
+  import FaInstagram from 'svelte-icons/fa/FaInstagram.svelte'
+  import FaTwitterSquare from 'svelte-icons/fa/FaTwitterSquare.svelte'
 
   export let segment: 'gallery' | 'about' | 'contact'
   let pathname: string
   afterUpdate(() => {
     pathname = window.location.pathname
   })
+  $: home = pathname === '/'
 </script>
 
 <style>
@@ -65,9 +68,49 @@
   :global(*:hover::-webkit-scrollbar-thumb) {
     background-color: rgba(var(--text-color-to-rgb), 0.4);
   }
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+  li {
+    display: block;
+    float: left;
+  }
+  a {
+    text-decoration: none;
+    padding: 1em 0.5em;
+    display: inline-block;
+    width: 1em;
+    padding-top: 18px;
+    padding-bottom: 10px;
+  }
 </style>
 
 <main class:background={pathname === '/'}>
-  <Nav home={pathname === '/'} {segment} />
+  <Nav
+    style={`
+      --nav-bg-color: ${home ? 'rgba(0, 0, 0, 0)' : '#19191c'};
+      --nav-dropdown-bg: rgba(${home ? '123, 93, 104, 0.9' : '25, 25, 28, 0.9'});
+      --nav-dropdown-border: #444; 
+      --nav-dropdown-height: ${48.8 * 4};
+      --mobile-button-bg: rgba(255, 255, 255, 0.05);
+      --mobile-button-color: #f0f0f0;
+      --nav-selected-underline-color: #f0f0f0;
+    `}
+    {segment}
+    routes={['gallery', 'about', 'contact']}>
+    <ul class="social">
+      <li>
+        <a class="icon" href="https://www.instagram.com/matt.thorning/">
+          <FaInstagram />
+        </a>
+      </li>
+      <li>
+        <a class="icon" href="https://twitter.com/MattThorning">
+          <FaTwitterSquare />
+        </a>
+      </li>
+    </ul>
+  </Nav>
   <slot />
 </main>

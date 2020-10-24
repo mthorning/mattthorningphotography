@@ -20,15 +20,16 @@ function addExif(exif, data) {
   data.exifData = exif;
   const exifProperties = ['FNumber', 'FocalLength', 'ISO', 'ExposureTime']
 
-  if (exif && Object.keys(exif).every(key => exifProperties.includes(key))) {
+  if (exif && Object.keys(exif).length) {
     data.exif = {
       aperture: exif.FNumber,
       focalLength: exif.FocalLength,
       iso: exif.ISO,
-      shutter:
-        exif.ExposureTime && exif.ExposureTime >= 1
+      ...(exif.ExposureTime ? {
+        shutter: exif.ExposureTime >= 1
           ? Math.round(exif.ExposureTime * 10) / 10
-          : `1/${Math.round(1 / exif.ExposureTime)}`,
+          : `1/${Math.round(1 / exif.ExposureTime)}`
+      } : {}),
     };
   } else {
     data.exif = { ...data.exif, show: false };

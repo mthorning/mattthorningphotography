@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Img from '../components/Img.svelte'
-  import IntersectionObserver from '../components/IntersectionObserver.svelte'
+  import Img from 'svelte-components/Img.svelte'
+  import IntersectionObserver from 'svelte-components/IntersectionObserver.svelte'
 
   export let isPortrait: boolean, alt: string, url: string, style: string
 </script>
@@ -20,18 +20,6 @@
       height: 250px;
     }
   }
-  :global(.img) {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    height: 120%;
-    width: auto;
-    transform: translate(-50%, -50%);
-  }
-  :global(.isPortrait) {
-    width: 105%;
-    height: auto;
-  }
 </style>
 
 <div data-test="thumbnail" class={`thumbnail `} {style}>
@@ -39,7 +27,19 @@
     {#if intersecting}
       <Img
         on:click
-        class={`img ${isPortrait ? 'isPortrait' : ''}`}
+        style={`
+          ${isPortrait ? `
+              width: 105%;
+              height: auto;
+            ` : `
+              width: auto;
+              height: 120%;
+          `}
+              position: absolute;
+              left: 50%;
+              top: 50%;
+              transform: translate(-50%, -50%);
+          `}
         {alt}
         src={url} />
     {/if}
