@@ -96,6 +96,7 @@
       --mobile-button-bg: rgba(255, 255, 255, 0.05);
       --mobile-button-color: #f0f0f0;
       --nav-selected-underline-color: #f0f0f0;
+      --nav-z-index: 110;
     `}
     {segment}
     routes={['gallery', 'about', 'contact']}>

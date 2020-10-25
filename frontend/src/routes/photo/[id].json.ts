@@ -92,7 +92,6 @@ calcPrintSizes = function (
   ratioTolerance = 0.05,
   minDPI = 150,
 ) {
-  console.log(cropSize)
   if (!cropSize?.width || !cropSize?.height || !availablePrintSizes?.length) return []
   const { width, height } = cropSize
   const [pixelWidth, pixelHeight] =
