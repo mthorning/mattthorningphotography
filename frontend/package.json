@@ -29,7 +29,8 @@
     "marked": "^1.2.0",
     "nodemailer": "^6.4.13",
     "polka": "^0.5.2",
-    "sirv": "^1.0.0"
+    "sirv": "^1.0.0",
+    "svelte-components": "git+https://github.com/mthorning/svelte-components.git#master"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
@@ -53,7 +54,6 @@
     "sapper": "^0.28.10",
     "svelte": "^3.29.0",
     "svelte-check": "^1.0.46",
-    "svelte-components": "0.0.3",
     "svelte-icons": "^2.1.0",
     "svelte-preprocess": "^4.3.0",
     "tslib": "^2.0.1",
