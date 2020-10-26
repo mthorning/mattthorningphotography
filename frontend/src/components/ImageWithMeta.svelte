@@ -6,6 +6,7 @@
   import type { Exif } from '../types'
 
   export let alt: string, exif: Exif, mediumURL: string, largeURL: string
+  let imageLoaded = false
 
   const dispatch = createEventDispatcher()
   let touchstart = 0
@@ -62,13 +63,15 @@
         cursor: pointer;
         max-width: 100%;
         max-height: 50vh;
+        height: 396px;
        `}
       src={mediumURL}
-      afterLoaded={(photo) => {
-        photo.style.width = 'auto'
-        photo.style.height = 'auto'
+      afterLoaded={(img) => {
+        img.style.width = 'auto'
+        img.style.height = 'auto'
+        imageLoaded = true
       }} />
-    {#if exif?.show}
+    {#if exif?.show && imageLoaded}
       <p>
         f{exif?.aperture ?? '-'}
         |
