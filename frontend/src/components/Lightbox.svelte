@@ -85,31 +85,34 @@
 
 <style>
   .overlay {
-    background: rgba(0, 0, 0, 0.9) url('/spinner.gif') no-repeat center;
-    background-size: 75px;
     position: fixed;
-    top: 0;
+    display: flex;
+    justify-content: center;
     right: 0;
-    bottom: 0;
     left: 0;
     z-index: 9999;
-    display: flex;
-    padding: 16px;
     align-items: center;
-    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.9);
+  }
+  .top {
+    background-image: url('/spinner.gif') no-repeat center;
+    background-size: 75px;
+    top: 0;
+    bottom: 50px;
+    padding: 16px 16px 0 16px;
+  }
+  .bottom {
+    top: calc(100% - 50px);
+    align-items: flex-start;
+    bottom: 0;
   }
   span {
-    position: absolute;
-    left: 50%;
-    top: 90%;
-    transform: translate(-50%, -90%);
     opacity: 0;
     transition: 2s opacity ease-in-out;
     display: flex;
     justify-content: space-between;
   }
   .control {
-    background: rgba(0, 0, 0, 0.5);
     border-radius: 2px;
     cursor: pointer;
     margin: 0 4px;
@@ -131,7 +134,7 @@
 
 <!-- svelte-ignore a11y-autofocus -->
 <div
-  class="overlay"
+  class="overlay top"
   data-test="lightbox"
   on:click={() => close()}
   on:touchstart={onTouchstart}
@@ -148,13 +151,17 @@
     {alt}
     afterLoaded={showControls}
     src={url} />
-  <span class:controls>
-    <div on:click={arrowClick(previous)} class="icon control">
-      <FaCaretLeft />
-    </div>
-    <div on:click class="control details">Click For Details</div>
-    <div on:click={arrowClick(next)} class="icon control">
-      <FaCaretRight />
-    </div>
-  </span>
+</div>
+<div class="overlay bottom">
+  {#if click}
+    <span class:controls>
+      <div on:click={arrowClick(previous)} class="icon control">
+        <FaCaretLeft />
+      </div>
+      <div on:click class="control details">Click For Details</div>
+      <div on:click={arrowClick(next)} class="icon control">
+        <FaCaretRight />
+      </div>
+    </span>
+  {/if}
 </div>
