@@ -1,10 +1,12 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
+  import { onMount, onDestroy } from 'svelte'
   import Img from './Img.svelte'
+  import { fade } from 'svelte/transition'
   import FaCaretLeft from 'svelte-icons/fa/FaCaretLeft.svelte'
   import FaCaretRight from 'svelte-icons/fa/FaCaretRight.svelte'
 
   export let alt: string, url: string, close: () => void, click: boolean
+  // to close, call handleClose no close
   export let previous = () => {}
   export let next = () => {}
 
@@ -12,9 +14,11 @@
   let controls = false
   const showControls = () => (controls = true)
 
+  let main: HTMLElement
   onMount(() => {
-    const main = document.querySelector('main')
+    main = document.querySelector('main')
     const scrollY = stopAppScroll(main)
+
     window.onpopstate = (e: PopStateEvent) => {
       e.preventDefault()
       e.stopPropagation()
@@ -22,13 +26,16 @@
     }
     history.pushState({ id: 'modal' }, 'modal')
     document.addEventListener('keydown', onKeydown)
-
-    return () => {
-      if (history.state.id === 'modal') history.back()
-      restoreAppScroll(main, scrollY)
-      document.removeEventListener('keydown', onKeydown)
-    }
   })
+
+  onDestroy(() => {
+    restoreAppScroll(main, scrollY)
+    document.removeEventListener('keydown', onKeydown)
+  })
+
+  function handleClose() {
+    window.dispatchEvent(new Event('popstate'))
+  }
 
   function stopAppScroll(main: HTMLElement) {
     const scrollY = window.scrollY
@@ -62,7 +69,7 @@
   function onKeydown(e: KeyboardEvent) {
     switch (e.key) {
       case 'Escape':
-        close()
+        handleClose()
         break
       case 'Left':
       case 'ArrowLeft':
@@ -107,8 +114,6 @@
     bottom: 0;
   }
   span {
-    opacity: 0;
-    transition: 2s opacity ease-in-out;
     display: flex;
     justify-content: space-between;
   }
@@ -117,9 +122,6 @@
     cursor: pointer;
     margin: 0 4px;
     user-select: none;
-  }
-  .controls {
-    opacity: 1;
   }
   .icon {
     height: 34px;
@@ -136,7 +138,7 @@
 <div
   class="overlay top"
   data-test="lightbox"
-  on:click={() => close()}
+  on:click={handleClose}
   on:touchstart={onTouchstart}
   on:touchend={onTouchend}>
   <Img
@@ -152,9 +154,12 @@
     afterLoaded={showControls}
     src={url} />
 </div>
-<div class="overlay bottom">
+<div on:click={handleClose} class="overlay bottom">
   {#if click}
-    <span class:controls>
+    <span
+      in:fade={{ delay: 300, duration: 1000 }}
+      on:click={handleClose}
+      class:controls>
       <div on:click={arrowClick(previous)} class="icon control">
         <FaCaretLeft />
       </div>
