@@ -1,6 +1,6 @@
 <script lang="ts">
   import { afterUpdate } from 'svelte'
-  import Nav from 'svelte-components/Nav.svelte'
+  import Nav from '../components/Nav.svelte'
   import FaInstagram from 'svelte-icons/fa/FaInstagram.svelte'
   import FaTwitterSquare from 'svelte-icons/fa/FaTwitterSquare.svelte'
 

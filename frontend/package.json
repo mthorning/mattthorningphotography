@@ -10,6 +10,7 @@
     "build": "sapper build --legacy",
     "export": "sapper export --legacy",
     "start": "node __sapper__/build",
+    "proxy": "API_URL=https://mattthorningphotography.com/api npm run dev",
     "validate": "svelte-check --ignore src/node_modules/@sapper"
   },
   "dependencies": {
@@ -29,8 +30,7 @@
     "marked": "^1.2.0",
     "nodemailer": "^6.4.13",
     "polka": "^0.5.2",
-    "sirv": "^1.0.0",
-    "svelte-components": "git+https://github.com/mthorning/svelte-components.git#master"
+    "sirv": "^1.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",

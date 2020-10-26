@@ -1,12 +1,16 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import Img from 'svelte-components/Img.svelte'
+  import Img from './Img.svelte'
+  import FaCaretLeft from 'svelte-icons/fa/FaCaretLeft.svelte'
+  import FaCaretRight from 'svelte-icons/fa/FaCaretRight.svelte'
 
-  export let alt: string, url: string, close: () => void, pointer: boolean
+  export let alt: string, url: string, close: () => void, click: boolean
   export let previous = () => {}
   export let next = () => {}
 
   let touchstart = 0
+  let controls = false
+  const showControls = () => (controls = true)
 
   onMount(() => {
     const main = document.querySelector('main')
@@ -70,10 +74,17 @@
         break
     }
   }
+  function arrowClick(cb: () => void) {
+    return function changeImage(e: MouseEvent) {
+      e.stopPropagation()
+      e.preventDefault()
+      cb()
+    }
+  }
 </script>
 
 <style>
-  div {
+  .overlay {
     background: rgba(0, 0, 0, 0.9) url('/spinner.gif') no-repeat center;
     background-size: 75px;
     position: fixed;
@@ -87,10 +98,40 @@
     align-items: center;
     justify-content: center;
   }
+  span {
+    position: absolute;
+    left: 50%;
+    top: 90%;
+    transform: translate(-50%, -90%);
+    opacity: 0;
+    transition: 2s opacity ease-in-out;
+    display: flex;
+    justify-content: space-between;
+  }
+  .control {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 2px;
+    cursor: pointer;
+    margin: 0 4px;
+    user-select: none;
+  }
+  .controls {
+    opacity: 1;
+  }
+  .icon {
+    height: 34px;
+    width: 34px;
+  }
+  .details {
+    padding: 3px 8px;
+    line-height: 24px;
+    white-space: nowrap;
+  }
 </style>
 
 <!-- svelte-ignore a11y-autofocus -->
 <div
+  class="overlay"
   data-test="lightbox"
   on:click={() => close()}
   on:touchstart={onTouchstart}
@@ -102,8 +143,18 @@
       max-height: 100%;
       width: auto;
       height: auto;
-      ${pointer ? 'cursor: pointer;' : ''} 
+      ${click ? 'cursor: pointer;' : ''} 
     `}
     {alt}
+    afterLoaded={showControls}
     src={url} />
+  <span class:controls>
+    <div on:click={arrowClick(previous)} class="icon control">
+      <FaCaretLeft />
+    </div>
+    <div on:click class="control details">Click For Details</div>
+    <div on:click={arrowClick(next)} class="icon control">
+      <FaCaretRight />
+    </div>
+  </span>
 </div>

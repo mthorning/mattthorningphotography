@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Img from 'svelte-components/Img.svelte'
-  import IntersectionObserver from 'svelte-components/IntersectionObserver.svelte'
+  import Img from './Img.svelte'
+  import IntersectionObserver from './IntersectionObserver.svelte'
 
   export let isPortrait: boolean, alt: string, url: string, style: string
 </script>

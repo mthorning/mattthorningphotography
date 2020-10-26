@@ -61,7 +61,7 @@
   {/if}
   {#if selectedImage}
     <Lightbox
-      pointer
+      click
       alt={selectedImage?.image?.alternativeText}
       url={selectedImage?.image?.formats?.large?.url}
       on:click={onImageClick}

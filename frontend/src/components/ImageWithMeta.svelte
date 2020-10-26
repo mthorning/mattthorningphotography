@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte'
   import Lightbox from './Lightbox.svelte'
-  import Img from 'svelte-components/Img.svelte'
+  import Img from './Img.svelte'
 
   import type { Exif } from '../types'
 
