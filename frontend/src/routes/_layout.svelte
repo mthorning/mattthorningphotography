@@ -4,6 +4,13 @@
   import FaInstagram from 'svelte-icons/fa/FaInstagram.svelte'
   import FaTwitterSquare from 'svelte-icons/fa/FaTwitterSquare.svelte'
 
+  import type { Route } from '../components/Nav.svelte'
+
+  const routes: Route[] = [
+    { name: 'gallery', href: '/gallery', regex: new RegExp(/(photo|gallery)/) },
+    { name: 'about', href: '/about', regex: new RegExp(/about/) },
+    { name: 'contact', href: '/contact', regex: new RegExp(/contact/) },
+  ]
   export let segment: 'gallery' | 'about' | 'contact'
   let pathname: string
   afterUpdate(() => {
@@ -99,7 +106,7 @@
       --nav-z-index: 110;
     `}
     {segment}
-    routes={['gallery', 'about', 'contact']}>
+    {routes}>
     <ul class="social">
       <li>
         <a class="icon" href="https://www.instagram.com/matt.thorning/">
