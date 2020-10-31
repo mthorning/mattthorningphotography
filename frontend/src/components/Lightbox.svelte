@@ -6,39 +6,35 @@
   import FaCaretRight from 'svelte-icons/fa/FaCaretRight.svelte'
 
   export let alt: string, url: string, close: () => void, click: boolean
-  // to close, call handleClose no close
+  // to close, call handleClose() not close()
   export let previous = () => {}
   export let next = () => {}
 
   let touchstart = 0
   let controls = false
+  let scrollY: number
   const showControls = () => (controls = true)
 
-  let main: HTMLElement
   onMount(() => {
-    main = document.querySelector('main')
-    const scrollY = stopAppScroll(main)
-
-    window.onpopstate = (e: PopStateEvent) => {
-      e.preventDefault()
-      e.stopPropagation()
-      close()
-    }
+    const main = document.querySelector('main')
+    const currentScroll = stopAppScroll(main)
     history.pushState({ id: 'modal' }, 'modal')
-    document.addEventListener('keydown', onKeydown)
+    return () => {
+      restoreAppScroll(main, currentScroll)
+    }
   })
 
-  onDestroy(() => {
-    restoreAppScroll(main, scrollY)
-    document.removeEventListener('keydown', onKeydown)
-  })
+  function onPopstate(e: PopStateEvent) {
+    e.preventDefault()
+    e.stopPropagation()
+    close()
+  }
 
   function handleClose() {
     window.dispatchEvent(new Event('popstate'))
   }
 
   function stopAppScroll(main: HTMLElement) {
-    const scrollY = window.scrollY
     main.style.position = 'fixed'
     main.style.top = -1 * scrollY + 'px'
     main.style.right = '0'
@@ -46,12 +42,12 @@
     return scrollY
   }
 
-  function restoreAppScroll(main: HTMLElement, scrollY: number) {
+  function restoreAppScroll(main: HTMLElement, currentScroll: number) {
     main.style.position = 'static'
     main.style.top = ''
     main.style.right = ''
     main.style.left = ''
-    window.scrollTo(0, scrollY)
+    window.scrollTo(0, currentScroll)
   }
 
   function onTouchstart({ changedTouches }) {
@@ -135,6 +131,7 @@
 </style>
 
 <!-- svelte-ignore a11y-autofocus -->
+<svelte:window on:keydown={onKeydown} on:popstate={onPopstate} bind:scrollY />
 <div
   class="overlay top"
   data-test="lightbox"
