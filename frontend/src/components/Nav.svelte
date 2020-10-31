@@ -1,19 +1,24 @@
-<script context="module" lang="ts">
-  export interface Route {
+<script lang="ts">
+  import { onMount } from 'svelte'
+  import FaBars from 'svelte-icons/fa/FaBars.svelte'
+  import FaInstagram from 'svelte-icons/fa/FaInstagram.svelte'
+  import FaTwitterSquare from 'svelte-icons/fa/FaTwitterSquare.svelte'
+
+  interface Route {
     name: string
     href: string
     regex: RegExp
   }
-</script>
-
-<script lang="ts">
-  import { onMount } from 'svelte'
-  import FaBars from 'svelte-icons/fa/FaBars.svelte'
 
   export let segment: string,
     style: string,
-    homePageName: string = 'home',
-    routes: Route[] = []
+    homePageName: string = 'home'
+
+  const routes: Route[] = [
+    { name: 'gallery', href: '/gallery', regex: new RegExp(/(photo|gallery)/) },
+    { name: 'about', href: '/about', regex: new RegExp(/about/) },
+    { name: 'contact', href: '/contact', regex: new RegExp(/contact/) },
+  ]
 
   let open = false
   let nav: HTMLElement
@@ -68,11 +73,11 @@
     width: 100vw;
     height: 0;
     overflow: hidden;
-    transition: 0.3s ease-in-out height;
+    transition: 0.5s ease-in-out height;
     background: var(--nav-dropdown-bg);
   }
   .open {
-    height: var(--nav-dropdown-height);
+    height: 200px;
     border-bottom: 1px solid var(--nav-dropdown-border);
   }
   .menu-items li a {
@@ -99,6 +104,18 @@
   }
   button:focus {
     outline: none;
+  }
+  .social li {
+    display: block;
+    float: left;
+  }
+  .icon {
+    text-decoration: none;
+    padding: 1em 0.5em;
+    display: inline-block;
+    width: 1em;
+    padding-top: 18px;
+    padding-bottom: 10px;
   }
   @media (min-width: 400px) {
     nav {
@@ -169,5 +186,16 @@
       </li>
     {/each}
   </ul>
-  <slot />
+  <ul class="social">
+    <li>
+      <a class="icon" href="https://www.instagram.com/matt.thorning/">
+        <FaInstagram />
+      </a>
+    </li>
+    <li>
+      <a class="icon" href="https://twitter.com/MattThorning">
+        <FaTwitterSquare />
+      </a>
+    </li>
+  </ul>
 </nav>
