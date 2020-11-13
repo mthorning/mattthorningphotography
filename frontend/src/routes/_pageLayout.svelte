@@ -1,6 +1,6 @@
 <style>
   div {
-    background: #19191c;
+    background: var(--primary-bg-color);
     max-width: 800px;
     margin: 32px auto;
     padding: 32px;

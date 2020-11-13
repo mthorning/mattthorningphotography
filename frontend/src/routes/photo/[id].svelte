@@ -16,6 +16,7 @@
   import ImageWithMeta from '../../components/ImageWithMeta.svelte'
   import PurchasePanel from '../../components/PurchasePanel.svelte'
   import Thumbnail from '../../components/Thumbnail.svelte'
+  import ShareButtons from '../../components/ShareButtons.svelte'
 
   import type { Data } from './[id].json'
 
@@ -36,7 +37,7 @@
 <style>
   h2 {
     border-top: 1px solid #777;
-    padding-top: 20px;
+    padding-top: 50px;
   }
   h1 {
     border-bottom: 1px solid #777;
@@ -56,6 +57,10 @@
     overflow-x: auto;
     white-space: nowrap;
   }
+  .share {
+    width: 100%;
+    position: relative;
+  }
 </style>
 
 <svelte:head>
@@ -72,6 +77,11 @@
 {/key}
 
 <p class="description">{photo.description}</p>
+
+<div class="share">
+  <ShareButtons title={photo?.title ?? 'Image'} />
+</div>
+
 {#if print?.enabled && photo?.sell && photo?.id && printSizes?.length}
   <h2>Prints</h2>
   <p>This image is available for purchase as a print in the following sizes:</p>
