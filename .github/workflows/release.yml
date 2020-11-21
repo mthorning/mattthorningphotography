@@ -2,6 +2,7 @@ name: CI
 
 env:
   APP_NAME: mattthorningphotography
+  PUBLIC_URL: https://mattthorningphotography.com
   EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
 
 on:
