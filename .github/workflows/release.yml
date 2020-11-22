@@ -1,4 +1,4 @@
-name: CI
+name: release
 
 env:
   APP_NAME: mattthorningphotography
@@ -6,13 +6,16 @@ env:
   EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
 
 on:
-  push:
-    branches: [ master]
-  pull_request:
-    branches: [ master ]
+  workflow_dispatch:
+    inputs:
+      with-api:
+        description: 'Release API? (y/n)'
+        required: false
+        default: n
 
 jobs:
   deploy-ui:
+    name: Deploy UI
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -43,6 +46,8 @@ jobs:
           overwrite: true
     
   deploy-api:
+    name: Deploy API
+    if: github.event.inputs.with-api == 'y'
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -72,7 +77,29 @@ jobs:
           target: ~/containers/${{ env.APP_NAME }}
           overwrite: true
           
-  up:
+  ui-up:
+    name: UI Up
+    if: github.event.inputs.with-api != 'y'
+    needs: deploy-ui
+    runs-on: ubuntu-latest
+    steps:
+      - name: load images and up
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          port: 22
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd ~/containers/${{ env.APP_NAME }}
+            docker load -i api/image-api.tar
+            docker load -i ui/image-ui.tar
+            docker-compose up -d --no-deps ui
+            docker system prune -f
+            
+  all-up:
+    name: All Up
+    if: github.event.inputs.with-api == 'y'
     needs: [deploy-ui, deploy-api]
     runs-on: ubuntu-latest
     steps:
@@ -87,5 +114,5 @@ jobs:
             cd ~/containers/${{ env.APP_NAME }}
             docker load -i api/image-api.tar
             docker load -i ui/image-ui.tar
-            docker-compose up -d --build --force-recreate --remove-orphans
+            docker-compose up -d --no-deps api ui
             docker system prune -f
