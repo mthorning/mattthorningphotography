@@ -4,6 +4,7 @@ env:
   APP_NAME: mattthorningphotography
   PUBLIC_URL: https://mattthorningphotography.com
   EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
+  PAYPAL_ID: ${{ secrets.PAYPAL_ID }}
 
 on:
   workflow_dispatch:
