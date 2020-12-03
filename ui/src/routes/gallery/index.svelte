@@ -63,7 +63,7 @@
     <Lightbox
       click
       alt={selectedImage?.image?.alternativeText}
-      url={selectedImage?.image?.formats?.large?.url}
+      url={selectedImage?.image?.url}
       on:click={onImageClick}
       close={() => (selectedIdx = -1)}
       next={() => (selectedIdx = selectedIdx === photos.length - 1 ? 0 : selectedIdx + 1)}

@@ -73,7 +73,7 @@
     alt={photo?.image?.alternativeText}
     exif={photo?.exif}
     mediumURL={photo?.formats?.medium.url}
-    largeURL={photo?.formats?.large?.url} />
+    largeURL={photo?.image?.url} />
 {/key}
 
 <p class="description">{photo.description}</p>

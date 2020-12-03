@@ -23,6 +23,7 @@ interface Photo {
   sell: boolean,
   exif: Exif,
   image: {
+    url: string,
     alternativeText: string
   },
   formats: {
@@ -121,6 +122,7 @@ export function get(req: Request, res: Response) {
           id
           isPortrait
           image {
+            url
             alternativeText
             formats
           }

@@ -5,10 +5,10 @@ export interface Photo {
   id: string,
   isPortrait: boolean,
   image: {
+    url: string,
     alternativeText: string,
     formats: {
       small: { url: string },
-      large: { url: string }
     }
   }
 }
@@ -24,6 +24,7 @@ export async function get(req, res, next) {
             id
             isPortrait
             image {
+                url
                 alternativeText
                 formats
             }

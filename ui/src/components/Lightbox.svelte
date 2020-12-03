@@ -106,7 +106,7 @@
   }
   .bottom {
     top: calc(100% - 50px);
-    align-items: flex-start;
+    align-items: center;
     bottom: 0;
   }
   span {
