@@ -62,9 +62,11 @@ module.exports = {
             };
           }
 
-          data.description =
-            exif.ImageDescription &&
-            exif.ImageDescription.replace(cropSizeString, "");
+          if (!data.description) {
+            data.description =
+              exif.ImageDescription &&
+              exif.ImageDescription.replace(cropSizeString, "");
+          }
         }
         // might as well set the title too
         data.title = data.title
