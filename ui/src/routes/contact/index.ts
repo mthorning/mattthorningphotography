@@ -1,4 +1,6 @@
+import type { ServerResponse } from 'http';
 import nodemailer from 'nodemailer'
+import type { Next } from 'polka';
 
 import type { Email } from '../../types'
 
@@ -11,16 +13,15 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-export async function post(req, res, next) {
-    const email: Email = req.body
-    const { from = process.env.EMAIL_ADDRESS, subject, html } = email
+export async function post(req: Request, res: ServerResponse, next: Next) {
+    const { from = process.env.EMAIL_ADDRESS, subject, html } = <Email><unknown>req.body
     transporter.sendMail({
         to: process.env.EMAIL_ADDRESS,
         from,
         subject,
         html
     }, (err: Error) => {
-        if(err) next(err);
+        if (err) next(err);
         res.end(JSON.stringify({ from, subject, html }))
     })
 }

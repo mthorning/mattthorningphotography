@@ -1,8 +1,9 @@
 import request from '../../utils/request'
 import marked from 'marked'
 
-import type { Request, Response } from 'express'
 import type { Exif, PrintSize } from '../../types'
+import type { Request } from 'polka';
+import type { ServerResponse } from 'http';
 
 interface CropSize {
   height: number,
@@ -114,7 +115,7 @@ calcPrintSizes = function (
     })
 }
 
-export function get(req: Request, res: Response) {
+export function get(req: Request, res: ServerResponse) {
   const { id } = req.params
   request(
     `
