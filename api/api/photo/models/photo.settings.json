@@ -48,12 +48,12 @@
     "captureDate": {
       "type": "datetime"
     },
-    "category": {
-      "model": "category",
-      "via": "photo"
-    },
     "exifData": {
       "type": "json"
+    },
+    "categories": {
+      "via": "photos",
+      "collection": "category"
     }
   }
 }

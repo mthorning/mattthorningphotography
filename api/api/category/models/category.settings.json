@@ -12,9 +12,10 @@
     "name": {
       "type": "string"
     },
-    "photo": {
-      "via": "category",
-      "model": "photo"
+    "photos": {
+      "collection": "photo",
+      "via": "categories",
+      "dominant": true
     }
   }
 }

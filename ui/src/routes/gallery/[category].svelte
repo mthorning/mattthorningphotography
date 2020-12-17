@@ -1,5 +1,6 @@
 <script context="module" lang="ts">
   export async function preload(page, session) {
+    const { category } = page.params
     console.log(page.query.category)
     const res = await this.fetch(
       `gallery.json${new URLSearchParams(page.query.category).toString()}`

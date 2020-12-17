@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "@paypal/paypal-js": "^1.0.4",
-    "@types/express": "^4.17.8",
     "@types/marked": "^1.1.0",
     "@types/nodemailer": "^6.4.0",
     "@types/paypal__paypal-js": "^1.0.1",
