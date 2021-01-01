@@ -42,6 +42,11 @@
     margin: 0;
     text-align: right;
   }
+  .photo-wrapper {
+    background: url('/spinner.gif') no-repeat center;
+    background-size: 75px;
+    text-align: center;
+  }
 </style>
 
 <!-- svelte-ignore a11y-autofocus -->
@@ -50,21 +55,23 @@
   on:click
   on:touchstart={onTouchstart}
   on:touchend={onTouchend}>
-  <Img
-    on:click={() => (showLightbox = true)}
-    {alt}
-    style={`
+  <div class="photo-wrapper">
+    <Img
+      on:click={() => (showLightbox = true)}
+      {alt}
+      style={`
         cursor: pointer;
         max-width: 100%;
         max-height: 50vh;
         height: 396px;
        `}
-    src={mediumURL}
-    afterLoaded={(img) => {
-      img.style.width = 'auto'
-      img.style.height = 'auto'
-      imageLoaded = true
-    }} />
+      src={mediumURL}
+      afterLoaded={(img) => {
+        img.style.width = 'auto'
+        img.style.height = 'auto'
+        imageLoaded = true
+      }} />
+  </div>
   {#if exif?.show && imageLoaded}
     <p>
       f{exif?.aperture ?? '-'}

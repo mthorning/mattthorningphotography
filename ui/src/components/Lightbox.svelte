@@ -128,6 +128,13 @@
     line-height: 24px;
     white-space: nowrap;
   }
+  .photo-wrapper {
+    height: 100%;
+    width: 100%;
+    background: url('/spinner.gif') no-repeat center;
+    background-size: 75px;
+    text-align: center;
+  }
 </style>
 
 <!-- svelte-ignore a11y-autofocus -->
@@ -138,18 +145,20 @@
   on:click={handleClose}
   on:touchstart={onTouchstart}
   on:touchend={onTouchend}>
-  <Img
-    on:click
-    style={`
+  <div class="photo-wrapper">
+    <Img
+      on:click
+      style={`
       max-width: 100%;
       max-height: 100%;
       width: auto;
       height: auto;
       ${click ? 'cursor: pointer;' : ''} 
     `}
-    {alt}
-    afterLoaded={showControls}
-    src={url} />
+      {alt}
+      afterLoaded={showControls}
+      src={url} />
+  </div>
 </div>
 <div on:click={handleClose} class="overlay bottom">
   {#if click}
