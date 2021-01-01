@@ -26,7 +26,11 @@
   $: thumbs = data.thumbs.filter((thumb) => thumb.id !== photo.id)
 
   $: printSizes = print.printSizes
-    ? print.printSizes.sort((a, b) => a.price - b.price)
+    ? print.printSizes
+        .filter(
+          (a) => a.price && typeof a.price === 'number' && !isNaN(a.price)
+        )
+        .sort((a, b) => a.price - b.price)
     : []
 
   function onImageClick(clickId: string) {

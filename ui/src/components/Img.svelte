@@ -27,13 +27,20 @@
   .loaded {
     opacity: 1;
   }
+  .photo-wrapper {
+    background: url('/spinner.gif') no-repeat center;
+    background-size: 75px;
+    text-align: center;
+  }
 </style>
 
-<img
-  {src}
-  {style}
-  bind:this={image}
-  use:setUp
-  on:click
-  class:loaded
-  alt={alt || 'photograph'} />
+<div class="photo-wrapper">
+  <img
+    {src}
+    {style}
+    bind:this={image}
+    use:setUp
+    on:click
+    class:loaded
+    alt={alt || 'photograph'} />
+</div>
