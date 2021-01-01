@@ -19,9 +19,6 @@
       "type": "boolean",
       "default": true
     },
-    "calcPrice": {
-      "type": "json"
-    },
     "ratioTolerance": {
       "type": "decimal",
       "default": 0.05
@@ -29,6 +26,22 @@
     "minDPI": {
       "type": "integer",
       "default": 150
+    },
+    "multiplier": {
+      "type": "decimal",
+      "default": 2
+    },
+    "minMargin": {
+      "type": "integer",
+      "default": 35
+    },
+    "marginPercIncr": {
+      "type": "float",
+      "default": 20
+    },
+    "postageMultiplier": {
+      "type": "float",
+      "default": 2
     }
   }
 }

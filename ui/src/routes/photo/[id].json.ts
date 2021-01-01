@@ -33,9 +33,20 @@ interface Photo {
 }
 
 interface Print {
-  printSizes: PrintSize[],
+  availablePrintSizes: {
+    postage: number,
+    price: number,
+    x: number,
+    y: number,
+  }[],
   info: string,
   enabled: boolean,
+  ratioTolerance: number,
+  minDPI: number,
+  multiplier: number,
+  minMargin: number,
+  marginPercIncr: number,
+  postageMultiplier: number,
 }
 
 interface Thumb {
@@ -53,7 +64,11 @@ interface Thumb {
 export interface Data {
   thumbs: Thumb[],
   photo: Photo,
-  print: Print
+  print: {
+    enabled: boolean,
+    printSizes: PrintSize[],
+    info: string
+  }
 }
 
 interface Dimensions {
@@ -71,28 +86,31 @@ function calcRatio(pixels: Dimensions, paper: Dimensions) {
   return pixelRatio - paperRatio
 }
 
-function calcPrice(price: number, postage: number) {
-  const margin = price * 2 < 35 ? 35 : price * 2;
-  return Math.ceil(price + (margin + (margin / 100) * 20) + postage * 2);
+function calcPrice({ price: cost, postage }, { multiplier, minMargin, marginPercIncr, postageMultiplier }) {
+  let margin = cost * multiplier < minMargin ? minMargin : cost * multiplier;
+  margin = margin + margin / 100 * marginPercIncr;
+  return Math.ceil(cost + margin + (postage * postageMultiplier));
 }
 
 
 interface CalcPrintSizes {
   (
     cropSize: CropSize,
-    availablePrintSizes: AvailablePrintSize[],
-    ratioTolerance: number,
-    minDPI: number
+    print: Print
   ): PrintSize[]
 }
 let calcPrintSizes: CalcPrintSizes
 
 calcPrintSizes = function (
   cropSize,
-  availablePrintSizes,
-  ratioTolerance = 0.05,
-  minDPI = 150,
+  {
+    availablePrintSizes,
+    ratioTolerance = 0.05,
+    minDPI = 150,
+    ...variables
+  }
 ) {
+  console.log(arguments)
   if (!cropSize?.width || !cropSize?.height || !availablePrintSizes?.length) return []
   const { width, height } = cropSize
   const [pixelWidth, pixelHeight] =
@@ -100,7 +118,7 @@ calcPrintSizes = function (
 
   return availablePrintSizes.map((print) => ({
     ...print,
-    price: calcPrice(print.price, print.postage),
+    price: calcPrice(print, variables),
   }))
     .filter((print) => {
       const pixels = { x: pixelWidth, y: pixelHeight }
@@ -156,6 +174,10 @@ export function get(req: Request, res: Response) {
             enabled
             ratioTolerance
             minDPI
+            multiplier
+            minMargin
+            marginPercIncr
+            postageMultiplier
         }
     `,
     res
@@ -167,9 +189,7 @@ export function get(req: Request, res: Response) {
         const printSizes: PrintSize[] = print && photo
           ? calcPrintSizes(
             photo.cropSize,
-            print.availablePrintSizes,
-            print.ratioTolerance,
-            print.minDPI,
+            print
           )
           : []
 
