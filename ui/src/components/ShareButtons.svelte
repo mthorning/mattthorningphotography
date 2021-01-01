@@ -13,7 +13,9 @@
   export let title: string
   let url: string
   const { page } = stores()
-  page.subscribe(({ host, path }) => (url = `${host}${path}`))
+  page.subscribe(({ host, path }) => {
+    url = `https://${host}${path}`
+  })
   const desc = `Matt Thorning Photography`
 </script>
 

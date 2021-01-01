@@ -1,9 +1,10 @@
 <script lang="ts">
-  import { onMount, onDestroy } from 'svelte'
-  import Img from './Img.svelte'
+  import { onMount } from 'svelte'
   import { fade } from 'svelte/transition'
   import FaCaretLeft from 'svelte-icons/fa/FaCaretLeft.svelte'
   import FaCaretRight from 'svelte-icons/fa/FaCaretRight.svelte'
+  import Img from './Img.svelte'
+  import Spinner from './Spinner.svelte'
 
   export let alt: string, url: string, close: () => void, click: boolean
   // to close, call handleClose() not close()
@@ -13,7 +14,11 @@
   let touchstart = 0
   let controls = false
   let scrollY: number
-  const showControls = () => (controls = true)
+  let showSpinner = true
+  const showControls = () => {
+    controls = true
+    showSpinner = false
+  }
 
   onMount(() => {
     const main = document.querySelector('main')
@@ -128,13 +133,6 @@
     line-height: 24px;
     white-space: nowrap;
   }
-  .photo-wrapper {
-    height: 100%;
-    width: 100%;
-    background: url('/spinner.gif') no-repeat center;
-    background-size: 75px;
-    text-align: center;
-  }
 </style>
 
 <!-- svelte-ignore a11y-autofocus -->
@@ -145,20 +143,27 @@
   on:click={handleClose}
   on:touchstart={onTouchstart}
   on:touchend={onTouchend}>
-  <div class="photo-wrapper">
-    <Img
-      on:click
+  {#if showSpinner}
+    <Spinner
       style={`
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+  `} />
+  {/if}
+  <Img
+    on:click
+    style={`
       max-width: 100%;
       max-height: 100%;
       width: auto;
       height: auto;
       ${click ? 'cursor: pointer;' : ''} 
     `}
-      {alt}
-      afterLoaded={showControls}
-      src={url} />
-  </div>
+    {alt}
+    afterLoaded={showControls}
+    src={url} />
 </div>
 <div on:click={handleClose} class="overlay bottom">
   {#if click}
