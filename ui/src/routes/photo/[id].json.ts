@@ -110,7 +110,6 @@ calcPrintSizes = function (
     ...variables
   }
 ) {
-  console.log(arguments)
   if (!cropSize?.width || !cropSize?.height || !availablePrintSizes?.length) return []
   const { width, height } = cropSize
   const [pixelWidth, pixelHeight] =
