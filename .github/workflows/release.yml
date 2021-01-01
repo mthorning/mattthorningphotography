@@ -116,5 +116,5 @@ jobs:
             docker load -i api/image-api.tar
             docker load -i ui/image-ui.tar
             docker-compose up -d --no-deps api ui
-            rm /api/image-api.tar ui/image-ui.tar
+            rm api/image-api.tar ui/image-ui.tar
             docker system prune -f
