@@ -60,13 +60,15 @@
     {/each}
   {/if}
   {#if selectedImage}
-    <Lightbox
-      click
-      alt={selectedImage?.image?.alternativeText}
-      url={selectedImage?.image?.url}
-      on:click={onImageClick}
-      close={() => (selectedIdx = -1)}
-      next={() => (selectedIdx = selectedIdx === photos.length - 1 ? 0 : selectedIdx + 1)}
-      previous={() => (selectedIdx = selectedIdx === 0 ? photos.length - 1 : selectedIdx - 1)} />
+    {#key selectedImage?.image?.url}
+      <Lightbox
+        click
+        alt={selectedImage?.image?.alternativeText}
+        url={selectedImage?.image?.url}
+        on:click={onImageClick}
+        close={() => (selectedIdx = -1)}
+        next={() => (selectedIdx = selectedIdx === photos.length - 1 ? 0 : selectedIdx + 1)}
+        previous={() => (selectedIdx = selectedIdx === 0 ? photos.length - 1 : selectedIdx - 1)} />
+    {/key}
   {/if}
 </div>

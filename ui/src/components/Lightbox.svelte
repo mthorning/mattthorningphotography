@@ -14,8 +14,10 @@
   let touchstart = 0
   let controls = false
   let scrollY: number
+
   let showSpinner = true
-  const showControls = () => {
+
+  const onImageLoad = () => {
     controls = true
     showSpinner = false
   }
@@ -162,7 +164,7 @@
       ${click ? 'cursor: pointer;' : ''} 
     `}
     {alt}
-    afterLoaded={showControls}
+    afterLoaded={onImageLoad}
     src={url} />
 </div>
 <div on:click={handleClose} class="overlay bottom">

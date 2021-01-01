@@ -13,6 +13,7 @@
     height: 140px;
     overflow: hidden;
     border: 1px solid #f0f0f0;
+    user-select: none;
   }
   @media (min-width: 600px) {
     div {
