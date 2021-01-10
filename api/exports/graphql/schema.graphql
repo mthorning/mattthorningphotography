@@ -23,6 +23,88 @@ type AdminUser {
   lastname: String!
 }
 
+input ArticleInput {
+  title: String!
+  body: String!
+  published: Boolean
+  type: ENUM_ARTICLES_TYPE!
+  created_by: ID
+  updated_by: ID
+}
+
+type Articles {
+  id: ID!
+  _id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String!
+  body: String!
+  published: Boolean
+  type: ENUM_ARTICLES_TYPE!
+}
+
+type ArticlesAggregator {
+  count: Int
+  totalCount: Int
+}
+
+type ArticlesConnection {
+  values: [Articles]
+  groupBy: ArticlesGroupBy
+  aggregate: ArticlesAggregator
+}
+
+type ArticlesConnection_id {
+  key: ID
+  connection: ArticlesConnection
+}
+
+type ArticlesConnectionBody {
+  key: String
+  connection: ArticlesConnection
+}
+
+type ArticlesConnectionCreatedAt {
+  key: DateTime
+  connection: ArticlesConnection
+}
+
+type ArticlesConnectionId {
+  key: ID
+  connection: ArticlesConnection
+}
+
+type ArticlesConnectionPublished {
+  key: Boolean
+  connection: ArticlesConnection
+}
+
+type ArticlesConnectionTitle {
+  key: String
+  connection: ArticlesConnection
+}
+
+type ArticlesConnectionType {
+  key: String
+  connection: ArticlesConnection
+}
+
+type ArticlesConnectionUpdatedAt {
+  key: DateTime
+  connection: ArticlesConnection
+}
+
+type ArticlesGroupBy {
+  id: [ArticlesConnectionId]
+  _id: [ArticlesConnection_id]
+  createdAt: [ArticlesConnectionCreatedAt]
+  updatedAt: [ArticlesConnectionUpdatedAt]
+  title: [ArticlesConnectionTitle]
+  body: [ArticlesConnectionBody]
+  published: [ArticlesConnectionPublished]
+  type: [ArticlesConnectionType]
+}
+
 type Category {
   id: ID!
   _id: ID!
@@ -125,6 +207,14 @@ input ComponentPhotoExifInput {
   bracketed: Boolean
 }
 
+input createArticleInput {
+  data: ArticleInput
+}
+
+type createArticlePayload {
+  article: Articles
+}
+
 input createCategoryInput {
   data: CategoryInput
 }
@@ -175,6 +265,14 @@ type deleteAboutPayload {
   about: About
 }
 
+input deleteArticleInput {
+  where: InputID
+}
+
+type deleteArticlePayload {
+  article: Articles
+}
+
 input deleteCategoryInput {
   where: InputID
 }
@@ -215,6 +313,15 @@ input editAboutInput {
   body: String
   title: String
   image: ID
+  created_by: ID
+  updated_by: ID
+}
+
+input editArticleInput {
+  title: String
+  body: String
+  published: Boolean
+  type: ENUM_ARTICLES_TYPE
   created_by: ID
   updated_by: ID
 }
@@ -315,6 +422,11 @@ input editUserInput {
   updated_by: ID
 }
 
+enum ENUM_ARTICLES_TYPE {
+  review
+  blog
+}
+
 input FileInfoInput {
   name: String
   alternativeText: String
@@ -353,11 +465,14 @@ scalar JSON
 """The `Long` scalar type represents 52-bit integers"""
 scalar Long
 
-union Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | UserPermissionsPasswordPayload | About | updateAboutPayload | deleteAboutPayload | Category | CategoryConnection | CategoryAggregator | CategoryGroupBy | CategoryConnectionId | CategoryConnection_id | CategoryConnectionCreatedAt | CategoryConnectionUpdatedAt | CategoryConnectionName | CategoryConnectionPhoto | createCategoryPayload | updateCategoryPayload | deleteCategoryPayload | Photo | PhotoConnection | PhotoAggregator | PhotoGroupBy | PhotoConnectionId | PhotoConnection_id | PhotoConnectionCreatedAt | PhotoConnectionUpdatedAt | PhotoConnectionTitle | PhotoConnectionImage | PhotoConnectionIsPortrait | PhotoConnectionDescription | PhotoConnectionSell | PhotoConnectionPublished | PhotoConnectionCropSize | PhotoConnectionExif | PhotoConnectionCaptureDate | PhotoConnectionCategory | PhotoConnectionExifData | createPhotoPayload | updatePhotoPayload | deletePhotoPayload | Prints | updatePrintPayload | deletePrintPayload | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnection_id | UploadFileConnectionCreatedAt | UploadFileConnectionUpdatedAt | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_metadata | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnection_id | UsersPermissionsRoleConnectionCreatedAt | UsersPermissionsRoleConnectionUpdatedAt | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | createRolePayload | updateRolePayload | deleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnection_id | UsersPermissionsUserConnectionCreatedAt | UsersPermissionsUserConnectionUpdatedAt | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | createUserPayload | updateUserPayload | deleteUserPayload | ComponentPhotoCropSize | ComponentPhotoExif
+union Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | UserPermissionsPasswordPayload | About | updateAboutPayload | deleteAboutPayload | Articles | ArticlesConnection | ArticlesAggregator | ArticlesGroupBy | ArticlesConnectionId | ArticlesConnection_id | ArticlesConnectionCreatedAt | ArticlesConnectionUpdatedAt | ArticlesConnectionTitle | ArticlesConnectionBody | ArticlesConnectionPublished | ArticlesConnectionType | createArticlePayload | updateArticlePayload | deleteArticlePayload | Category | CategoryConnection | CategoryAggregator | CategoryGroupBy | CategoryConnectionId | CategoryConnection_id | CategoryConnectionCreatedAt | CategoryConnectionUpdatedAt | CategoryConnectionName | CategoryConnectionPhoto | createCategoryPayload | updateCategoryPayload | deleteCategoryPayload | Photo | PhotoConnection | PhotoAggregator | PhotoGroupBy | PhotoConnectionId | PhotoConnection_id | PhotoConnectionCreatedAt | PhotoConnectionUpdatedAt | PhotoConnectionTitle | PhotoConnectionImage | PhotoConnectionIsPortrait | PhotoConnectionDescription | PhotoConnectionSell | PhotoConnectionPublished | PhotoConnectionCropSize | PhotoConnectionExif | PhotoConnectionCaptureDate | PhotoConnectionCategory | PhotoConnectionExifData | createPhotoPayload | updatePhotoPayload | deletePhotoPayload | Prints | updatePrintPayload | deletePrintPayload | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnection_id | UploadFileConnectionCreatedAt | UploadFileConnectionUpdatedAt | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_metadata | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnection_id | UsersPermissionsRoleConnectionCreatedAt | UsersPermissionsRoleConnectionUpdatedAt | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | createRolePayload | updateRolePayload | deleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnection_id | UsersPermissionsUserConnectionCreatedAt | UsersPermissionsUserConnectionUpdatedAt | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | createUserPayload | updateUserPayload | deleteUserPayload | ComponentPhotoCropSize | ComponentPhotoExif
 
 type Mutation {
   updateAbout(input: updateAboutInput): updateAboutPayload
   deleteAbout: deleteAboutPayload
+  createArticle(input: createArticleInput): createArticlePayload
+  updateArticle(input: updateArticleInput): updateArticlePayload
+  deleteArticle(input: deleteArticleInput): deleteArticlePayload
   createCategory(input: createCategoryInput): createCategoryPayload
   updateCategory(input: updateCategoryInput): updateCategoryPayload
   deleteCategory(input: deleteCategoryInput): deleteCategoryPayload
@@ -569,6 +684,9 @@ enum PublicationState {
 
 type Query {
   about(publicationState: PublicationState): About
+  article(id: ID!, publicationState: PublicationState): Articles
+  articles(sort: String, limit: Int, start: Int, where: JSON, publicationState: PublicationState): [Articles]
+  articlesConnection(sort: String, limit: Int, start: Int, where: JSON): ArticlesConnection
   category(id: ID!, publicationState: PublicationState): Category
   categories(sort: String, limit: Int, start: Int, where: JSON, publicationState: PublicationState): [Category]
   categoriesConnection(sort: String, limit: Int, start: Int, where: JSON): CategoryConnection
@@ -610,6 +728,15 @@ input updateAboutInput {
 
 type updateAboutPayload {
   about: About
+}
+
+input updateArticleInput {
+  where: InputID
+  data: editArticleInput
+}
+
+type updateArticlePayload {
+  article: Articles
 }
 
 input updateCategoryInput {
