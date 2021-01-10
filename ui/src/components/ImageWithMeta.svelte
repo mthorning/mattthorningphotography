@@ -49,6 +49,7 @@
     margin: 0;
     text-align: right;
     align-self: flex-end;
+    font-size: 14px;
   }
   .min-dimensions {
     height: 396px;
