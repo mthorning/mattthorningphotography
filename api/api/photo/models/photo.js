@@ -18,18 +18,21 @@ async function update(data) {
 function addExif(exif, data) {
   data.captureDate = exif.CreateDate;
   data.exifData = exif;
-  const exifProperties = ['FNumber', 'FocalLength', 'ISO', 'ExposureTime']
+  const exifProperties = ["FNumber", "FocalLength", "ISO", "ExposureTime"];
 
   if (exif && Object.keys(exif).length) {
     data.exif = {
       aperture: exif.FNumber,
       focalLength: exif.FocalLength,
       iso: exif.ISO,
-      ...(exif.ExposureTime ? {
-        shutter: exif.ExposureTime >= 1
-          ? Math.round(exif.ExposureTime * 10) / 10
-          : `1/${Math.round(1 / exif.ExposureTime)}`
-      } : {}),
+      ...(exif.ExposureTime
+        ? {
+            shutter:
+              exif.ExposureTime >= 1
+                ? Math.round(exif.ExposureTime * 10) / 10
+                : `1/${Math.round(1 / exif.ExposureTime)}`,
+          }
+        : {}),
     };
   } else {
     data.exif = { ...data.exif, show: false };
@@ -37,14 +40,22 @@ function addExif(exif, data) {
 }
 
 function checkCanBePublished(data) {
-  if (!data.title || !data.description || !data.captureDate) data.published = false
-  const exif = data.exif
-  if (!exif.aperture || !exif.focalLength || !exif.iso) data.exif = { ...data.exif, show: false }
+  if (!data.title || !data.description || !data.captureDate)
+    data.published = false;
+  const exif = data.exif;
+  if (!exif.aperture || !exif.focalLength || !exif.iso)
+    data.exif = { ...data.exif, show: false };
+}
+
+function canonicalUrl(data) {
+  data.canonicalUrl = `/photo/${data.id}`;
 }
 
 module.exports = {
   lifecycles: {
     beforeCreate: async (data) => {
+      // canonicalUrl(data)
+
       if (data.image) {
         const { file, exif } = await update(data);
         addExif(exif, data);
@@ -73,13 +84,21 @@ module.exports = {
           ? data.title
           : file.name.split("-")[1].replace(/_/g, " ").replace(file.ext, "");
 
-        checkCanBePublished(data)
+        checkCanBePublished(data);
       }
     },
     beforeUpdate: async (params, data) => {
-      const { exif } = await update(data);
+      // canonicalUrl(data)
 
-      checkCanBePublished(data)
+      await update(data);
+
+      checkCanBePublished(data);
+    },
+    afterCreate() {
+      strapi.plugins.sitemap.services.sitemap.createSitemap();
+    },
+    afterDelete() {
+      strapi.plugins.sitemap.services.sitemap.createSitemap();
     },
   },
 };

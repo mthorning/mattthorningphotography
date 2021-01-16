@@ -2,7 +2,7 @@ import request from '../../utils/request'
 
 
 export interface Photo {
-  id: string,
+  slug: string,
   isPortrait: boolean,
   image: {
     url: string,
@@ -21,7 +21,7 @@ export async function get(req, res, next) {
   request(
     `
         photos(sort: "captureDate:asc", where: { published: true }) {
-            id
+            slug
             isPortrait
             image {
                 url

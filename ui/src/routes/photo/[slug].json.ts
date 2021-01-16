@@ -9,15 +9,9 @@ interface CropSize {
   width: number
 }
 
-interface AvailablePrintSize {
-  x: number,
-  y: number,
-  postage: number,
-  price: number,
-}
-
 interface Photo {
   id: string,
+  slug: string,
   title: string,
   description: string,
   sell: boolean,
@@ -50,7 +44,7 @@ interface Print {
 }
 
 interface Thumb {
-  id: string,
+  slug: string,
   isPortrait: boolean,
   image: {
     alternativeText: string,
@@ -132,11 +126,11 @@ calcPrintSizes = function (
 }
 
 export function get(req: Request, res: Response) {
-  const { id } = req.params
+  const { slug } = req.params
   request(
     `
         thumbs: photos(sort: "captureDate:asc", where: { published: true }) {
-          id
+          slug
           isPortrait
           image {
             url
@@ -144,8 +138,9 @@ export function get(req: Request, res: Response) {
             formats
           }
         }
-        photo(id: "${id}") {
+        photos(where:{ slug: "${slug}" }) {
             id
+            slug
             title
             description
             sell
@@ -183,7 +178,7 @@ export function get(req: Request, res: Response) {
   )
     .then((response) => {
       if (response) {
-        const { print = {}, photo = {}, thumbs = {} } = response
+          const { print = {}, photos: [photo = {}], thumbs = {} } = response
 
         const printSizes: PrintSize[] = print && photo
           ? calcPrintSizes(

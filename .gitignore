@@ -7,3 +7,6 @@ yarn-error.log
 /**/.cache/
 /**/public/uploads/
 .env
+sitemap.xml
+/**/.yalc
+/**/yalc.lock

@@ -24,7 +24,7 @@
 
   function onImageClick(e: MouseEvent) {
     e.stopPropagation()
-    goto(`/photo/${selectedImage.id}`, { replaceState: true })
+    goto(`/photo/${selectedImage.slug}`, { replaceState: true })
   }
 </script>
 

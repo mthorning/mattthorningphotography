@@ -1,7 +1,7 @@
 <script context="module" lang="ts">
   export async function preload(page) {
-    const { id } = page.params
-    const res = await this.fetch(`photo/${id}.json`)
+    const { slug } = page.params
+    const res = await this.fetch(`photo/${slug}.json`)
     if (res.status === 200) {
       const data = await res.json()
       return { data }
@@ -18,12 +18,12 @@
   import Thumbnail from '../../components/Thumbnail.svelte'
   import ShareButtons from '../../components/ShareButtons.svelte'
 
-  import type { Data } from './[id].json'
+  import type { Data } from './[slug].json'
 
   export let data: Data
   $: photo = data?.photo
   $: print = data?.print
-  $: thumbs = data.thumbs.filter((thumb) => thumb.id !== photo.id)
+  $: thumbs = data.thumbs.filter((thumb) => thumb.slug !== photo.slug)
 
   $: printSizes = print.printSizes
     ? print.printSizes
@@ -110,6 +110,6 @@
       isPortrait={thumb?.isPortrait}
       alt={thumb?.image?.alternativeText}
       url={thumb?.image?.formats?.thumbnail?.url}
-      on:click={() => onImageClick(thumb?.id)} />
+      on:click={() => onImageClick(thumb?.slug)} />
   {/each}
 </div>

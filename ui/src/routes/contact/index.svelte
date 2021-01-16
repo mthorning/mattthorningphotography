@@ -56,8 +56,8 @@
   }
   button[type='submit'] {
     align-self: flex-end;
-    width: 75px;
-    height: 30px;
+    width: 80px;
+    height: 40px;
     cursor: pointer;
   }
   .spinner {

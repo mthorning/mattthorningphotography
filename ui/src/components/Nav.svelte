@@ -86,7 +86,8 @@
   }
   a {
     text-decoration: none;
-    padding: 1em 0.5em;
+    padding: 0.7em 0.5em;
+    font-size: 1.2em;
     display: inline-block;
   }
   button {
