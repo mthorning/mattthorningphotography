@@ -28,6 +28,9 @@
         "blog"
       ],
       "required": true
+    },
+    "subtitle": {
+      "type": "string"
     }
   }
 }

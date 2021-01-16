@@ -28,6 +28,7 @@ input ArticleInput {
   body: String!
   published: Boolean
   type: ENUM_ARTICLES_TYPE!
+  subtitle: String
   created_by: ID
   updated_by: ID
 }
@@ -41,6 +42,7 @@ type Articles {
   body: String!
   published: Boolean
   type: ENUM_ARTICLES_TYPE!
+  subtitle: String
 }
 
 type ArticlesAggregator {
@@ -79,6 +81,11 @@ type ArticlesConnectionPublished {
   connection: ArticlesConnection
 }
 
+type ArticlesConnectionSubtitle {
+  key: String
+  connection: ArticlesConnection
+}
+
 type ArticlesConnectionTitle {
   key: String
   connection: ArticlesConnection
@@ -103,6 +110,7 @@ type ArticlesGroupBy {
   body: [ArticlesConnectionBody]
   published: [ArticlesConnectionPublished]
   type: [ArticlesConnectionType]
+  subtitle: [ArticlesConnectionSubtitle]
 }
 
 type Category {
@@ -322,6 +330,7 @@ input editArticleInput {
   body: String
   published: Boolean
   type: ENUM_ARTICLES_TYPE
+  subtitle: String
   created_by: ID
   updated_by: ID
 }
@@ -465,7 +474,7 @@ scalar JSON
 """The `Long` scalar type represents 52-bit integers"""
 scalar Long
 
-union Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | UserPermissionsPasswordPayload | About | updateAboutPayload | deleteAboutPayload | Articles | ArticlesConnection | ArticlesAggregator | ArticlesGroupBy | ArticlesConnectionId | ArticlesConnection_id | ArticlesConnectionCreatedAt | ArticlesConnectionUpdatedAt | ArticlesConnectionTitle | ArticlesConnectionBody | ArticlesConnectionPublished | ArticlesConnectionType | createArticlePayload | updateArticlePayload | deleteArticlePayload | Category | CategoryConnection | CategoryAggregator | CategoryGroupBy | CategoryConnectionId | CategoryConnection_id | CategoryConnectionCreatedAt | CategoryConnectionUpdatedAt | CategoryConnectionName | CategoryConnectionPhoto | createCategoryPayload | updateCategoryPayload | deleteCategoryPayload | Photo | PhotoConnection | PhotoAggregator | PhotoGroupBy | PhotoConnectionId | PhotoConnection_id | PhotoConnectionCreatedAt | PhotoConnectionUpdatedAt | PhotoConnectionTitle | PhotoConnectionImage | PhotoConnectionIsPortrait | PhotoConnectionDescription | PhotoConnectionSell | PhotoConnectionPublished | PhotoConnectionCropSize | PhotoConnectionExif | PhotoConnectionCaptureDate | PhotoConnectionCategory | PhotoConnectionExifData | createPhotoPayload | updatePhotoPayload | deletePhotoPayload | Prints | updatePrintPayload | deletePrintPayload | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnection_id | UploadFileConnectionCreatedAt | UploadFileConnectionUpdatedAt | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_metadata | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnection_id | UsersPermissionsRoleConnectionCreatedAt | UsersPermissionsRoleConnectionUpdatedAt | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | createRolePayload | updateRolePayload | deleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnection_id | UsersPermissionsUserConnectionCreatedAt | UsersPermissionsUserConnectionUpdatedAt | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | createUserPayload | updateUserPayload | deleteUserPayload | ComponentPhotoCropSize | ComponentPhotoExif
+union Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | UserPermissionsPasswordPayload | About | updateAboutPayload | deleteAboutPayload | Articles | ArticlesConnection | ArticlesAggregator | ArticlesGroupBy | ArticlesConnectionId | ArticlesConnection_id | ArticlesConnectionCreatedAt | ArticlesConnectionUpdatedAt | ArticlesConnectionTitle | ArticlesConnectionBody | ArticlesConnectionPublished | ArticlesConnectionType | ArticlesConnectionSubtitle | createArticlePayload | updateArticlePayload | deleteArticlePayload | Category | CategoryConnection | CategoryAggregator | CategoryGroupBy | CategoryConnectionId | CategoryConnection_id | CategoryConnectionCreatedAt | CategoryConnectionUpdatedAt | CategoryConnectionName | CategoryConnectionPhoto | createCategoryPayload | updateCategoryPayload | deleteCategoryPayload | Photo | PhotoConnection | PhotoAggregator | PhotoGroupBy | PhotoConnectionId | PhotoConnection_id | PhotoConnectionCreatedAt | PhotoConnectionUpdatedAt | PhotoConnectionTitle | PhotoConnectionImage | PhotoConnectionIsPortrait | PhotoConnectionDescription | PhotoConnectionSell | PhotoConnectionPublished | PhotoConnectionCropSize | PhotoConnectionExif | PhotoConnectionCaptureDate | PhotoConnectionCategory | PhotoConnectionExifData | createPhotoPayload | updatePhotoPayload | deletePhotoPayload | Prints | updatePrintPayload | deletePrintPayload | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnection_id | UploadFileConnectionCreatedAt | UploadFileConnectionUpdatedAt | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_metadata | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnection_id | UsersPermissionsRoleConnectionCreatedAt | UsersPermissionsRoleConnectionUpdatedAt | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | createRolePayload | updateRolePayload | deleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnection_id | UsersPermissionsUserConnectionCreatedAt | UsersPermissionsUserConnectionUpdatedAt | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | createUserPayload | updateUserPayload | deleteUserPayload | ComponentPhotoCropSize | ComponentPhotoExif
 
 type Mutation {
   updateAbout(input: updateAboutInput): updateAboutPayload

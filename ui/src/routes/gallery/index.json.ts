@@ -1,3 +1,5 @@
+import type { ServerResponse } from 'http'
+import type { Next, Request } from 'polka'
 import request from '../../utils/request'
 
 
@@ -17,7 +19,7 @@ export interface Data {
   photos: Photo[]
 }
 
-export async function get(req, res, next) {
+export async function get(_req: Request, res: ServerResponse, _next: Next) {
   request(
     `
         photos(sort: "captureDate:asc", where: { published: true }) {
