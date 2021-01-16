@@ -2,8 +2,7 @@
   "kind": "collectionType",
   "collectionName": "photos",
   "info": {
-    "name": "Photo",
-    "area": "photo"
+    "name": "Photo"
   },
   "options": {
     "increments": true,
