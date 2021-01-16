@@ -1,7 +1,10 @@
-<script>
-  import PageLayout from '../_pageLayout.svelte'
-</script>
+<style>
+  div {
+    margin: 0 auto;
+    padding: 32px;
+  }
+</style>
 
-<PageLayout>
+<div>
   <slot />
-</PageLayout>
+</div>

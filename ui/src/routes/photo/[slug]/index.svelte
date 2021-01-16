@@ -13,12 +13,12 @@
 
 <script lang="ts">
   import { goto } from '@sapper/app'
-  import ImageWithMeta from '../../components/ImageWithMeta.svelte'
-  import PurchasePanel from '../../components/PurchasePanel.svelte'
-  import Thumbnail from '../../components/Thumbnail.svelte'
-  import ShareButtons from '../../components/ShareButtons.svelte'
+  import ImageWithMeta from '../../../components/ImageWithMeta.svelte'
+  import PurchasePanel from '../../../components/PurchasePanel.svelte'
+  import Thumbnail from '../../../components/Thumbnail.svelte'
+  import ShareButtons from '../../../components/ShareButtons.svelte'
 
-  import type { Data } from './[slug].json'
+  import type { Data } from './index.json'
 
   export let data: Data
   $: photo = data?.photo

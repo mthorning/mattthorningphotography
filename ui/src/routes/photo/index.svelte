@@ -1,6 +1,6 @@
 <script context="module" lang="ts">
   export async function preload(page, session) {
-    const res = await this.fetch('gallery.json')
+    const res = await this.fetch('photo.json')
     if (res.status === 200) {
       const data = await res.json()
       return { data }
@@ -24,7 +24,7 @@
 
   function onImageClick(e: MouseEvent) {
     e.stopPropagation()
-    goto(`/photo/${selectedImage.slug}`, { replaceState: true })
+    goto(`/photo/${selectedImage.slug}`)
   }
 </script>
 

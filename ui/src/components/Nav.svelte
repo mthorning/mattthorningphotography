@@ -15,7 +15,7 @@
     homePageName: string = 'home'
 
   const routes: Route[] = [
-    { name: 'gallery', href: '/gallery', regex: new RegExp(/(photo|gallery)/) },
+    { name: 'gallery', href: '/photo', regex: new RegExp(/photo/) },
     { name: 'about', href: '/about', regex: new RegExp(/about/) },
     { name: 'contact', href: '/contact', regex: new RegExp(/contact/) },
   ]

@@ -4,7 +4,7 @@ describe('image page', () => {
 const title = text => text.substr(9).replace(/_/g, ' ')
 
     before(() => {
-        cy.visit('/gallery')
+        cy.visit('/photo')
         cy.get('[data-test="thumbnail"]').first().click()
         cy.repeat(() => cy.get('body').type('{leftarrow}'), 15)
         cy.get('[data-test="lightbox"] img').then($el => {

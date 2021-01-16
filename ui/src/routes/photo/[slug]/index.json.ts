@@ -1,8 +1,8 @@
-import request from '../../utils/request'
+import request from '../../../utils/request'
 import marked from 'marked'
 
 import type { Request, Response } from 'express'
-import type { Exif, PrintSize } from '../../types'
+import type { Exif, PrintSize } from '../../../types'
 
 interface CropSize {
   height: number,
