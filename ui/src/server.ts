@@ -17,11 +17,18 @@ const apiProxy = createProxyMiddleware(["/api", "/uploads"], {
   },
 });
 
+const assets = sirv('static', {
+    maxAge: 31536000, // 1Y
+    immutable: true,
+    dev
+});
+
+
 polka()
   .use(
     apiProxy,
     compression({ threshold: 0 }),
-    sirv("static", { dev }),
+    assets,
     bodyParser.json(),
     sapper.middleware()
   )
