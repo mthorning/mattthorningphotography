@@ -1,16 +1,6 @@
 <!doctype html>
 <html lang='en'>
 <head>
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133286805-3"></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-
-          gtag('config', 'UA-133286805-3');
-        </script>
-
 	<meta charset='utf-8'>
 	<meta name='viewport' content='width=device-width,initial-scale=1.0'>
 	<meta name='theme-color' content='#333333'>
@@ -39,10 +29,8 @@
 	     and anything else it needs to hydrate the app and
 	     initialise the router -->
 	%sapper.scripts%
-                 <!--
-  <script
-    src="https://www.paypal.com/sdk/js?client-id=AXtwH23AghczaZleWBS0x81Crqecr6s-YRYMaZVkhA8eNqDjRI0c4I_J8GDdsGX1G5-WaTAnayN6iOCB&currency=GBP&disable-funding=credit,card,bancontact,blik,eps,giropay,ideal,mybank,p24,sepa,sofort,venmo">
-  </script>
-  -->
+
+        <!-- Cloudflare Web Analytics -->
+         <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "a358ec1441ad4889a0374388947084ff"}'></script><!-- End Cloudflare Web Analytics --></script>
 </body>
 </html>
