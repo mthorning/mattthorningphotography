@@ -104,7 +104,7 @@
     align-items: center;
     background-color: rgba(0, 0, 0, 0.9);
   }
-  @media (min-width: 400px) {
+  @media (min-width: 400px) and (min-height: 400px) {
     .radial {
       background: no-repeat center center
         radial-gradient(#9fa0ae -74%, rgba(0, 0, 0, 0.9) 67%);
