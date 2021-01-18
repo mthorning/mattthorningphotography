@@ -129,7 +129,7 @@ export function get(req: Request, res: Response) {
   const { slug } = req.params
   request(
     `
-        thumbs: photos(sort: "captureDate:asc", where: { published: true }) {
+        thumbs: photos(sort: "title:asc", where: { published: true }) {
           slug
           isPortrait
           image {

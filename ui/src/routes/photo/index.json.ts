@@ -20,7 +20,7 @@ export interface Data {
 export async function get(req, res, next) {
   request(
     `
-        photos(sort: "captureDate:asc", where: { published: true }) {
+        photos(sort: "title:asc", where: { published: true }) {
             slug
             isPortrait
             image {

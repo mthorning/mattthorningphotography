@@ -5,7 +5,7 @@
     margin: 32px auto;
     padding: 32px;
   }
-  @media screen and (max-width: 900px) {
+  @media screen and (max-width: 875px) {
     div {
       margin: 0 auto;
     }

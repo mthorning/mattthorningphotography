@@ -104,6 +104,11 @@
     align-items: center;
     background-color: rgba(0, 0, 0, 0.9);
   }
+  .radial {
+    background: no-repeat center center
+      radial-gradient(#9fa0ae -74%, rgba(0, 0, 0, 0.9) 67%);
+    background-size: cover !important;
+  }
   .top {
     background-image: url('/spinner.gif') no-repeat center;
     background-size: 75px;
@@ -140,7 +145,7 @@
 <!-- svelte-ignore a11y-autofocus -->
 <svelte:window on:keydown={onKeydown} on:popstate={onPopstate} bind:scrollY />
 <div
-  class="overlay top"
+  class="overlay top radial"
   data-test="lightbox"
   on:click={handleClose}
   on:touchstart={onTouchstart}
