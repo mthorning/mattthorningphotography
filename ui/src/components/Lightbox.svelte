@@ -104,10 +104,12 @@
     align-items: center;
     background-color: rgba(0, 0, 0, 0.9);
   }
-  .radial {
-    background: no-repeat center center
-      radial-gradient(#9fa0ae -74%, rgba(0, 0, 0, 0.9) 67%);
-    background-size: cover !important;
+  @media (min-width: 400px) {
+    .radial {
+      background: no-repeat center center
+        radial-gradient(#9fa0ae -74%, rgba(0, 0, 0, 0.9) 67%);
+      background-size: cover !important;
+    }
   }
   .top {
     background-image: url('/spinner.gif') no-repeat center;
