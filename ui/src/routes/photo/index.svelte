@@ -58,11 +58,18 @@
       <h5>I thought I had more photos than this...</h5>
     {:else}
       {#each photos as photo, index}
-        <Thumbnail
-          isPortrait={photo?.isPortrait}
-          alt={photo?.image?.alternativeText}
-          url={photo?.image?.formats?.small?.url}
-          on:click={() => (selectedIdx = index)} />
+        <!-- a tag for SEO purpose - noop -->
+        <a
+          href={`/photo/${photo.slug}`}
+          on:click={(e) => {
+            e.preventDefault()
+            selectedIdx = index
+          }}>
+          <Thumbnail
+            isPortrait={photo?.isPortrait}
+            alt={photo?.image?.alternativeText}
+            url={photo?.image?.formats?.small?.url} />
+        </a>
       {/each}
     {/if}
     {#if selectedImage}
