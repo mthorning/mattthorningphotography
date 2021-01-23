@@ -1,6 +1,7 @@
 describe('about page', () => {
     before(() => cy.visit('/about'))
 
+    it('fails', () => expect(false).to.equal(true))
     it('shows photo', () => {
         cy.get('[data-test="photo"]').should('be.visible').and('have.css', 'background')
     })
