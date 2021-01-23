@@ -29,3 +29,6 @@ Cypress.Commands.add('repeat', (func, times) => {
     }
 })
 
+Cypress.Commands.add('load', () => {
+    cy.get('[data-test="spinner"]',  {timeout: 10000} ).should('not.exist')
+});

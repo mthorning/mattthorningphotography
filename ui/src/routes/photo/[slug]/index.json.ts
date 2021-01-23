@@ -178,7 +178,12 @@ export function get(req: Request, res: Response) {
   )
     .then((response) => {
       if (response) {
-          const { print = {}, photos: [photo = {}], thumbs = {} } = response
+          const { print = {}, photos: [photo], thumbs = {} } = response
+
+          if(!photo) {
+              res.statusCode = 404;
+              res.end()
+          }
 
         const printSizes: PrintSize[] = print && photo
           ? calcPrintSizes(

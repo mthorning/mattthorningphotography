@@ -1,15 +1,13 @@
 describe('gallery', () => {
-    beforeEach(() => {
-        cy.visit('/')
-        cy.get('nav a[href="/gallery"]').click()
-    })
+    before(() => cy.visit('/photo'))
     
     it('shows gallery', () => {
         cy.get('[data-test="gallery"]').should('exist')
     })
 
     it('shows fullsize images', () => {
-        cy.get('[data-test="thumbnail"]').first().click()
+        cy.get('[data-test="thumbnail"]').first().find('img').should('have.class', 'loaded').click();
+
         cy.get('[data-test="lightbox"] img').should('have.attr', 'src').then(firstImg => {
                 cy.repeat(() => {
                     cy.get('body').type('{leftarrow}')    
@@ -23,11 +21,8 @@ describe('gallery', () => {
     })
 
     it('closes fullsize image on escape press', () => {
-        cy.visit('/gallery')
-        cy.get('[data-test="thumbnail"]').eq(8).click()
-        cy.get('[data-test="lightbox"]').should('be.visible')
         cy.get('body').type('{esc}')
-        cy.get('[data-test="lightbox"]').should('not.be.visible')
+        cy.get('[data-test="lightbox"]').should('not.exist')
         cy.get('[data-test="gallery"]').should('exist')
     })
 

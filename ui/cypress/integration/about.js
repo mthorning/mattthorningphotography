@@ -1,19 +1,12 @@
 describe('about page', () => {
-    beforeEach(() => {
-        cy.visit('/')
-        cy.get('nav a[href="/about"]').click()
-    })
+    before(() => cy.visit('/about'))
 
     it('shows photo', () => {
         cy.get('[data-test="photo"]').should('be.visible').and('have.css', 'background')
-        })
+    })
 
     it('shows some gibberish', () => {
         cy.get('[data-test="some-gibberish"]').should('be.visible')
-    })
-
-    it('shows gear list', () => {
-        cy.get('[data-test="gear-list"]').should('be.visible')
     })
 
     it('links to contact page', () => {

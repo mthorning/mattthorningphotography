@@ -2,9 +2,12 @@ describe('mobile menu', () => {
     before(() => cy.visit('/'))
 
     function checkLinks() {
-        ['home', 'gallery', 'about', 'contact'].forEach(link => 
-            cy.get(`[data-test="menu-items"] a[href="/${link === 'home' ? '' : link}"]`).contains(link).should('be.visible')
-        )
+        [
+            { label: 'home', href: '' }, 
+            { label: 'gallery', href: 'photo' }, 'about', 'contact'].forEach(link => {
+            const val = (prop) => typeof link === 'string' ? link : link[prop]
+            cy.get(`[data-test="menu-items"] a[href="/${val('href')}"]`).contains(val('label')).should('be.visible')
+            })
     }
 
     it('shows all links', () => {

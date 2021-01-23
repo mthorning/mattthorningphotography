@@ -22,6 +22,7 @@
 
   p {
     margin: 1em auto;
+    text-transform: Capitalize;
   }
 
   @media (min-width: 480px) {
