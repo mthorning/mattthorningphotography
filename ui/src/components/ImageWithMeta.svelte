@@ -60,6 +60,7 @@
 <!-- svelte-ignore a11y-autofocus -->
 <div class="wrapper">
   <div
+    data-test="image-with-meta"
     class="container"
     class:min-dimensions={!imageLoaded}
     on:click
@@ -90,14 +91,16 @@
         imageLoaded = true
       }} />
     {#if exif?.show && imageLoaded}
-      <p>
-        f{exif?.aperture ?? '-'}
-        |
-        {exif?.bracketed ? 'bracketed' : `${exif?.shutter ?? '-'}sec`}
-        | ISO
-        {exif?.iso ?? '-'}
-        |
-        {exif?.focalLength ?? '-'}mm
+      <p data-test="exif">
+      {[
+            `f${exif?.aperture ?? '-'}`,
+            '|',
+            `${exif?.bracketed ? 'bracketed' : `${exif?.shutter ?? '-'}sec`}`,
+            '|',
+            `ISO ${exif?.iso ?? '-'}`,
+            '|',
+            `${exif?.focalLength ?? '-'}mm`
+        ].join(' ')}
       </p>
     {/if}
   </div>

@@ -99,7 +99,7 @@
 {/if}
 
 <div id="test" class="footer">
-  {#each thumbs as thumb, index}
+  {#each thumbs as thumb}
     <Thumbnail
       style={`
           width: 100px;
