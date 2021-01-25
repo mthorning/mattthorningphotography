@@ -87,4 +87,4 @@
   })
 </script>
 
-<div bind:this={paypalContainer} />
+<div data-test="paypalButton" bind:this={paypalContainer} />

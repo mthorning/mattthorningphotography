@@ -2,7 +2,11 @@
   import Img from './Img.svelte'
   import IntersectionObserver from './IntersectionObserver.svelte'
 
-  export let isPortrait: boolean, alt: string, url: string, style: string
+  export let isPortrait: boolean,
+    alt: string,
+    url: string,
+    style: string,
+    linkHref: string
 </script>
 
 <style>
@@ -25,24 +29,26 @@
 
 <div data-test="thumbnail" class={`thumbnail `} {style}>
   <IntersectionObserver once let:intersecting>
-    {#if intersecting}
-      <Img
-        on:click
-        style={`
-          ${isPortrait ? `
-              width: 105%;
-              height: auto;
-            ` : `
-              width: auto;
-              height: 120%;
-          `}
-              position: absolute;
-              left: 50%;
-              top: 50%;
-              transform: translate(-50%, -50%);
-          `}
-        {alt}
-        src={url} />
-    {/if}
+    <a on:click href={linkHref}>
+      {#if intersecting}
+        <!-- anchor tag for SEO purposes -->
+        <Img
+            style={`
+              ${isPortrait ? `
+                  width: 105%;
+                  height: auto;
+                ` : `
+                  width: auto;
+                  height: 120%;
+              `}
+                  position: absolute;
+                  left: 50%;
+                  top: 50%;
+                  transform: translate(-50%, -50%);
+              `}
+            {alt}
+            src={url} />
+      {/if}
+    </a>
   </IntersectionObserver>
 </div>

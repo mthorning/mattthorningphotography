@@ -32,10 +32,6 @@
         )
         .sort((a, b) => a.price - b.price)
     : []
-
-  function onImageClick(clickId: string) {
-    goto(`/photo/${clickId}`)
-  }
 </script>
 
 <style>
@@ -98,7 +94,7 @@
   </div>
 {/if}
 
-<div id="test" class="footer">
+<div data-test="hzGallery" class="footer">
   {#each thumbs as thumb}
     <Thumbnail
       style={`
@@ -110,6 +106,6 @@
       isPortrait={thumb?.isPortrait}
       alt={thumb?.image?.alternativeText}
       url={thumb?.image?.formats?.thumbnail?.url}
-      on:click={() => onImageClick(thumb?.slug)} />
+      linkHref={`/photo/${thumb.slug}`} />
   {/each}
 </div>
