@@ -5,7 +5,8 @@ describe('photo page', () => {
         cy.get('[data-test="thumbnail"] a').then(imgs => {
             const href = imgs.eq(Math.floor(Math.random() * imgs.length)).attr('href')
             cy.request(`${href}.json`).then(({ body }) => data = body)
-            cy.visit(href)
+            cy.get(`[data-test="thumbnail"] a[href="${href}"]`).click()
+            cy.get('[data-test="lightbox"] img').click()
         })
     })
 
@@ -41,9 +42,30 @@ describe('photo page', () => {
         it('shows the description', () => {
             cy.get('p.description').should('have.text', data.photo.description)
         });
+
+        it('opens fullsize image on click', () => {
+            cy.get('[data-test="image-with-meta"] img').click()
+            cy.get('.overlay').should('be.visible').and('have.length', 2)
+            cy.get('.overlay img')
+                .should('be.visible')
+                .invoke('attr', 'src')
+                .should('eq', data.photo.image.url)
+            cy.get('.overlay img').click()
+            cy.get('.overlay').should('not.exist')
+        })
+
+
+        it('closes image on escape press', () => {
+            cy.get('[data-test="image-with-meta"] img').click()
+            cy.get('.overlay').should('be.visible')
+            cy.get('body').type('{esc}')
+            cy.get('.overlay').should('be.not.exist')
+        })
     });
 
     describe('print section', () => {
+
+        before(cy.reload)
 
         function ifEnabled(selector, tests) {
             const { print: { enabled, printSizes }, photo: { sell, id } } = data
@@ -92,9 +114,10 @@ describe('photo page', () => {
     })
 
     describe('horizontal gallery', () => {
-        before(() => 
+        before(() => {
+            cy.reload()
             cy.scrollTo('bottom')
-        )
+        })
 
         it('displays the correct thumbnail links', () => {
             cy.get('[data-test="hzGallery"]').within(() => {
