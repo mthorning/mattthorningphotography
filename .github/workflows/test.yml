@@ -1,7 +1,7 @@
-name: Test
+name: Test Prod
 
 env:
-  CYPRESS_URL: https://mattthorningphotography.com
+  CYPRESS_BASE_URL: https://mattthorningphotography.com
 
 on:
   workflow_dispatch:
