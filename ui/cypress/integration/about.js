@@ -12,6 +12,6 @@ describe('about page', () => {
     it('links to contact page', () => {
         cy.get('[data-test="some-gibberish"]').find('a[href="/contact"]').click()
         cy.wait(500)
-        cy.get('h1').contains('Contact').should('be.visible')
+        cy.location().should(location => expect(location.pathname).to.eq('/contact'))
     })
 })
