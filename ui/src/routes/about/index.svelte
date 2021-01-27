@@ -35,7 +35,10 @@
 </style>
 
 <svelte:head>
-  <title>About</title>
+  <title>About Matt Thorning</title>
+  <meta
+    name="description"
+    content="Cornish landscape and fine art photographer." />
 </svelte:head>
 
 <div>

@@ -65,6 +65,7 @@
 
 <svelte:head>
   <title>{photo.title}</title>
+  <meta name="description" content={photo.description} />
 </svelte:head>
 
 <h1>{photo?.title ?? 'Image'}</h1>

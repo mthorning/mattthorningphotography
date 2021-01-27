@@ -49,7 +49,10 @@
 </style>
 
 <svelte:head>
-  <title>Gallery</title>
+  <title>Image Gallery</title>
+  <meta
+    name="description"
+    content="A selection of my favourite images available for purchase." />
 </svelte:head>
 
 <div class="page">

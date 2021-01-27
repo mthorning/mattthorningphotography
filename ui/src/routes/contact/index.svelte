@@ -67,8 +67,16 @@
   }
 </style>
 
+<svelte:head>
+  <title>Get in touch</title>
+  <meta
+    name="description"
+    content="Please leave your details in the form below and I will get back to you as
+    soon as possible." />
+</svelte:head>
+
 <div>
-  <h1>Contact</h1>
+  <h1>Get in touch</h1>
   <p>
     Please leave your details in the form below and I will get back to you as
     soon as possible.

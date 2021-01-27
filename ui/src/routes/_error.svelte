@@ -33,7 +33,8 @@
 </style>
 
 <svelte:head>
-  <title>{status}</title>
+  <title>{error.message}</title>
+  <meta name="robots" content="noindex" />
 </svelte:head>
 
 <div>

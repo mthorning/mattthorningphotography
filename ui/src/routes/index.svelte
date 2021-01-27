@@ -14,7 +14,10 @@
 </style>
 
 <svelte:head>
-  <title>MattThorning</title>
+  <title>Matt Thorning Photography</title>
+  <meta
+    name="description"
+    content="Landscape and fine art photography from Cornwall." />
 </svelte:head>
 
 <div>
