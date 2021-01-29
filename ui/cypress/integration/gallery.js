@@ -34,7 +34,7 @@ describe('gallery', () => {
         })
     })
 
-    it('shows changes fullsize images with arrow keys', () => {
+    it.skip('shows changes fullsize images with arrow keys', () => {
         cy.get('[data-test="thumbnail"]').first().find('img').should('have.class', 'loaded').click();
 
         cy.get('[data-test="lightbox"] img').should('have.attr', 'src').then(firstImg => {
