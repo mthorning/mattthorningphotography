@@ -12,7 +12,6 @@
 </script>
 
 <script lang="ts">
-  import { goto } from '@sapper/app'
   import ImageWithMeta from '../../../components/ImageWithMeta.svelte'
   import PurchasePanel from '../../../components/PurchasePanel.svelte'
   import Thumbnail from '../../../components/Thumbnail.svelte'

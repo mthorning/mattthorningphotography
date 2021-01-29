@@ -39,8 +39,8 @@
       --nav-dropdown-bg: rgba(${home ? '123, 93, 104, 0.9' : '25, 25, 28, 0.9'});
       --nav-dropdown-border: #444; 
       --mobile-button-bg: rgba(255, 255, 255, 0.05);
-      --mobile-button-color: #f0f0f0;
-      --nav-selected-underline-color: #f0f0f0;
+      --mobile-button-color: var(--primary-color);
+      --nav-selected-underline-color: var(--primary-color);
       --nav-z-index: 110;
     `}
     {segment} />

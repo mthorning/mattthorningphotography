@@ -49,12 +49,14 @@ type About {
   body: String
   title: String
   image: UploadFile
+  showGearList: Boolean
 }
 
 input AboutInput {
   body: String
   title: String
   image: ID
+  showGearList: Boolean
   created_by: ID
   updated_by: ID
 }
@@ -63,6 +65,7 @@ input editAboutInput {
   body: String
   title: String
   image: ID
+  showGearList: Boolean
   created_by: ID
   updated_by: ID
 }
@@ -175,6 +178,110 @@ input deleteCategoryInput {
 
 type deleteCategoryPayload {
   category: Category
+}
+
+enum ENUM_EQUIPMENTITEMS_CATEGORY {
+  main_kit
+  filters
+  processing
+}
+
+type EquipmentItems {
+  id: ID!
+  _id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  category: ENUM_EQUIPMENTITEMS_CATEGORY
+}
+
+type EquipmentItemsConnection {
+  values: [EquipmentItems]
+  groupBy: EquipmentItemsGroupBy
+  aggregate: EquipmentItemsAggregator
+}
+
+type EquipmentItemsAggregator {
+  count: Int
+  totalCount: Int
+}
+
+type EquipmentItemsGroupBy {
+  id: [EquipmentItemsConnectionId]
+  _id: [EquipmentItemsConnection_id]
+  createdAt: [EquipmentItemsConnectionCreatedAt]
+  updatedAt: [EquipmentItemsConnectionUpdatedAt]
+  name: [EquipmentItemsConnectionName]
+  category: [EquipmentItemsConnectionCategory]
+}
+
+type EquipmentItemsConnectionId {
+  key: ID
+  connection: EquipmentItemsConnection
+}
+
+type EquipmentItemsConnection_id {
+  key: ID
+  connection: EquipmentItemsConnection
+}
+
+type EquipmentItemsConnectionCreatedAt {
+  key: DateTime
+  connection: EquipmentItemsConnection
+}
+
+type EquipmentItemsConnectionUpdatedAt {
+  key: DateTime
+  connection: EquipmentItemsConnection
+}
+
+type EquipmentItemsConnectionName {
+  key: String
+  connection: EquipmentItemsConnection
+}
+
+type EquipmentItemsConnectionCategory {
+  key: String
+  connection: EquipmentItemsConnection
+}
+
+input EquipmentItemInput {
+  name: String!
+  category: ENUM_EQUIPMENTITEMS_CATEGORY
+  created_by: ID
+  updated_by: ID
+}
+
+input editEquipmentItemInput {
+  name: String
+  category: ENUM_EQUIPMENTITEMS_CATEGORY
+  created_by: ID
+  updated_by: ID
+}
+
+input createEquipmentItemInput {
+  data: EquipmentItemInput
+}
+
+type createEquipmentItemPayload {
+  equipmentItem: EquipmentItems
+}
+
+input updateEquipmentItemInput {
+  where: InputID
+  data: editEquipmentItemInput
+}
+
+type updateEquipmentItemPayload {
+  equipmentItem: EquipmentItems
+}
+
+input deleteEquipmentItemInput {
+  where: InputID
+}
+
+type deleteEquipmentItemPayload {
+  equipmentItem: EquipmentItems
 }
 
 type Photo {
@@ -939,7 +1046,7 @@ input editComponentPhotoExifInput {
   bracketed: Boolean
 }
 
-union Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | UserPermissionsPasswordPayload | About | updateAboutPayload | deleteAboutPayload | Category | CategoryConnection | CategoryAggregator | CategoryGroupBy | CategoryConnectionId | CategoryConnection_id | CategoryConnectionCreatedAt | CategoryConnectionUpdatedAt | CategoryConnectionName | CategoryConnectionPhoto | createCategoryPayload | updateCategoryPayload | deleteCategoryPayload | Photo | PhotoConnection | PhotoAggregator | PhotoGroupBy | PhotoConnectionId | PhotoConnection_id | PhotoConnectionCreatedAt | PhotoConnectionUpdatedAt | PhotoConnectionTitle | PhotoConnectionImage | PhotoConnectionIsPortrait | PhotoConnectionDescription | PhotoConnectionSell | PhotoConnectionPublished | PhotoConnectionCropSize | PhotoConnectionExif | PhotoConnectionCaptureDate | PhotoConnectionCategory | PhotoConnectionExifData | PhotoConnectionSlug | createPhotoPayload | updatePhotoPayload | deletePhotoPayload | Prints | updatePrintPayload | deletePrintPayload | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnection_id | UploadFileConnectionCreatedAt | UploadFileConnectionUpdatedAt | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_metadata | deleteFilePayload | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnection_id | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | createRolePayload | updateRolePayload | deleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnection_id | UsersPermissionsUserConnectionCreatedAt | UsersPermissionsUserConnectionUpdatedAt | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | createUserPayload | updateUserPayload | deleteUserPayload | ComponentPhotoCropSize | ComponentPhotoExif
+union Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | UserPermissionsPasswordPayload | About | updateAboutPayload | deleteAboutPayload | Category | CategoryConnection | CategoryAggregator | CategoryGroupBy | CategoryConnectionId | CategoryConnection_id | CategoryConnectionCreatedAt | CategoryConnectionUpdatedAt | CategoryConnectionName | CategoryConnectionPhoto | createCategoryPayload | updateCategoryPayload | deleteCategoryPayload | EquipmentItems | EquipmentItemsConnection | EquipmentItemsAggregator | EquipmentItemsGroupBy | EquipmentItemsConnectionId | EquipmentItemsConnection_id | EquipmentItemsConnectionCreatedAt | EquipmentItemsConnectionUpdatedAt | EquipmentItemsConnectionName | EquipmentItemsConnectionCategory | createEquipmentItemPayload | updateEquipmentItemPayload | deleteEquipmentItemPayload | Photo | PhotoConnection | PhotoAggregator | PhotoGroupBy | PhotoConnectionId | PhotoConnection_id | PhotoConnectionCreatedAt | PhotoConnectionUpdatedAt | PhotoConnectionTitle | PhotoConnectionImage | PhotoConnectionIsPortrait | PhotoConnectionDescription | PhotoConnectionSell | PhotoConnectionPublished | PhotoConnectionCropSize | PhotoConnectionExif | PhotoConnectionCaptureDate | PhotoConnectionCategory | PhotoConnectionExifData | PhotoConnectionSlug | createPhotoPayload | updatePhotoPayload | deletePhotoPayload | Prints | updatePrintPayload | deletePrintPayload | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnection_id | UploadFileConnectionCreatedAt | UploadFileConnectionUpdatedAt | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_metadata | deleteFilePayload | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnection_id | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | createRolePayload | updateRolePayload | deleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnection_id | UsersPermissionsUserConnectionCreatedAt | UsersPermissionsUserConnectionUpdatedAt | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | createUserPayload | updateUserPayload | deleteUserPayload | ComponentPhotoCropSize | ComponentPhotoExif
 
 input InputID {
   id: ID!
@@ -962,6 +1069,9 @@ type Query {
   category(id: ID!, publicationState: PublicationState): Category
   categories(sort: String, limit: Int, start: Int, where: JSON, publicationState: PublicationState): [Category]
   categoriesConnection(sort: String, limit: Int, start: Int, where: JSON): CategoryConnection
+  equipmentItem(id: ID!, publicationState: PublicationState): EquipmentItems
+  equipmentItems(sort: String, limit: Int, start: Int, where: JSON, publicationState: PublicationState): [EquipmentItems]
+  equipmentItemsConnection(sort: String, limit: Int, start: Int, where: JSON): EquipmentItemsConnection
   photo(id: ID!, publicationState: PublicationState): Photo
   photos(sort: String, limit: Int, start: Int, where: JSON, publicationState: PublicationState): [Photo]
   photosConnection(sort: String, limit: Int, start: Int, where: JSON): PhotoConnection
@@ -987,6 +1097,9 @@ type Mutation {
   createCategory(input: createCategoryInput): createCategoryPayload
   updateCategory(input: updateCategoryInput): updateCategoryPayload
   deleteCategory(input: deleteCategoryInput): deleteCategoryPayload
+  createEquipmentItem(input: createEquipmentItemInput): createEquipmentItemPayload
+  updateEquipmentItem(input: updateEquipmentItemInput): updateEquipmentItemPayload
+  deleteEquipmentItem(input: deleteEquipmentItemInput): deleteEquipmentItemPayload
   createPhoto(input: createPhotoInput): createPhotoPayload
   updatePhoto(input: updatePhotoInput): updatePhotoPayload
   deletePhoto(input: deletePhotoInput): deletePhotoPayload
@@ -1013,7 +1126,7 @@ type Mutation {
 
   """Delete an existing user"""
   deleteUser(input: deleteUserInput): deleteUserPayload
-  upload(refId: ID, ref: String, field: String, source: String, file: Upload!): UploadFile!
+  upload(refId: ID, ref: String, field: String, source: String, info: FileInfoInput, file: Upload!): UploadFile!
   multipleUpload(refId: ID, ref: String, field: String, source: String, files: [Upload]!): [UploadFile]!
   updateFileInfo(id: ID!, info: FileInfoInput!): UploadFile!
   login(input: UsersPermissionsLoginInput!): UsersPermissionsLoginPayload!

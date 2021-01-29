@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "equipment_items",
+  "info": {
+    "name": "EquipmentItems",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "main_kit",
+        "filters",
+        "processing"
+      ]
+    }
+  }
+}

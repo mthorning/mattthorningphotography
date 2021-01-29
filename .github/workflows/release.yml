@@ -13,10 +13,15 @@ on:
         description: 'Release API? (y/n)'
         required: false
         default: n
+      with-ui:
+        description: 'Release UI? (y/n)'
+        required: false
+        default: y
 
 jobs:
   deploy-ui:
     name: Deploy UI
+    if: github.event.inputs.with-ui == 'y'
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -78,7 +83,7 @@ jobs:
           
   ui-up:
     name: UI Up
-    if: github.event.inputs.with-api != 'y'
+    if: github.event.inputs.with-ui == 'y' && github.event.inputs.with-api != 'y'
     needs: deploy-ui
     runs-on: ubuntu-latest
     steps:
@@ -96,9 +101,30 @@ jobs:
             rm ui/image-ui.tar
             docker system prune -f
             
+  api-up:
+    name: All Up
+    if: github.event.inputs.with-ui != 'y' && github.event.inputs.with-api == 'y'
+    needs: [deploy-ui, deploy-api]
+    runs-on: ubuntu-latest
+    steps:
+      - name: load images and up
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          port: 22
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd ~/containers/${{ env.APP_NAME }}
+            docker load -i api/image-api.tar
+            docker load -i ui/image-ui.tar
+            docker-compose up -d
+            rm api/image-api.tar ui/image-ui.tar
+            docker system prune -f
+
   all-up:
     name: All Up
-    if: github.event.inputs.with-api == 'y'
+    if: github.event.inputs.with-ui == 'y' && github.event.inputs.with-api == 'y'
     needs: [deploy-ui, deploy-api]
     runs-on: ubuntu-latest
     steps:

@@ -1,6 +1,7 @@
   :root {
     --text-color-to-rgb: 69, 85, 101;
     --primary-bg-color: #19191c;
+    --primary-color: #f0f0f0;
   }
 
 body {
@@ -9,7 +10,7 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   font-size: 14px;
   line-height: 1.5;
-  color: #f0f0f0;
+  color: var(--primary-color);
   background: #1f1d21;
 }
 

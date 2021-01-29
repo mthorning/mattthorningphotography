@@ -14,7 +14,10 @@
   import type { Data } from './index.json'
 
   export let data: Data
-  const { about: { title, body, image } = {} } = data
+  const {
+    about: { title, body, image, showGearList } = {},
+    equipmentItems,
+  } = data
 </script>
 
 <style>
@@ -24,13 +27,18 @@
   }
   .photo {
     width: 100%;
-    border: 1px solid #f0f0f0;
+    border: 1px solid var(--primary-color);
     height: 300px;
     margin: 20px auto;
     background-image: var(--image-url);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+  }
+  .gear-list {
+    margin-top: 32px;
+    padding-top: 32px;
+    border-top: 1px solid var(--primary-color);
   }
 </style>
 
@@ -53,4 +61,18 @@
   <div data-test="some-gibberish">
     {@html body}
   </div>
+
+  {#if showGearList}
+    <div class="gear-list">
+      <h1>Gear List</h1>
+      {#each Object.keys(equipmentItems) as category}
+        <h3>{category}</h3>
+        <ul>
+          {#each equipmentItems[category] as item}
+            <li>{item}</li>
+          {/each}
+        </ul>
+      {/each}
+    </div>
+  {/if}
 </div>

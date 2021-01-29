@@ -2,11 +2,13 @@
   "kind": "singleType",
   "collectionName": "abouts",
   "info": {
-    "name": "About"
+    "name": "About",
+    "description": ""
   },
   "options": {
     "increments": true,
-    "timestamps": true
+    "timestamps": true,
+    "draftAndPublish": false
   },
   "attributes": {
     "body": {
@@ -25,6 +27,9 @@
       ],
       "plugin": "upload",
       "required": false
+    },
+    "showGearList": {
+      "type": "boolean"
     }
   }
 }

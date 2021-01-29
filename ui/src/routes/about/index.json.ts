@@ -3,6 +3,10 @@ import marked from "marked";
 
 import type { Request, Response } from 'express'
 
+interface EquipmentItems {
+    [category: string]: [string]
+}
+
 export interface Data {
     about: {
         title: string,
@@ -10,7 +14,9 @@ export interface Data {
         image: {
             url: string
         }
-    }
+        showGearList: boolean
+    },
+    equipmentItems: EquipmentItems
 }
 
 export function get(_req: Request, res: Response) {
@@ -19,25 +25,38 @@ export function get(_req: Request, res: Response) {
             about {
                 title
                 body
+                showGearList
                 image {
                     url
                 }
             }
+            equipmentItems {
+                name
+                category
+            }
         `, 
         res
-    ).then((response: Data) => {
+    ).then((response) => {
         if (response) {
 
             res.writeHead(200, {
               "Content-Type": "application/json",
             });
 
-            res.end(JSON.stringify({ 
+            const equipmentItems = response.equipmentItems.reduce((items: EquipmentItems, { name, category }) => ({ 
+                ...items, 
+                [category]: [...items[category] ?? [], name]
+            }), {});
+
+            const data: Data = { 
+                equipmentItems,
                 about: { 
                     ...response.about, 
                     body: marked(response.about?.body)
                 }
-            }))
+            }
+
+            res.end(JSON.stringify(data))
         }
     }).catch((error) => {
         console.error("Something happened", error);
