@@ -104,7 +104,7 @@ jobs:
   api-up:
     name: API Up
     if: github.event.inputs.with-ui != 'y' && github.event.inputs.with-api == 'y'
-    needs: [deploy-ui, deploy-api]
+    needs: [deploy-api]
     runs-on: ubuntu-latest
     steps:
       - name: load images and up
