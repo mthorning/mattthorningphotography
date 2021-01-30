@@ -102,9 +102,9 @@ jobs:
             docker system prune -f
             
   api-up:
-    name: All Up
+    name: API Up
     if: github.event.inputs.with-ui != 'y' && github.event.inputs.with-api == 'y'
-    needs: [deploy-ui, deploy-api]
+    needs: [deploy-api]
     runs-on: ubuntu-latest
     steps:
       - name: load images and up
