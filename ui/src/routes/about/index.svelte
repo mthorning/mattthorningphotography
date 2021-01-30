@@ -21,7 +21,7 @@
 </script>
 
 <style>
-  div {
+  .content {
     max-width: 56em;
     margin: auto;
   }
@@ -58,20 +58,32 @@
       style={`--image-url:url(${image.url})`}
       class="photo" />
   {/if}
-  <div data-test="some-gibberish">
+  <div class="content" data-test="about-text">
     {@html body}
   </div>
 
+  <p>
+    If you want to get in touch for any reason then please contact me either
+    through my
+    <a href="/contact">contact page </a>or the social media links above.
+  </p>
   {#if showGearList}
     <div class="gear-list">
-      <h1>Gear List</h1>
+      <h2>Gear List</h2>
       {#each Object.keys(equipmentItems) as category}
-        <h3>{category}</h3>
-        <ul>
-          {#each equipmentItems[category] as item}
-            <li>{item}</li>
-          {/each}
-        </ul>
+        <div data-test={category}>
+          <h3>
+            {category
+              .split('_')
+              .map((l) => `${l.charAt(0).toUpperCase()}${l.substr(1)}`)
+              .join(' ')}
+          </h3>
+          <ul>
+            {#each equipmentItems[category] as item}
+              <li>{item}</li>
+            {/each}
+          </ul>
+        </div>
       {/each}
     </div>
   {/if}

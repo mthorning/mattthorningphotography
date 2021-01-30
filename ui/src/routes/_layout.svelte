@@ -13,7 +13,7 @@
 
 <style>
   main {
-    height: 100vh;
+    min-height: 100vh;
     padding-top: 57px;
     margin: 0 auto;
     box-sizing: border-box;
