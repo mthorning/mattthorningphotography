@@ -1,0 +1,17 @@
+#! /bin/sh
+
+UPSTREAM=${1:-'@{u}'}
+LOCAL=$(git rev-parse @)
+BASE=$(git merge-base @ "$UPSTREAM")
+
+if [ $LOCAL = $BASE ]; then
+    echo "Need to pull"
+    exit 1
+fi
+
+branch="$(git rev-parse --abbrev-ref HEAD)"
+
+if [ "$branch" = "master" ]; then
+    cd ui
+    ./node_modules/.bin/cypress run
+fi
