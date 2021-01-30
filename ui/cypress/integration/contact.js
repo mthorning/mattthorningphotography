@@ -12,12 +12,14 @@ const name = 'CYPRESS TEST'
 
         cy.intercept('POST', '/contact').as('contactRequest')
         cy.get('button[type="submit"]').click()
+        cy.get('[data-test="spinner"]').should('be.visible')
 
         cy.wait('@contactRequest').then(({ request }) => {
             expect(request.body.from).to.equal(email)
             expect(request.body.subject).to.equal(`Message from ${name}`)
             expect(request.body.html).to.equal(`\n            <pre>${message}</pre>\n            <hr />\n            <a href="mailto:${email}">${email}</a>\n            `)
 
+            cy.get('[data-test="spinner"]').should('not.exist')
             cy.location().then(({ pathname, search }) => {
                 expect(pathname).to.equal('/thankyou')
                 expect(search).to.equal('?type=message')
