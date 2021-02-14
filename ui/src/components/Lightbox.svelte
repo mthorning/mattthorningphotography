@@ -6,7 +6,11 @@
   import Img from './Img.svelte'
   import Spinner from './Spinner.svelte'
 
-  export let alt: string, url: string, close: () => void, click: boolean
+  export let alt: string,
+    url: string,
+    close: () => void,
+    click: boolean,
+    radial: boolean
   // to close, call handleClose() not close()
   export let previous = () => {}
   export let next = () => {}
@@ -147,7 +151,8 @@
 <!-- svelte-ignore a11y-autofocus -->
 <svelte:window on:keydown={onKeydown} on:popstate={onPopstate} bind:scrollY />
 <div
-  class="overlay top radial"
+  class="overlay top"
+  class:radial
   data-test="lightbox"
   on:click={handleClose}
   on:touchstart={onTouchstart}

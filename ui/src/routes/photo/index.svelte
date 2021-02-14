@@ -76,6 +76,7 @@
       {#key selectedImage?.image?.url}
         <Lightbox
           click
+          radial={true}
           alt={selectedImage?.image?.alternativeText}
           url={selectedImage?.image?.url}
           on:click={onImageClick}
