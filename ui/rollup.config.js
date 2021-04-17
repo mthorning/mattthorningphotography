@@ -30,12 +30,15 @@ export default {
         'process.env.PORT': JSON.stringify(process.env.PORT),
         'process.env.EMAIL_ADDRESS': JSON.stringify(process.env.EMAIL_ADDRESS),
         'process.env.PAYPAL_ID': JSON.stringify(process.env.PAYPAL_ID),
+        preventAssignment: true
       }),
       svelte({
-        dev,
-        hydratable: true,
-        preprocess: sveltePreprocess(),
+        compilerOptions: {
+            dev,
+            hydratable: true,
+        },
         emitCss: true,
+        preprocess: sveltePreprocess(),
       }),
       typescript({ sourceMap: dev }),
       resolve({
@@ -59,12 +62,15 @@ export default {
       replace({
         'process.browser': false,
         'process.env.NODE_ENV': JSON.stringify(mode),
+        preventAssignment: true
       }),
       svelte({
-        generate: 'ssr',
-        hydratable: true,
+        compilerOptions: {
+            generate: 'ssr',
+            hydratable: true,
+            dev,
+        },
         preprocess: sveltePreprocess(),
-        dev,
       }),
       typescript({ sourceMap: !!dev }),
       resolve({
@@ -87,6 +93,7 @@ export default {
       replace({
         'process.browser': true,
         'process.env.NODE_ENV': JSON.stringify(mode),
+        preventAssignment: true
       }),
       commonjs(),
       typescript({ sourceMap: dev }),

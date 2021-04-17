@@ -35,7 +35,7 @@ jobs:
       - name: install and build sapper app
         run: |
           npm install
-          NODE_ENV=production && npm run build
+          NODE_ENV=production npm run build
       - name: build docker image
         run: |
           docker build --tag ${{ env.APP_NAME }}-ui .
@@ -66,7 +66,7 @@ jobs:
       - name: install and build strapi
         run: |
           npm install
-          NODE_ENV=production && npm run build
+          NODE_ENV=production npm run build
       - name: build docker image
         run: |
           docker build --tag ${{ env.APP_NAME }}-api .
