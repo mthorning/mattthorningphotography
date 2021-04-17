@@ -120,7 +120,7 @@ jobs:
             docker load -i ui/image-ui.tar
             docker-compose up -d
             rm api/image-api.tar ui/image-ui.tar
-            docker system prune -f
+            docker system prune --all --volumes --force
 
   all-up:
     name: All Up
@@ -141,4 +141,4 @@ jobs:
             docker load -i ui/image-ui.tar
             docker-compose up -d
             rm api/image-api.tar ui/image-ui.tar
-            docker system prune -f
+            docker system prune --all --volumes --force
