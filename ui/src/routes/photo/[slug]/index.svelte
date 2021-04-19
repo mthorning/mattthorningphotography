@@ -12,6 +12,7 @@
 </script>
 
 <script lang="ts">
+  import { stores } from '@sapper/app'
   import ImageWithMeta from '../../../components/ImageWithMeta.svelte'
   import PurchasePanel from '../../../components/PurchasePanel.svelte'
   import Thumbnail from '../../../components/Thumbnail.svelte'
@@ -19,10 +20,14 @@
 
   import type { Data } from './index.json'
 
+  const { page } = stores()
+
   export let data: Data
   $: photo = data?.photo
   $: print = data?.print
   $: thumbs = data.thumbs.filter((thumb) => thumb.slug !== photo.slug)
+  $: shareImgUrl = `${$page.host}${photo?.image?.url}`
+  $: shareUrl = `${$page.host}${$page.path}`
 
   $: printSizes = print.printSizes
     ? print.printSizes
@@ -65,6 +70,12 @@
 <svelte:head>
   <title>{photo.title}</title>
   <meta name="description" content={photo.description} />
+  <meta property="og:description" content={photo.description} />
+  <meta property="og:url" content={shareUrl} />
+  <meta name="twitter:description" content={photo.description} />
+  <meta name="twitter:image" content={shareImgUrl} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta property="og:image" content={shareImgUrl} />
 </svelte:head>
 
 <h1>{photo?.title ?? 'Image'}</h1>
